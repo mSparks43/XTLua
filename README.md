@@ -1,3 +1,14 @@
+XTLua
+XTLua is a modification of XLua which runs lua - specifically before_physics and after_physics lua functions in a worker thread aysnchronously to X-Plane.
+
+The goal is to facilitate more complex Lua calcuations without impacting the X-Plane frame rate. The Lua bindings of XLua have been replaced with xtluaDefs in xpdatarefs.cpp which synchronize the current variable states of XTLua with X-Plane once each flight model frame.
+
+Release Notes
+-----------------
+
+0.0.2b1 -  04/19/2020
+
+Initial Release
 XLua
 ====
 

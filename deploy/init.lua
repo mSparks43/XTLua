@@ -139,7 +139,8 @@ function wrap_dref_any_deferred(in_dref)
 			elseif t == "number" then
 				return XLuaSetNumber(self.dref,v)
 			else
-				error("Previously unresolved dataref is being written to but is an array or is still undefined.")
+				return 0.0
+				--error("Previously unresolved dataref is being written to but is an array or is still undefined.")
 			end			
 		end,	
 		dref = in_dref,
@@ -172,12 +173,14 @@ function find_dataref(name)
 end
 
 function create_dataref(name,type,notifier)
-	if notifier == nil then
+  error("create_dataref unsupported - use xLua")
+	--[[if notifier == nil then
 		dref = XLuaCreateDataRef(name,type,"no",nil)
 	else
 		dref = XLuaCreateDataRef(name,type,"yes",notifier)
 	end
 	return wrap_dref_any(dref,type)
+  ]]
 end
 
 --------------------------------------------------------------------------------

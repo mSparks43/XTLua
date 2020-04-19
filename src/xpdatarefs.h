@@ -8,6 +8,8 @@
 //	This source code is licensed under the MIT open source license.
 //	See LICENSE.txt for the full terms of the license.
 
+// xTLua
+// Modified by Mark Parker on 04/19/2020
 #ifndef xpdatarefs_h
 #define xpdatarefs_h
 
@@ -42,6 +44,8 @@ double			xlua_dref_get_number(xlua_dref * who);
 void			xlua_dref_set_number(xlua_dref * who, double value);
 double			xlua_dref_get_array(xlua_dref * who, int n);
 void			xlua_dref_set_array(xlua_dref * who, int n, double value);
+void			xlua_dref_preUpdate();
+void			xlua_dref_postUpdate();
 string			xlua_dref_get_string(xlua_dref * who);
 void			xlua_dref_set_string(xlua_dref * who, const string& value);
 
@@ -49,6 +53,7 @@ void			xlua_dref_set_string(xlua_dref * who, const string& value);
 // our dref early and then ANOTHER add-on is loaded that defines it.
 void			xlua_relink_all_drefs();
 
+int 			xlua_dref_resolveDREFQueue();
 // This deletes EVERY dataref, reclaiming all memory - used once at cleanup.
 void			xlua_dref_cleanup();
 

@@ -1,15 +1,18 @@
 //	Copyright 2016, Laminar Research
 //	This source code is licensed under the MIT open source license.
 //	See LICENSE.txt for the full terms of the license.
+// xTLua
+// Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "1.0.0r1"
+#define VERSION "0.0.2b1"
 
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <vector>
 
+#include <thread>
 #ifndef XPLM200
 #define XPLM200
 #endif
@@ -76,7 +79,7 @@ struct lua_alloc_request_t {
 
 
 
-static void lua_lock()
+/*static void lua_lock()
 {
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_LOCK, NULL);
 }
@@ -108,7 +111,8 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	r.nsize = nsize;
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_REALLOC,&r);
 	return r.ptr;
-}
+}*/
+bool ready=false;
 
 static float xlua_pre_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
@@ -116,14 +120,18 @@ static float xlua_pre_timer_master_cb(
                                    int                  inCounter,    
                                    void *               inRefcon)
 {
-	xlua_do_timers_for_time(xlua_get_simulated_time());
+	//xlua_do_timers_for_time(xlua_get_simulated_time());
 	
-	if(XPLMGetDatai(g_replay_active) == 0)
+	/*if(XPLMGetDatai(g_replay_active) == 0)
 	if(XPLMGetDataf(g_sim_period) > 0.0f)	
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)	
-		(*m)->pre_physics();
+		(*m)->pre_physics();*/
+	if(xlua_dref_resolveDREFQueue()>0)
+		ready=true;
 	return -1;
 }
+bool liveThread=false;
+bool run=true;
 
 static float xlua_post_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
@@ -131,7 +139,7 @@ static float xlua_post_timer_master_cb(
                                    int                  inCounter,    
                                    void *               inRefcon)
 {
-	if(XPLMGetDatai(g_replay_active) == 0)
+	/*if(XPLMGetDatai(g_replay_active) == 0)
 	{
 		if(XPLMGetDataf(g_sim_period) > 0.0f)
 		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
@@ -139,25 +147,83 @@ static float xlua_post_timer_master_cb(
 	}
 	else
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-		(*m)->post_replay();
+		(*m)->post_replay();*/
+
+	xlua_dref_postUpdate();
+
+	liveThread=true;
 	return -1;
 }
+std::vector<string> script_paths;
+std::vector<string> mod_paths;
+string init_script_path;
 
+static void do_during_physics(){
+	while(!liveThread&&run){
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
+	printf("during_physics thread woke up\n");
 
+	printf("begin loading scripts\n");
+	printf("%s\n",init_script_path.c_str());
+
+	
+	for(int i=0;i<script_paths.size();i++)
+	{
+		
+			printf(" loading %s\n",script_paths[i].c_str());
+#if !MOBILE
+			g_modules.push_back(new module(
+							mod_paths[i].c_str(),
+							init_script_path.c_str(),
+							script_paths[i].c_str()));
+#else
+			g_modules.push_back(new module(
+				mod_paths[i].c_str(),
+				init_script_path.c_str(),
+				script_paths[i].c_str(),
+				lj_alloc_f,
+				NULL));
+#endif
+		
+	}
+	while(liveThread&&run&&!ready){
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+	while(liveThread&&run){
+		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+			(*m)->post_physics();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));//100fps or less
+	}
+	if(g_is_acf_inited)
+	{
+		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+			(*m)->acf_unload();
+		g_is_acf_inited = 0;
+	}
+
+	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+		delete (*m);
+	g_modules.clear();
+    //sprintf(gBob_debstr2,"simulation thread stopped\n");
+    //XPLMDebugString(gBob_debstr2);
+	printf("during_physics thread stopped\n");
+}
+std::thread m_thread(&do_during_physics);
 PLUGIN_API int XPluginStart(
 						char *		outName,
 						char *		outSig,
 						char *		outDesc)
 {
 
-    strcpy(outName, "XLua " VERSION);
-    strcpy(outSig, "com.x-plane.xlua." VERSION);
-    strcpy(outDesc, "A minimal scripting environment for aircraft authors.");
+    strcpy(outName, "XTLua " VERSION);
+    strcpy(outSig, "com.x-plane.xtlua." VERSION);
+    strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
 
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
-#if !MOBILE
+/*#if !MOBILE
 	g_alloc = lj_alloc_create();
 	if (g_alloc == NULL)
 	{
@@ -165,7 +231,7 @@ PLUGIN_API int XPluginStart(
 		printf("No allocator\n");
 		return 0;
 	}
-#endif
+#endif*/
 	
 	XPLMCreateFlightLoop_t pre = { 0 };
 	XPLMCreateFlightLoop_t post = { 0 };
@@ -192,8 +258,10 @@ PLUGIN_API int XPluginStart(
 	plugin_base_path.erase(lp);
 	lp = plugin_base_path.find_last_of("/\\");
 	plugin_base_path.erase(lp+1);
+	//strcpy(outSig, "com.x-plane.xtlua." VERSION);
+	sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),VERSION);
+	init_script_path=plugin_base_path;
 	
-	string init_script_path(plugin_base_path);
 	init_script_path += "init.lua";
 	string scripts_dir_path(plugin_base_path);
 	
@@ -223,25 +291,12 @@ PLUGIN_API int XPluginStart(
 			mod_path += "/";
 			mod_path += fptr;
 			mod_path += "/";
+			mod_paths.push_back(mod_path);
 			string script_path(mod_path);
 			script_path += fptr;
 			script_path += ".lua";
 
-#if !MOBILE
-			g_modules.push_back(new module(
-							mod_path.c_str(),
-							init_script_path.c_str(),
-							script_path.c_str(),
-							lj_alloc_f,
-							g_alloc));
-#else
-			g_modules.push_back(new module(
-				mod_path.c_str(),
-				init_script_path.c_str(),
-				script_path.c_str(),
-				lj_alloc_f,
-				NULL));
-#endif
+			script_paths.push_back(script_path);
 		}
 			
 		++offset;
@@ -255,23 +310,17 @@ PLUGIN_API int XPluginStart(
 
 PLUGIN_API void	XPluginStop(void)
 {
-	if(g_is_acf_inited)
-	{
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-			(*m)->acf_unload();
-		g_is_acf_inited = 0;
-	}
+	run=false;
+	if(m_thread.joinable())
+		m_thread.join();
 
-	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-		delete (*m);
-	g_modules.clear();
 
 #if !MOBILE
-	if(g_alloc)
+	/*if(g_alloc)
 	{
 		lj_alloc_destroy(g_alloc);
 		g_alloc = NULL;
-	}
+	}*/
 #endif
 	
 	xlua_dref_cleanup();

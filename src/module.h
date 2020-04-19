@@ -3,6 +3,8 @@
 //  xlua
 //
 //  Created by Ben Supnik on 3/19/16.
+// xTLua
+// Modified by Mark Parker on 04/19/2020
 //
 //	Copyright 2016, Laminar Research
 //	This source code is licensed under the MIT open source license.
@@ -29,9 +31,7 @@ public:
 						 module(
 							const char *		in_module_path,
 							const char *		in_init_script,
-							const char *		in_module_script,
-							void *				(* in_alloc_func)(void *msp, void *ptr, size_t osize, size_t nsize),
-							void *				in_alloc_ref);
+							const char *		in_module_script);
 						~module();
 
 	static module *		module_from_interp(lua_State * interp);

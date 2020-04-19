@@ -4,12 +4,15 @@
 //
 //  Created by Ben Supnik on 3/19/16.
 //
+// xTLua
+// Modified by Mark Parker on 04/19/2020
+//
 //	Copyright 2016, Laminar Research
 //	This source code is licensed under the MIT open source license.
 //	See LICENSE.txt for the full terms of the license.
 
 #include "module.h"
-#include <XPLMUtilities.h>
+//#include <XPLMUtilities.h>
 #include "xpfuncs.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -106,7 +109,6 @@ static void destroy_alloc_block(module_alloc_block * head)
 if(errcode != 0) { \
 	const char * s = lua_tostring(m_interp, -1); \
 	printf("%s\n%s failed: %d\n",s,msg,errcode); \
-	XPLMDebugString(msg); \
 	lua_close(m_interp); \
 	m_interp = NULL; \
 	return; }
@@ -114,9 +116,7 @@ if(errcode != 0) { \
 module::module(
 							const char *		in_module_path,
 							const char *		in_init_script,
-							const char *		in_module_script,
-							void *				(* in_alloc_func)(void *msp, void *ptr, size_t osize, size_t nsize),
-							void *				in_alloc_ref) :
+							const char *		in_module_script) :
 	m_interp(NULL),
 	m_memory(NULL),
 	m_path(in_module_path)
@@ -124,15 +124,15 @@ module::module(
 	int boiler_plate_paths = length_of_dir(in_init_script);
 	printf("Running %s\n", in_module_script+boiler_plate_paths);
 	
-#if MOBILE
+//#if MOBILE
 	m_interp = luaL_newstate();
-#else
-	m_interp = lua_newstate(in_alloc_func, in_alloc_ref);
-#endif
+//#else
+	//m_interp = lua_newstate(in_alloc_func, in_alloc_ref);
+//#endif
 
 	if(m_interp == NULL)
 	{
-		XPLMDebugString("Unable to set up Lua.");
+		printf("Unable to set up Lua.");
 		return;
 	}
 	luaL_openlibs(m_interp);

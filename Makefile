@@ -1,6 +1,6 @@
 BUILDDIR	:=	./build
 SRC_BASE	:=	.
-TARGET		:= xlua
+TARGET		:= xtlua
 
 SOURCES = \
 	src/xlua.cpp \
@@ -9,6 +9,7 @@ SOURCES = \
 	src/xpcommands.cpp \
 	src/xpdatarefs.cpp \
 	src/xpfuncs.cpp \
+	src/xpmtdatarefs.cpp \
 	src/xptimers.cpp
 
 LIBS = -lluajit
@@ -18,7 +19,7 @@ INCLUDES = \
 	-I$(SRC_BASE)/SDK/CHeaders/XPLM \
 	-I$(SRC_BASE)/SDK/CHeaders/Widgets
 
-DEFINES = -DAPL=0 -DIBM=0 -DLIN=1
+DEFINES = -DAPL=0 -DIBM=0 -DLIN=1 -std=c++11
 
 ############################################################################
 
