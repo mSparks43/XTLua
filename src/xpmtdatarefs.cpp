@@ -13,8 +13,19 @@
 #include <stdio.h>
 #include <assert.h>
 std::mutex data_mutex;
+void XTLuaDataRefs::XTRegisterCommandHandler(void *inRefcon){
+    char namec[32]={0};
+    sprintf(namec,"%p",inRefcon);
+    std::string name=namec;
+    printf("Will register command handlers for %s",name.c_str());
+}
+float XTLuaDataRefs::XTGetElapsedTime(){
+    return time;
+}
+//begin DataRefs section
 void XTLuaDataRefs::updateDataRefs(){
     data_mutex.lock();
+    time = XPLMGetElapsedTime();
     std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;
     std::unordered_map<std::string, XTLuaChars> incomingStringdataRefs;
     for (auto x : floatdataRefs) {
@@ -146,7 +157,9 @@ void XTLuaDataRefs::ShowDataRefs(){
 void XTLuaDataRefs::XTqueueresolve_dref(xlua_dref * d){
     drefResolveQueue.push_back(d);//this needs to be done on another thread
 }
-
+void XTLuaDataRefs::XTqueueresolve_cmd(xlua_cmd * d){
+    cmdResolveQueue.push_back(d);//this needs to be done on another thread
+}
 int XTLuaDataRefs::resolveQueue(){
     int retVal=0;
     for(xlua_dref * d:drefResolveQueue){
@@ -196,6 +209,19 @@ int XTLuaDataRefs::resolveQueue(){
     }
 
     drefResolveQueue.clear();
+
+    for(xlua_cmd * d:cmdResolveQueue){
+        XPLMCommandRef c = XPLMFindCommand(d->m_name.c_str());	
+	    if(c == NULL){
+		    printf("ERROR: Command %s not found\n",d->m_name.c_str());
+	    }
+        else
+        {
+            printf("Resolved Command %s\n",d->m_name.c_str());
+        }
+        d->m_cmd = c;
+    }
+    cmdResolveQueue.clear();
     return retVal;
 }
 float XTLuaDataRefs::XTGetDataf(

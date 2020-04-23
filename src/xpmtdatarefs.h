@@ -12,7 +12,7 @@
 #define XPLM200 1
 #include "xpcommands.h"
 #include "xpmtdatatypes.h"
-
+#include <XPLMProcessing.h> //XPLMGetElapsedTime
 #include <XPLMUtilities.h>
 #include <string>
 #include <mutex>
@@ -59,11 +59,15 @@ private:
     std::unordered_map<std::string, XTLuaInteger> intdataRefs;
     std::unordered_map<std::string, XTLuaChars> stringdataRefs;
     std::vector<xlua_dref*> drefResolveQueue;
-    
+    std::vector<xlua_cmd*> cmdResolveQueue;
+    float time=0;
 public:
+    void XTRegisterCommandHandler(void *inRefcon);
+    float XTGetElapsedTime();
     void ShowDataRefs();
     void updateDataRefs();
     void                 XTqueueresolve_dref(xlua_dref * d);//can be called from anywhere
+    void                 XTqueueresolve_cmd(xlua_cmd * d);//can be called from anywhere
     int                 resolveQueue();//only to be called from flight loop thread
     int                  XTGetDatavf(
                                    XPLMDataRef          inDataRef,    

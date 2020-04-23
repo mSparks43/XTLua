@@ -14,7 +14,7 @@
 #include "xpcommands.h"
 #define XPLM200 1
 #include <XPLMUtilities.h>
-#include <XPLMProcessing.h>
+//#include <XPLMProcessing.h>
 #include "xpdatarefs.h"
 
 //#include <XPLMDataAccess.h>
@@ -314,6 +314,9 @@ xlua_dref *		xlua_find_dref(const char * name)
 
 xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, int writable, xlua_dref_notify_f func, void * ref)
 {
+	printf("ERROR: xTLua cannot create datarefs - us xLua.\n",name);
+	return NULL;
+	/*
 	assert(type != xlua_none);
 	assert(name);
 	assert(type != xlua_array || dim > 0);
@@ -400,7 +403,7 @@ xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, i
 		break;
 	}
 
-	return d;
+	return d;*/
 }
 
 xlua_dref_type	xlua_dref_get_type(xlua_dref * who)
@@ -638,9 +641,13 @@ void			xlua_relink_all_drefs()
 	}
 }
 
+
+// meat of setting drefs in here - lock the lua thread and update all datarefs to/from X-Plane
 int xlua_dref_resolveDREFQueue(){
 	return xtluaDefs.resolveQueue();
 }
+
+
 void			xlua_dref_cleanup()
 {
 	while(s_drefs)
@@ -675,53 +682,63 @@ static xlua_cmd *		s_cmds = NULL;
 
 static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
+
 	xlua_cmd * me = (xlua_cmd *) ref;
-	if(phase == xplm_CommandBegin)
-		me->m_down_time = XPLMGetElapsedTime();
+	/*if(phase == xplm_CommandBegin)
+		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_pre_handler)
-		me->m_pre_handler(me, phase, XPLMGetElapsedTime() - me->m_down_time, me->m_pre_ref);
+		me->m_pre_handler(me, phase, xtluaDefs.XTGetElapsedTime() - me->m_down_time, me->m_pre_ref);*/
 	return 1;
 }
 
 static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
 	xlua_cmd * me = (xlua_cmd *) ref;
-	if(phase == xplm_CommandBegin)
-		me->m_down_time = XPLMGetElapsedTime();
+	/*if(phase == xplm_CommandBegin)
+		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_main_handler)
-		me->m_main_handler(me, phase, XPLMGetElapsedTime() - me->m_down_time, me->m_main_ref);
+		me->m_main_handler(me, phase, xtluaDefs.XTGetElapsedTime() - me->m_down_time, me->m_main_ref);*/
 	return 0;
 }
 
 static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
 	xlua_cmd * me = (xlua_cmd *) ref;
-	if(phase == xplm_CommandBegin)
-		me->m_down_time = XPLMGetElapsedTime();
+	/*if(phase == xplm_CommandBegin)
+		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_post_handler)
-		me->m_post_handler(me, phase, XPLMGetElapsedTime() - me->m_down_time, me->m_post_ref);
+		me->m_post_handler(me, phase, xtluaDefs.XTGetElapsedTime() - me->m_down_time, me->m_post_ref);*/
 	return 1;
 }
-
+static void resolve_cmd(xlua_cmd * d)
+{
+	xtluaDefs.XTqueueresolve_cmd(d);
+}
 xlua_cmd * xlua_find_cmd(const char * name)
 {
 	for(xlua_cmd * i = s_cmds; i; i = i->m_next)
 	if(i->m_name == name)
 		return i;
 		
-	XPLMCommandRef c = XPLMFindCommand(name);	
-	if(c == NULL) return NULL;	
+	/*XPLMCommandRef c = XPLMFindCommand(name);	
+	if(c == NULL){
+		printf("ERROR: Command %s not found\n",name);
+	} return NULL;*/	
 		
 	xlua_cmd * nc = new xlua_cmd;
 	nc->m_next = s_cmds;
 	s_cmds = nc;
 	nc->m_name = name;
-	nc->m_cmd = c;
+	resolve_cmd(nc);
+	//nc->m_cmd = c;
 	return nc;
 }
 
 xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
 {
+	printf("ERROR: xTLua cannot create command - %s - use xLua and wrap them here.\n",name);
+	return NULL;
+	/*
 	for(xlua_cmd * i = s_cmds; i; i = i->m_next)
 	if(i->m_name == name)
 	{
@@ -751,7 +768,7 @@ xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
 	nc->m_name = name;
 	nc->m_cmd = XPLMCreateCommand(name,desc);
 	nc->m_ours = 1;
-	return nc;
+	return nc;*/
 }
 
 void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
@@ -763,7 +780,8 @@ void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void *
 	}
 	cmd->m_main_handler = handler;
 	cmd->m_main_ref = ref;
-	XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_main_handler, 1, cmd);
+	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_main_handler, 1, cmd);
+	xtluaDefs.XTRegisterCommandHandler(cmd);
 }
 
 
@@ -776,7 +794,8 @@ void xlua_cmd_install_pre_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, vo
 	}
 	cmd->m_pre_handler = handler;
 	cmd->m_pre_ref = ref;
-	XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
+	xtluaDefs.XTRegisterCommandHandler(cmd);
+	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
 }
 
 void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
@@ -788,21 +807,22 @@ void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, v
 	}
 	cmd->m_post_handler = handler;
 	cmd->m_post_ref = ref;
-	XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
+	xtluaDefs.XTRegisterCommandHandler(cmd); 
+	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
 }
 
 void xlua_cmd_start(xlua_cmd * cmd)
 {
-	XPLMCommandBegin(cmd->m_cmd);
+	//XPLMCommandBegin(cmd->m_cmd);
 }
 void xlua_cmd_stop(xlua_cmd * cmd)
 {
-	XPLMCommandEnd(cmd->m_cmd);
+	//XPLMCommandEnd(cmd->m_cmd);
 }
 
 void xlua_cmd_once(xlua_cmd * cmd)
 {
-	XPLMCommandOnce(cmd->m_cmd);
+	//XPLMCommandOnce(cmd->m_cmd);
 }
 
 void xlua_cmd_cleanup()
