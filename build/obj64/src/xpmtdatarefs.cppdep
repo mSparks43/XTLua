@@ -1,0 +1,4 @@
+build/obj64/src/xpmtdatarefs.o: src/xpmtdatarefs.cpp \
+ SDK/CHeaders/XPLM/XPLMDataAccess.h SDK/CHeaders/XPLM/XPLMDefs.h \
+ src/xpmtdatarefs.h src/xpcommands.h src/xpmtdatatypes.h \
+ SDK/CHeaders/XPLM/XPLMUtilities.h

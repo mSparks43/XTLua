@@ -9,9 +9,14 @@
 //	See LICENSE.txt for the full terms of the license.
 #include <XPLMDataAccess.h>
 #include <unordered_map>
+#define XPLM200 1
+#include "xpcommands.h"
 #include "xpmtdatatypes.h"
+
+#include <XPLMUtilities.h>
 #include <string>
 #include <mutex>
+
 struct	xlua_dref {
 	xlua_dref *				m_next;
 	std::string				m_name;
@@ -26,6 +31,25 @@ struct	xlua_dref {
 	//double					m_number_storage;
 	//vector<double>			m_array_storage;
 	std::string					m_string_storage;
+};
+
+struct xlua_cmd {
+	xlua_cmd() : m_next(NULL),m_cmd(NULL),m_ours(0),
+		m_pre_handler(NULL),m_pre_ref(NULL),
+		m_main_handler(NULL),m_main_ref(NULL),
+		m_post_handler(NULL),m_post_ref(NULL) { }
+
+	xlua_cmd *			m_next;
+	std::string				m_name;
+	XPLMCommandRef		m_cmd;
+	int					m_ours;
+	xlua_cmd_handler_f	m_pre_handler;
+	void *				m_pre_ref;
+	xlua_cmd_handler_f	m_main_handler;
+	void *				m_main_ref;
+	xlua_cmd_handler_f	m_post_handler;
+	void *				m_post_ref;
+	float				m_down_time;
 };
 class XTLuaDataRefs
 {
