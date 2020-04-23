@@ -13,6 +13,47 @@
 #include <stdio.h>
 #include <assert.h>
 std::mutex data_mutex;
+
+void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
+    data_mutex.lock();
+    printf("Command start %s\n",cmd->m_name.c_str());
+
+    data_mutex.unlock();
+}
+
+void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
+    data_mutex.lock();
+    printf("Command stop %s\n",cmd->m_name.c_str());
+
+    data_mutex.unlock();
+}
+
+void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
+    data_mutex.lock();
+    
+    
+    char namec[32]={0};
+    sprintf(namec,"%p",cmd);
+    std::string name=namec;
+                                     
+    if(fireCmds.find(name)==fireCmds.end()){
+        //printf("Command once %s\n",cmd->m_name.c_str());
+       
+        XTCmd xtcmd;
+        xtcmd.xluaref=cmd;
+        xtcmd.fire=true;
+        commandQueue.push_back(xtcmd);
+        fireCmds[name]=xtcmd;
+    }
+    else
+    {
+        printf("skip Command once %s - in queue\n",cmd->m_name.c_str());
+    }
+    
+    data_mutex.unlock();
+}
+
+
 void XTLuaDataRefs::XTRegisterCommandHandler(void *inRefcon){
     char namec[32]={0};
     sprintf(namec,"%p",inRefcon);
@@ -117,6 +158,15 @@ void XTLuaDataRefs::updateDataRefs(){
         XTLuaChars val=x.second;
         stringdataRefs[x.first]=val;
     }
+    for(XTCmd c:commandQueue){
+        xlua_cmd* cmd=c.xluaref;
+        if(c.fire){
+            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            XPLMCommandOnce(cmd->m_cmd);
+        }
+    }
+    commandQueue.clear();
+    fireCmds.clear();
     data_mutex.unlock();
 }
 void XTLuaDataRefs::ShowDataRefs(){

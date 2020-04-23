@@ -813,15 +813,18 @@ void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, v
 
 void xlua_cmd_start(xlua_cmd * cmd)
 {
+	xtluaDefs.XTCommandBegin(cmd);
 	//XPLMCommandBegin(cmd->m_cmd);
 }
 void xlua_cmd_stop(xlua_cmd * cmd)
 {
+	xtluaDefs.XTCommandEnd(cmd);
 	//XPLMCommandEnd(cmd->m_cmd);
 }
 
 void xlua_cmd_once(xlua_cmd * cmd)
 {
+	xtluaDefs.XTCommandOnce(cmd);
 	//XPLMCommandOnce(cmd->m_cmd);
 }
 

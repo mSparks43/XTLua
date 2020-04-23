@@ -60,8 +60,16 @@ private:
     std::unordered_map<std::string, XTLuaChars> stringdataRefs;
     std::vector<xlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
+    std::unordered_map<std::string, XTCmd> startCmds;
+    std::unordered_map<std::string, XTCmd> stopCmds;
+    std::unordered_map<std::string, XTCmd> fireCmds;
+    std::vector<XTCmd> commandQueue;
+
     float time=0;
 public:
+    void XTCommandBegin(xlua_cmd * cmd);
+    void XTCommandEnd(xlua_cmd * cmd);
+    void XTCommandOnce(xlua_cmd * cmd);
     void XTRegisterCommandHandler(void *inRefcon);
     float XTGetElapsedTime();
     void ShowDataRefs();
