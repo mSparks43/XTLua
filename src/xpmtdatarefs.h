@@ -16,7 +16,7 @@
 #include <XPLMUtilities.h>
 #include <string>
 #include <mutex>
-
+#include "xpdatarefs.h"
 struct	xlua_dref {
 	xlua_dref *				m_next;
 	std::string				m_name;
@@ -51,6 +51,11 @@ struct xlua_cmd {
 	void *				m_post_ref;
 	float				m_down_time;
 };
+
+/*static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
+static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
+static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);*/
+
 class XTLuaDataRefs
 {
 private:
@@ -60,23 +65,26 @@ private:
     std::unordered_map<std::string, XTLuaChars> stringdataRefs;
     std::vector<xlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
+    std::unordered_map<std::string, xlua_cmd*> cmdHandlerResolveQueue;
     std::unordered_map<std::string, XTCmd> startCmds;
     std::unordered_map<std::string, XTCmd> stopCmds;
     std::unordered_map<std::string, XTCmd> fireCmds;
     std::vector<XTCmd> commandQueue;
-
+    std::vector<XTCmd> runQueue;
     float time=0;
 public:
+    void XTPreCMD(xlua_cmd * cmd,int phase);
     void XTCommandBegin(xlua_cmd * cmd);
     void XTCommandEnd(xlua_cmd * cmd);
     void XTCommandOnce(xlua_cmd * cmd);
-    void XTRegisterCommandHandler(void *inRefcon);
+    void XTRegisterCommandHandler(xlua_cmd * cmd);
     float XTGetElapsedTime();
     void ShowDataRefs();
     void updateDataRefs();
     void                 XTqueueresolve_dref(xlua_dref * d);//can be called from anywhere
     void                 XTqueueresolve_cmd(xlua_cmd * d);//can be called from anywhere
     int                 resolveQueue();//only to be called from flight loop thread
+    std::vector<xlua_cmd*> XTGetHandlers();
     int                  XTGetDatavf(
                                    XPLMDataRef          inDataRef,    
                                    float *              outValues,    /* Can be NULL */

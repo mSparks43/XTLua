@@ -3,7 +3,15 @@ xtlua_async = find_dataref("laminar/xtlua/xtlua_async")
 xtlua_async_array = find_dataref("laminar/xtlua/xtlua_async_array")
 xtlua_async_string      = find_dataref("laminar/xtlua/xtlua_async_string")
 xtlua_async_string = "hello"
-simCMD_com1_stby_flip       = find_command("sim/radios/com1_standy_flip")
+simCMD_com1_stby_flip       	       = find_command("sim/radios/com1_standy_flip")
+
+function simCMD_com1_stby_flip_wrapper_beforeCMDhandler(phase, duration)
+  print("before com1 flip "..phase.." for "..duration)
+end
+function simCMD_com1_stby_flip_wrapper_afterCMDhandler(phase, duration)
+  print("after com1 flip")
+end
+simCMD_com1_stby_flip_wrapper          = wrap_command("sim/radios/com1_standy_flip", simCMD_com1_stby_flip_wrapper_beforeCMDhandler, simCMD_com1_stby_flip_wrapper_afterCMDhandler)
 local ref
 function after_physics()
   print("during physics 2")

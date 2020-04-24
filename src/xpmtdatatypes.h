@@ -61,11 +61,3 @@ class XTLuaChars
     bool set;//do we set this data
 };
 
-class XTCmd
-{
-    public:
-    xlua_cmd * xluaref;
-    bool fire;
-    bool start;
-    bool stop;
-};

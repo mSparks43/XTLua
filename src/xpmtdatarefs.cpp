@@ -12,8 +12,17 @@
 #include "xpmtdatarefs.h"
 #include <stdio.h>
 #include <assert.h>
-std::mutex data_mutex;
 
+static std::mutex data_mutex;
+void XTLuaDataRefs::XTPreCMD(xlua_cmd * cmd,int phase){
+    //printf("Pre command %s\n",cmd.m_name.c_str());
+    data_mutex.lock();
+    /*char namec[32]={0};
+    sprintf(namec,"%p",cmd);
+    std::string name=namec;*/
+
+    data_mutex.unlock();
+}
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
     data_mutex.lock();
     printf("Command start %s\n",cmd->m_name.c_str());
@@ -29,9 +38,7 @@ void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
 }
 
 void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
-    data_mutex.lock();
-    
-    
+    data_mutex.lock(); 
     char namec[32]={0};
     sprintf(namec,"%p",cmd);
     std::string name=namec;
@@ -48,17 +55,21 @@ void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
     else
     {
         printf("skip Command once %s - in queue\n",cmd->m_name.c_str());
-    }
-    
+    }    
     data_mutex.unlock();
 }
 
 
-void XTLuaDataRefs::XTRegisterCommandHandler(void *inRefcon){
+void XTLuaDataRefs::XTRegisterCommandHandler(xlua_cmd * cmd){
     char namec[32]={0};
-    sprintf(namec,"%p",inRefcon);
+    sprintf(namec,"%p",cmd);
     std::string name=namec;
-    printf("Will register command handlers for %s",name.c_str());
+    //use pointer name to only register each handler once
+    printf("Will register command handlers for %s\n",cmd->m_name.c_str());
+    data_mutex.lock(); 
+    cmdHandlerResolveQueue[name]=cmd;
+    data_mutex.unlock();
+
 }
 float XTLuaDataRefs::XTGetElapsedTime(){
     return time;
@@ -210,6 +221,10 @@ void XTLuaDataRefs::XTqueueresolve_dref(xlua_dref * d){
 void XTLuaDataRefs::XTqueueresolve_cmd(xlua_cmd * d){
     cmdResolveQueue.push_back(d);//this needs to be done on another thread
 }
+ 
+
+
+
 int XTLuaDataRefs::resolveQueue(){
     int retVal=0;
     for(xlua_dref * d:drefResolveQueue){
@@ -272,7 +287,25 @@ int XTLuaDataRefs::resolveQueue(){
         d->m_cmd = c;
     }
     cmdResolveQueue.clear();
+    /*for (auto x : cmdHandlerResolveQueue) {
+        xlua_cmd * cmd=x.second;
+        if(cmd->m_pre_handler)
+			XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
+		if(cmd->m_main_handler)
+			XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_main_handler, 1, cmd);
+		if(cmd->m_post_handler)
+			XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
+    }
+    cmdHandlerResolveQueue.clear();*/
     return retVal;
+}
+std::vector<xlua_cmd*> XTLuaDataRefs::XTGetHandlers(){
+    std::vector<xlua_cmd*> retval;
+    for (auto x : cmdHandlerResolveQueue) {
+        xlua_cmd * cmd=x.second;
+        retval.push_back(cmd);
+    }
+    return retval;
 }
 float XTLuaDataRefs::XTGetDataf(
                                    XPLMDataRef          inDataRef,bool local){
@@ -734,4 +767,4 @@ void XTLuaDataRefs::XTSetDatai(
     data_mutex.unlock();
  }
 
-                             
+                        

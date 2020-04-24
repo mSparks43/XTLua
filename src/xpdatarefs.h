@@ -14,9 +14,22 @@
 #define xpdatarefs_h
 
 #include <string>
-
+#include <vector>
+#include "xpcommands.h"
+//#include "xpmtdatatypes.h"
 using std::string;
-
+class XTCmd
+{
+    public:
+    xlua_cmd * xluaref;
+    xlua_cmd_handler_f runFunc;
+	int phase;
+	float duration;
+	void *	m_func_ref;
+    bool fire;
+    bool start;
+    bool stop;
+};
 struct	xlua_dref;
 
 enum xlua_dref_type {
@@ -46,6 +59,7 @@ double			xlua_dref_get_array(xlua_dref * who, int n);
 void			xlua_dref_set_array(xlua_dref * who, int n, double value);
 void			xlua_dref_preUpdate();
 void			xlua_dref_postUpdate();
+std::vector<XTCmd> get_runQueue();
 string			xlua_dref_get_string(xlua_dref * who);
 void			xlua_dref_set_string(xlua_dref * who, const string& value);
 
