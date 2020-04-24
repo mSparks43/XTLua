@@ -195,10 +195,18 @@ static void do_during_physics(){
 		for(XTCmd item:runItems){
 			item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
 		}
+		std::vector<string> msgItems=get_runMessages();
+		for(string item:msgItems){
+
+			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+				(*m)->do_callout(item.c_str());
+		}
+		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+			(*m)->pre_physics();
 		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 			(*m)->post_physics();
-		//std::this_thread::sleep_for(std::chrono::milliseconds(10));//100fps or less
-		std::this_thread::sleep_for(std::chrono::milliseconds(3000));//100fps or less
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));//100fps or less
+		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));//100fps or less
 	}
 	if(g_is_acf_inited)
 	{
@@ -364,8 +372,9 @@ PLUGIN_API void XPluginReceiveMessage(
 		break;
 	case XPLM_MSG_PLANE_UNLOADED:
 		if(g_is_acf_inited)
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-			(*m)->acf_unload();
+			xlua_add_callout("aircraft_unload");
+		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+		//	(*m)->acf_unload();
 		g_is_acf_inited = 0;
 		break;
 	case XPLM_MSG_AIRPORT_LOADED:
@@ -374,18 +383,20 @@ PLUGIN_API void XPluginReceiveMessage(
 			// Pick up any last stragglers from out-of-order load and then validate our datarefs!
 			xlua_relink_all_drefs();
 			xlua_validate_drefs();
-			
-			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-				(*m)->acf_load();
+			xlua_add_callout("aircraft_load");
+			//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+			//	(*m)->acf_load();
 			g_is_acf_inited = 1;							
 		}
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-			(*m)->flight_init();
+		xlua_add_callout("flight_start");
+		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+		//	(*m)->flight_init();
 		break;
 	case XPLM_MSG_PLANE_CRASHED:
 		assert(g_is_acf_inited);
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-			(*m)->flight_crash();		
+		xlua_add_callout("flight_crash");
+		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+		//	(*m)->flight_crash();		
 		break;
 	}
 }

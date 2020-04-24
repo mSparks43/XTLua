@@ -50,10 +50,11 @@ public:
 			void		pre_physics();
 			void		post_physics();
 			void		post_replay();
+			void		do_callout(const char * call_name);
 
 private:
 
-		void			do_callout(const char * call_name);
+		
 
 	lua_State *				m_interp;
 	module_alloc_block *	m_memory;

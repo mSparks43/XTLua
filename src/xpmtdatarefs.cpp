@@ -14,26 +14,28 @@
 #include <assert.h>
 
 static std::mutex data_mutex;
-void XTLuaDataRefs::XTPreCMD(xlua_cmd * cmd,int phase){
-    //printf("Pre command %s\n",cmd.m_name.c_str());
-    data_mutex.lock();
-    /*char namec[32]={0};
-    sprintf(namec,"%p",cmd);
-    std::string name=namec;*/
 
-    data_mutex.unlock();
-}
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
     data_mutex.lock();
     printf("Command start %s\n",cmd->m_name.c_str());
-
+    XTCmd xtcmd;
+    xtcmd.xluaref=cmd;
+    xtcmd.start=true;
+    commandQueue.push_back(xtcmd);
     data_mutex.unlock();
 }
 
 void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
     data_mutex.lock();
-    printf("Command stop %s\n",cmd->m_name.c_str());
 
+    printf("Command stop %s\n",cmd->m_name.c_str());
+       
+    XTCmd xtcmd;
+    xtcmd.xluaref=cmd;
+    xtcmd.stop=true;
+    commandQueue.push_back(xtcmd);
+
+    
     data_mutex.unlock();
 }
 
@@ -133,31 +135,55 @@ void XTLuaDataRefs::updateDataRefs(){
         }
     }
     for (auto x : stringdataRefs) {
-        int i=0;
+       // int i=0;
         XTLuaChars val=x.second;
         
         if(val.get&&!val.set){
-           char inVals[val.values.size()];
-           int retVal=XPLMGetDatab(val.ref,inVals,0,val.values.size());
-           for(int i=0;i<retVal;i++){
-                char v=val.values[i];
-                //printf("get char %s[%d] = %s(%d) was %f\n",x.first.c_str(),i,inVals[i],x.second.values.size(),v);
-                val.get=false;
-                val.values[v]=inVals[i];
+           int size=XPLMGetDatab(val.ref,NULL,0,0);
+            
+           char inVals[size+1]={0};
+           XPLMGetDatab(val.ref,inVals,0,size);
+           printf("get char %s = %s(%d)\n",x.first.c_str(),inVals,size);
+           //val.values.clear();
+           XTLuaChars newval;
+           newval.ref=val.ref;
+           newval.get=false;
+             newval.set=false;
+           for(int i=0;i<size;i++){
+                newval.values.push_back(inVals[i]);
+                
             }
-            incomingStringdataRefs[x.first]=val;
+            if(newval.values[newval.values.size()-1]!=0)
+                newval.values.push_back(0);
+            
+            incomingStringdataRefs[x.first]=newval;
         }
         else if(val.set){ 
-            char outVals[val.values.size()];
+            
+             XTLuaChars newval;
+             newval.ref=val.ref;
+             newval.get=false;
+             newval.set=false;
+             
+             char outVals[val.values.size()+1]={0};
+              for(int i=0;i<val.values.size();i++){
+                outVals[i]=val.values[i];
+                newval.values.push_back(outVals[i]);//.push_back(outVals[i]);
+            }
+            //newval.values.push_back(0);
+            printf("set char %s to %s(%d)\n",x.first.c_str(),outVals,val.values.size());
+            incomingStringdataRefs[x.first]=newval;
+            XPLMSetDatab(val.ref,outVals,0,val.values.size());
+            /*char outVals[val.values.size()];
             for(int i=0;i<val.values.size();i++){
                 outVals[i]=val.values[i];
                 char v=val.values[i];
-                //printf("set char %p %s[%d] = %s(%d)\n",x.second.ref,x.first.c_str(),i,v,x.second.values.size());
+                printf("set char %p %s[%d] = %s(%d)\n",x.second.ref,x.first.c_str(),i,v,x.second.values.size());
             }
             XPLMSetDatab(val.ref,outVals,0,val.values.size());
             XTLuaChars val=x.second;
             val.set=false;
-            incomingStringdataRefs[x.first]=val;
+            incomingStringdataRefs[x.first]=val;*/
         }
         
     }
@@ -174,6 +200,15 @@ void XTLuaDataRefs::updateDataRefs(){
         if(c.fire){
             //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandOnce(cmd->m_cmd);
+        
+        }
+        if(c.start){
+            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            XPLMCommandBegin(cmd->m_cmd);
+        }
+        if(c.stop){
+            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            XPLMCommandEnd(cmd->m_cmd);
         }
     }
     commandQueue.clear();
@@ -357,8 +392,8 @@ void  XTLuaDataRefs::XTSetDataf(
     if(floatdataRefs.find(name)!=floatdataRefs.end()){
         XTLuaFloat val=floatdataRefs[name];
         
-        if(inValue!=0.0||!local)
-            val.set=true;
+        //(inValue!=0.0||!local)
+        val.set=true;
         val.values[0]=inValue;
         floatdataRefs[name]=val;
        
@@ -392,12 +427,14 @@ int XTLuaDataRefs::XTGetDatab(
     char namec[32];
     sprintf(namec,"%p",inDataRef);
     std::string name=namec;
-    int retVal=0;//=XPLMGetDatab(inDataRef,outValue,inOffset,inMaxBytes);
+    printf("apply XTGetDatab %s[%d] %s\n",name.c_str(),inMaxBytes,outValues!=NULL?"values":"size");
+     int retVal=0;
+    
     {
         if(outValues!=NULL){
             if(stringdataRefs.find(name)!=stringdataRefs.end()){
                 XTLuaChars val=stringdataRefs[name];
-                for(int i=inOffset;i<val.values.size();i++){
+                for(int i=inOffset;i<val.values.size()&&i-inOffset<inMaxBytes;i++){
                     outValues[i]=val.values[i];
                     retVal++;
                 }
@@ -417,16 +454,18 @@ int XTLuaDataRefs::XTGetDatab(
                         outValues[i]=val.values[i];   
                 }
                 stringdataRefs[name]=val;
+                data_mutex.unlock();
                 return val.values.size();
             }
             else {
                 XTLuaChars val;
                 //val.isArray=true;
-                val.end=inOffset+inMaxBytes;
-                val.start=inOffset;
+                //val.end=inOffset+inMaxBytes;
+                //val.start=inOffset;
                 
                 val.ref=inDataRef;
-                val.size=-1;//we dont know this here
+                //val.size=-1;//we dont know this here
+                val.values.push_back(0);
                 for(int i=0;i<inOffset;i++){
                     val.values.push_back(0);
                 }
@@ -434,7 +473,7 @@ int XTLuaDataRefs::XTGetDatab(
                     val.values.push_back(outValues[i]);
                 }
                 val.get=true;
-                val.size=val.end;
+                //val.size=val.end;
                 stringdataRefs[name]=val;
             }
         }
@@ -455,45 +494,32 @@ void XTLuaDataRefs::XTSetDatab(
     char namec[32];
     sprintf(namec,"%p",inDataRef);
     std::string name=namec;
+    printf("apply XTSetDatab %s[%d]\n",name.c_str(),inLength);
     if(inValues!=NULL){
-        /*if(stringdataRefs.find(name)!=stringdataRefs.end()){
-            //already have it
-            XTLuaChars val=stringdataRefs[name];
-            if((inOffset+inLength)>=val.values.size()){
-                 for(int i=val.values.size();i<(inOffset+inLength);i++){
-                     val.values.push_back(0);
-                 }
-            }
-            for(int i=inOffset;i<(inOffset+inLength);i++){
-                val.values[i]=inValues[i-inOffset];
-                if(inValues[i]!=0||!local)
-                    val.set=true;  
-                //printf("apply set float %p %s[%d] = %f(%d)\n",val.ref,name.c_str(),i,inValues[i-inoffset],val.values.size());
-                 
-            }
-            stringdataRefs[name]=val; 
-            //val.get=true;
-        }
-        else {*/
             XTLuaChars val;
-            val.end=inOffset+inLength;
-            val.start=inOffset;
+            //val.end=inOffset+inLength;
+            //val.start=inOffset;
             
             val.ref=inDataRef;
-            val.size=-1;//we dont know this here
-            for(int i=0;i<inOffset;i++){
+            //val.size=-1;//we dont know this here
+            /*for(int i=0;i<inOffset;i++){
                 val.values.push_back(0);
-            }
+            }*/
             for(int i=inOffset;i<inOffset+inLength;i++){
-                val.values.push_back(inValues[i]);
-                if(inValues[i]!=0||!local)
-                    val.set=true;
+                 if(i>=val.values.size())
+                     val.values.push_back(inValues[i]);
+                 else    
+                     val.values[i]=inValues[i];   
+
+                
 
             }
-            val.values.push_back(0);//null terminate
-            val.size=val.end;
+            val.set=true;
+            if(val.values[val.values.size()-1]!=0)
+                val.values.push_back(0);//null terminate
+            //val.size=val.end;
             stringdataRefs[name]=val;
-//}
+
     }
     data_mutex.unlock();
 }      
@@ -581,9 +607,9 @@ void XTLuaDataRefs::XTSetDatavf(
             }
             for(int i=inoffset;i<(inoffset+inCount);i++){
                 val.values[i]=inValues[i-inoffset];
-                if(inValues[i]!=0.0||!local)
-                    val.set=true;  
-                //printf("apply set float %p %s[%d] = %f(%d)\n",val.ref,name.c_str(),i,inValues[i-inoffset],val.values.size());
+                //if(inValues[i]!=0.0||!local)
+                val.set=true;  
+                printf("apply set float %p %s[%d] = %f(%d)\n",val.ref,name.c_str(),i,inValues[i-inoffset],val.values.size());
                  
             }
             floatdataRefs[name]=val; 
@@ -624,8 +650,8 @@ int  XTLuaDataRefs::XTGetDatavi(
    /* data_mutex.lock();
     if(!local)
         return XPLMGetDatavi(inDataRef,outValues,inOffset,inMax);
-    data_mutex.unlock();
-     printf("dont do this?\n") ;    */ 
+    data_mutex.unlock();*/ 
+     printf("dont do this getvi?\n") ;    
     return 0.0;    
 } 
 void XTLuaDataRefs::XTSetDatavi(
@@ -637,8 +663,8 @@ void XTLuaDataRefs::XTSetDatavi(
     /*data_mutex.lock();
     if(!local)
         XPLMSetDatavi(inDataRef,inValues,inoffset,inCount);
-    data_mutex.unlock();
-    printf("dont do this?\n") ; */
+    data_mutex.unlock();*/
+    printf("dont do this setvi?\n") ; 
 }                                   
 
 double XTLuaDataRefs::XTGetDatad(

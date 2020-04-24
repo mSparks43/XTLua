@@ -60,6 +60,8 @@ void			xlua_dref_set_array(xlua_dref * who, int n, double value);
 void			xlua_dref_preUpdate();
 void			xlua_dref_postUpdate();
 std::vector<XTCmd> get_runQueue();
+std::vector<string> get_runMessages();
+void xlua_add_callout(string callout);
 string			xlua_dref_get_string(xlua_dref * who);
 void			xlua_dref_set_string(xlua_dref * who, const string& value);
 

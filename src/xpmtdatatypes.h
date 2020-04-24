@@ -54,9 +54,9 @@ class XTLuaChars
     public:
     std::vector<char> values;
     void * ref;
-    int size;
-    int end;//maybe we dont parse every value
-    int start;//maybe we dont parse every value
+    //int size;
+    //int end;//maybe we dont parse every value
+    //int start;//maybe we dont parse every value
     bool get;//do we get this data
     bool set;//do we set this data
 };

@@ -73,7 +73,7 @@ private:
     std::vector<XTCmd> runQueue;
     float time=0;
 public:
-    void XTPreCMD(xlua_cmd * cmd,int phase);
+
     void XTCommandBegin(xlua_cmd * cmd);
     void XTCommandEnd(xlua_cmd * cmd);
     void XTCommandOnce(xlua_cmd * cmd);

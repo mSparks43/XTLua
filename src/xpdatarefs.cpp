@@ -643,6 +643,7 @@ void			xlua_relink_all_drefs()
 }
 
 std::vector<XTCmd> runQueue;
+std::vector<string> messageQueue;
 std::mutex data_mutex;
 static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
@@ -664,10 +665,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		data_mutex.unlock();
 	}
 	printf("Pre command %s\n",me->m_name.c_str());
-	/*char namec[32]={0};
-    sprintf(namec,"%p",me);
-    std::string name=namec;
-	xtluaDefs.XTPreCMD(name,phase);*/
+
 	/*
 	if(me->m_pre_handler)
 		me->m_pre_handler(me, phase, xtluaDefs.XTGetElapsedTime() - me->m_down_time, me->m_pre_ref);*/
@@ -733,6 +731,21 @@ std::vector<XTCmd> get_runQueue(){
 	runQueue.clear();
 	data_mutex.unlock();
 	return items;
+}
+std::vector<string> get_runMessages(){
+	std::vector<string> items;
+	data_mutex.lock();
+	for(string item:messageQueue)
+		items.push_back(item);
+	messageQueue.clear();
+	data_mutex.unlock();
+	return items;
+}
+void xlua_add_callout(string callout){
+	printf("xlua_add_callout %s\n",callout.c_str());
+	data_mutex.lock();
+	messageQueue.push_back(callout);
+	data_mutex.unlock();
 }
 int xlua_dref_resolveDREFQueue(){
 	int retVal=xtluaDefs.resolveQueue();
@@ -890,9 +903,7 @@ void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, v
 	xtluaDefs.XTRegisterCommandHandler(cmd); 
 	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
 }
-/*void xlua_std_pre_cmd(xlua_cmd * cmd,int phase){
-	xtluaDefs.XTPreCMD(cmd,phase);
-}*/
+
 void xlua_cmd_start(xlua_cmd * cmd)
 {
 	xtluaDefs.XTCommandBegin(cmd);
