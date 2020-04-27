@@ -22,16 +22,20 @@ class XTLuaDouble
     bool set;//do we set this data
 
 };
+class XTLuaArrayFloat{
+    public:
+    float value;
+    void * ref;
+    int type;
+    bool get;//do we get this data
+    bool set;//do we set this data
+};
 class XTLuaFloat
 {
     public:
     
-    std::vector<float> values;
+    std::vector<XTLuaArrayFloat> values;
     void * ref;
-    int size;
-    int end;//maybe we dont parse every value
-    int start;//maybe we dont parse every value
-    bool isArray;//more than one value
     bool get;//do we get this data
     bool set;//do we set this data
 

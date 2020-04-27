@@ -5,7 +5,7 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "0.0.2b1"
+#define VERSION "0.0.3a2"
 
 #include <stdio.h>
 #include <string.h>
@@ -113,7 +113,7 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	return r.ptr;
 }*/
 bool ready=false;
-
+bool loadedModules=false;
 static float xlua_pre_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
@@ -126,7 +126,7 @@ static float xlua_pre_timer_master_cb(
 	if(XPLMGetDataf(g_sim_period) > 0.0f)	
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)	
 		(*m)->pre_physics();*/
-	if(xlua_dref_resolveDREFQueue()>0)
+	if(loadedModules&&xlua_dref_resolveDREFQueue()==0)
 		ready=true;
 	return -1;
 }
@@ -187,6 +187,7 @@ static void do_during_physics(){
 #endif
 		
 	}
+	loadedModules=true;
 	while(liveThread&&run&&!ready){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
@@ -197,7 +198,7 @@ static void do_during_physics(){
 		}
 		std::vector<string> msgItems=get_runMessages();
 		for(string item:msgItems){
-
+			printf("do threaded callout %s\n",item.c_str());
 			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 				(*m)->do_callout(item.c_str());
 		}

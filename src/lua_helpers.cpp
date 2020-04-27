@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <XPLMDataAccess.h>
-
+#include "xpmtdatarefs.h"
 extern XPLMDataRef				g_replay_active;
 extern XPLMDataRef				g_sim_period;
 
@@ -100,8 +100,8 @@ int lua_pushtraceback(lua_State * L)
 static void setup_std_vars(lua_State * L, int dbg)
 {
 	 lua_getfield(L, LUA_GLOBALSINDEX, "setup_callback_var");
-	 fmt_pcall(L,dbg,"sf","SIM_PERIOD",XPLMGetDataf(g_sim_period));
-
+	 //fmt_pcall(L,dbg,"sf","SIM_PERIOD",XPLMGetDataf(g_sim_period));
+ 	 fmt_pcall(L,dbg,"sf","SIM_PERIOD",0.02);
 	 lua_getfield(L, LUA_GLOBALSINDEX, "setup_callback_var");
 	 fmt_pcall(L,dbg,"si","IN_REPLAY",XPLMGetDatai(g_replay_active) != 0 ?  1 : 0);
 }	
