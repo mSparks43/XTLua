@@ -17,7 +17,7 @@ static std::mutex data_mutex;
 
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
     data_mutex.lock();
-    //printf("Command start %s\n",cmd->m_name.c_str());
+    printf("Command start %s\n",cmd->m_name.c_str());
     XTCmd xtcmd;
     xtcmd.xluaref=cmd;
     xtcmd.start=true;
@@ -28,7 +28,7 @@ void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
 void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
     data_mutex.lock();
 
-    //printf("Command stop %s\n",cmd->m_name.c_str());
+    printf("Command stop %s\n",cmd->m_name.c_str());
        
     XTCmd xtcmd;
     xtcmd.xluaref=cmd;
@@ -46,7 +46,7 @@ void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
     std::string name=namec;
                                      
     if(fireCmds.find(name)==fireCmds.end()){
-        //printf("Command once %s\n",cmd->m_name.c_str());
+        printf("Command once %s\n",cmd->m_name.c_str());
        
         XTCmd xtcmd;
         xtcmd.xluaref=cmd;
@@ -73,9 +73,7 @@ void XTLuaDataRefs::XTRegisterCommandHandler(xlua_cmd * cmd){
     data_mutex.unlock();
 
 }
-float XTLuaDataRefs::XTGetElapsedTime(){
-    return time;
-}
+
 //begin DataRefs section
 void XTLuaDataRefs::updateStringDataRefs(){
     std::unordered_map<std::string, XTLuaChars> incomingStringdataRefs;
@@ -132,16 +130,16 @@ void XTLuaDataRefs::updateCommands(){
     for(XTCmd c:commandQueue){
         xlua_cmd* cmd=c.xluaref;
         if(c.fire){
-            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandOnce(cmd->m_cmd);
         
         }
         if(c.start){
-            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandBegin(cmd->m_cmd);
         }
         if(c.stop){
-            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+            printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandEnd(cmd->m_cmd);
         }
     }
@@ -195,8 +193,8 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             int size=val.size();
             if(val[0]->type == xplmType_Int)
             {
-                int inVals[size]; 
-                int outVals[val.size()];
+                int inVals[size]={0}; 
+                int outVals[val.size()]={0}; 
                 for(int i=0;i<val.size();i++){
                     if(val[i]->get){
                         hasGetUpdate=true;
@@ -205,6 +203,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     inVals[i]=val[i]->value;
                 }
                 //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
+                //printf("update array int %p get = %d\n",val[i]->ref,hasGetUpdate);
                 if(hasGetUpdate)
                     XPLMGetDatavi(val[0]->ref,inVals,0,size);           
                 
@@ -213,22 +212,30 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                             outVals[i]=val[i]->value;
                             val[i]->set=false;
                             hasSetUpdate=true;
-                        }
-                        else
-                        {
-                            outVals[i]=inVals[i];
+                    }
+                    else
+                    {
+                       
+                       if(hasGetUpdate){
                             val[i]->value=inVals[i];
-                        }
-                        
-                        //printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),retVal);
+                            outVals[i]=inVals[i];
+                       }
+                       else{
+                            outVals[i]=val[i]->value;
+                       }
+                    }
+                    if(hasSetUpdate)
+                        printf("set array int %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),val[i]->value);    
                 }
-                if(hasSetUpdate)
+                if(hasSetUpdate){
                     XPLMSetDatavi(val[0]->ref,outVals,0,val.size());
+                    
+                }
             }
             else
             {
-                float inVals[size]; 
-                float outVals[val.size()];
+                float inVals[size]={0}; 
+                float outVals[val.size()]={0}; 
 
                 for(int i=0;i<val.size();i++){
                     if(val[i]->get){
@@ -249,11 +256,16 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                         }
                         else
                         {
-                            outVals[i]=inVals[i];
-                            val[i]->value=inVals[i];
+                            
+                            if(hasGetUpdate){
+                                val[i]->value=inVals[i];
+                                outVals[i]=inVals[i];
+                            }else{
+                                outVals[i]=val[i]->value;
+                            }
                         }
                         
-                        //printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),retVal);
+                       // printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(), val[i]->value);
                 }
                 if(hasSetUpdate)
                     XPLMSetDatavf(val[0]->ref,outVals,0,val.size());
@@ -344,11 +356,17 @@ void XTLuaDataRefs::updateFloatDataRefs(){
         floatdataRefs[x.first]=val;
     }
 }*/
+double XTLuaDataRefs::XTGetElapsedTime(){
+    //data_mutex.lock();
+    double retVal=timeT;
+    //data_mutex.unlock();
+    return retVal;
 
+}
 void XTLuaDataRefs::updateDataRefs(){
     data_mutex.lock();
     //printf("updateDataRefs\n");
-        time = XPLMGetElapsedTime();
+        timeT = XPLMGetElapsedTime();
         if(updateRoll==0)
         {
             updateStringDataRefs();
@@ -360,7 +378,7 @@ void XTLuaDataRefs::updateDataRefs(){
         }
         //else if(updateRoll==2)
         {
-            updateCommands(); 
+            updateCommands(); //always do command queue
             
         } 
         updateRoll++;
@@ -438,21 +456,43 @@ int XTLuaDataRefs::resolveQueue(){
                 char namec[32];
                 sprintf(namec,"%p",d->m_dref);
                 std::string name=namec;
-                int size=XPLMGetDatavf(d->m_dref,NULL,0,0);
-                float inVals[size];
-                XPLMGetDatavf(d->m_dref,inVals,0,size);
-                XTLuaFloat newval;
-                newval.ref=d->m_dref;
-                newval.get=false;
-                newval.set=false;
+
+                int size=0;
                 int type=xplmType_Float;
-                if(!(d->m_types & xplmType_FloatArray))
+                if(!(d->m_types & xplmType_FloatArray)){
                     type=xplmType_Int;
+                    
+                    size=XPLMGetDatavi(d->m_dref,NULL,0,0);
+                    printf("Resolved int array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
+                }
+                else{
+                    
+                    size=XPLMGetDatavf(d->m_dref,NULL,0,0);
+                    printf("Resolved float array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
+                }
+                
+                float inVals[size]={0};
+                int inIVals[size]={0};
+                if(!(d->m_types & xplmType_FloatArray))
+                    XPLMGetDatavi(d->m_dref,inIVals,0,size);
+                else
+                    XPLMGetDatavf(d->m_dref,inVals,0,size);
+                //XTLuaFloat newval;
+               // newval.ref=d->m_dref;
+                //newval.get=false;
+               // newval.set=false;
+                
+                
                 for(int i=0;i<size;i++){
                     XTLuaArrayFloat* v=new XTLuaArrayFloat;
-                    v->value=inVals[i];
+                    if(!(d->m_types & xplmType_FloatArray))
+                        v->value=inIVals[i];
+                    else
+                        v->value=inVals[i];
+                    printf("defaulted array dref %s to %f with %d\n",d->m_name.c_str(),v->value,size);  
                     v->ref=d->m_dref;
                     v->type=type;
+                    v->get=true;
                     v->index=i;
                     //printf("%d=%f\n",i,inVals[i]);
                     //newval.values.push_back(v);
@@ -478,7 +518,7 @@ int XTLuaDataRefs::resolveQueue(){
                     val=XPLMGetDatai(d->m_dref);
                     v->type=xplmType_Int;
                 }
-                
+                v->get=true;
                 v->value=val;
                 v->ref=d->m_dref;
                 //newval.values.push_back(v);
@@ -828,7 +868,7 @@ void XTLuaDataRefs::XTSetDatavf(
                 val[index]->set=true;
             val[index]->value=inValue;
             
-           //printf("apply XTSetDatavf single %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),index,val[index]->value); 
+          //printf("apply XTSetDatavf single %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),index,val[index]->value); 
         }
     }
     

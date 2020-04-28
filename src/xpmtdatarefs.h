@@ -71,7 +71,7 @@ private:
     std::unordered_map<std::string, XTCmd> fireCmds;
     std::vector<XTCmd> commandQueue;
     std::vector<XTCmd> runQueue;
-    float time=0;
+    double timeT=0;
     int updateRoll=0;
 public:
 
@@ -79,7 +79,7 @@ public:
     void XTCommandEnd(xlua_cmd * cmd);
     void XTCommandOnce(xlua_cmd * cmd);
     void XTRegisterCommandHandler(xlua_cmd * cmd);
-    float XTGetElapsedTime();
+    double XTGetElapsedTime();
     void ShowDataRefs();
     void updateDataRefs();
     void updateStringDataRefs();

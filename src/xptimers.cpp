@@ -91,8 +91,8 @@ void xlua_timer_cleanup()
 }
 
 
-double xlua_get_simulated_time(void)
+/*double xlua_get_simulated_time(void)
 {
 	static XPLMDataRef sim_time = XPLMFindDataRef("sim/time/total_running_time_sec");
 	return XPLMGetDataf(sim_time);
-}
+}*/

@@ -196,6 +196,7 @@ static void do_during_physics(){
 		for(XTCmd item:runItems){
 			item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
 		}
+		xlua_do_timers_for_time(xlua_get_simulated_time());
 		std::vector<string> msgItems=get_runMessages();
 		for(string item:msgItems){
 			printf("do threaded callout %s\n",item.c_str());
@@ -390,6 +391,7 @@ PLUGIN_API void XPluginReceiveMessage(
 			g_is_acf_inited = 1;							
 		}
 		xlua_add_callout("flight_start");
+		
 		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 		//	(*m)->flight_init();
 		break;

@@ -359,7 +359,7 @@ double			xlua_dref_get_array(xlua_dref * d, int n)
 		//	return d->m_array_storage[n];
 		//return 0.0;
 	}*/
-	if(d->m_types & xplmType_FloatArray||d->m_types & xplmType_IntArray)
+	if((d->m_types & xplmType_FloatArray)||(d->m_types & xplmType_IntArray))
 	{
 		float r;
 		if(xtluaDefs.XTGetDatavf(d, &r, n, 1,d->m_ours))
@@ -385,9 +385,11 @@ void			xlua_dref_set_array(xlua_dref * d, int n, double value)
 			d->m_array_storage[n] = value;
 		//return;
 	}*/
-	if(d->m_types & xplmType_FloatArray || d->m_types & xplmType_IntArray)
+	//printf("set %s to %f types=%d\n",d->m_name.c_str(),value,d->m_types);
+	if((d->m_types & xplmType_FloatArray) || (d->m_types & xplmType_IntArray))
 	{
 		//float r = value;
+		//printf("do set %s to %f types=%d\n",d->m_name.c_str(),value,d->m_types);
 		xtluaDefs.XTSetDatavf(d, value, n);
 	}
 	/*if(d->m_types & xplmType_IntArray)
@@ -573,6 +575,13 @@ void xlua_add_callout(string callout){
 	messageQueue.push_back(callout);
 	data_mutex.unlock();
 }
+double xlua_get_simulated_time(){
+	//printf("get sim time\n");
+	data_mutex.lock();
+	double retVal=xtluaDefs.XTGetElapsedTime();
+	data_mutex.unlock();
+	return retVal;
+}
 int xlua_dref_resolveDREFQueue(){
 	int retVal=xtluaDefs.resolveQueue();
 	if(retVal>0){
@@ -580,13 +589,15 @@ int xlua_dref_resolveDREFQueue(){
 		printf("have %d commands to handle registering\n",commandstoHandle.size());
 		for(xlua_cmd* cmd: commandstoHandle){
 			if(cmd->m_pre_handler){
-				printf("XPLMRegisterCommandHandler %s\n",cmd->m_name.c_str());
+				printf("XPLMRegisterPreCommandHandler %s\n",cmd->m_name.c_str());
 				XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
 			}
 			if(cmd->m_main_handler){
+				printf("XPLMRegisterCommandHandler %s\n",cmd->m_name.c_str());
 				XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_main_handler, 1, cmd);
 			}
 			if(cmd->m_post_handler){
+				printf("XPLMRegisterPostCommandHandler %s\n",cmd->m_name.c_str());
 				XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
 			}
 		}
