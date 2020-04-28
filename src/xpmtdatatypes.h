@@ -27,6 +27,7 @@ class XTLuaArrayFloat{
     float value;
     void * ref;
     int type;
+    int index;
     bool get;//do we get this data
     bool set;//do we set this data
 };

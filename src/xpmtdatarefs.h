@@ -72,6 +72,7 @@ private:
     std::vector<XTCmd> commandQueue;
     std::vector<XTCmd> runQueue;
     float time=0;
+    int updateRoll=0;
 public:
 
     void XTCommandBegin(xlua_cmd * cmd);

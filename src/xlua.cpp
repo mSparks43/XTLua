@@ -206,7 +206,7 @@ static void do_during_physics(){
 			(*m)->pre_physics();
 		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 			(*m)->post_physics();
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));//100fps or less
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));//100fps or less
 		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));//100fps or less
 	}
 	if(g_is_acf_inited)
