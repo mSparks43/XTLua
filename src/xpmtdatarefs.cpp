@@ -224,8 +224,8 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                             outVals[i]=val[i]->value;
                        }
                     }
-                    if(hasSetUpdate)
-                        printf("set array int %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),val[i]->value);    
+                    //if(hasSetUpdate)
+                    //    printf("set array int %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),val[i]->value);    
                 }
                 if(hasSetUpdate){
                     XPLMSetDatavi(val[0]->ref,outVals,0,val.size());
@@ -450,7 +450,7 @@ int XTLuaDataRefs::resolveQueue(){
         {
             d->m_index = -1;
             d->m_types = XPLMGetDataRefTypes(d->m_dref);
-            printf("Resolved dref %s to %p\n",d->m_name.c_str(),d->m_dref);
+            printf("Resolved dref %s to %p as %d\n",d->m_name.c_str(),d->m_dref,d->m_types);
             if(d->m_types & (xplmType_FloatArray | xplmType_IntArray))			// an array type
             {
                 char namec[32];
@@ -525,6 +525,9 @@ int XTLuaDataRefs::resolveQueue(){
                 //printf(" =%f\n",val);
                 floatdataRefs[name].push_back(v);
 
+            }else if(d->m_types & xplmType_Data){
+                //its a string!
+                
             }
             retVal++;
         }
@@ -553,10 +556,10 @@ int XTLuaDataRefs::resolveQueue(){
                             d->m_types = tid;
                             d->m_index = idx;
                             char namec[32];
-                            /*sprintf(namec,"%p",d->m_dref);
+                            sprintf(namec,"%p",d->m_dref);
                             std::string name=namec;
                             printf("Resolved singleton dref %s to %p\n",d->m_name.c_str(),d->m_dref);
-                            float val=0.0;
+                            /*float val=0.0;
                             XTLuaArrayFloat* v=new XTLuaArrayFloat;
                             if(d->m_types & xplmType_Double){
                                 val=XPLMGetDatad(d->m_dref);
@@ -774,12 +777,17 @@ void XTLuaDataRefs::XTSetDatab(
             XTLuaChars val;
             val.ref=inDataRef;
             for(int i=inOffset;i<inOffset+inLength;i++){
-                 if(i>=val.values.size())
+                 if(i>=val.values.size()){
                      val.values.push_back(inValues[i]);
-                 else    
-                     val.values[i]=inValues[i];   
+                     val.set=true;
+                 }
+                 else if(i<val.values.size()&&val.values[i]!=inValues[i]){ 
+                     val.values.erase(val.values.begin()+i,val.values.end());//its a new string, clear the old one  
+                     val.values[i]=inValues[i]; 
+                     val.set=true;
+                 }  
             }
-            val.set=true;
+            
             if(val.values[val.values.size()-1]!=0)
                 val.values.push_back(0);//null terminate
             stringdataRefs[name]=val;
