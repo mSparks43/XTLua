@@ -85,7 +85,7 @@ public:
     void updateStringDataRefs();
     void updateFloatDataRefs();
     void updateCommands();
-    float getsim_period();
+    void cleanup();
     void                 XTqueueresolve_dref(xlua_dref * d);//can be called from anywhere
     void                 XTqueueresolve_cmd(xlua_cmd * d);//can be called from anywhere
     int                 resolveQueue();//only to be called from flight loop thread
