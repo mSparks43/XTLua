@@ -80,7 +80,7 @@ public:
     void XTCommandOnce(xlua_cmd * cmd);
     void XTRegisterCommandHandler(xlua_cmd * cmd);
     double XTGetElapsedTime();
-    void ShowDataRefs();
+    //void ShowDataRefs();
     void updateDataRefs();
     void updateStringDataRefs();
     void updateFloatDataRefs();

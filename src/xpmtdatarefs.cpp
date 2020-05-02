@@ -73,7 +73,9 @@ void XTLuaDataRefs::XTRegisterCommandHandler(xlua_cmd * cmd){
     data_mutex.unlock();
 
 }
-
+/*float XTLuaDataRefs::getsim_period(){
+    return 0.02;	   
+}*/
 //begin DataRefs section
 void XTLuaDataRefs::updateStringDataRefs(){
     std::unordered_map<std::string, XTLuaChars> incomingStringdataRefs;
@@ -319,7 +321,7 @@ void XTLuaDataRefs::cleanup(){
         }
      }
      floatdataRefs.clear();
-     printf("XTLua:Cleaned up data");
+     printf("XTLua:Cleaned up data\n");
     data_mutex.unlock();
 }
 

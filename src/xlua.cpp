@@ -132,7 +132,7 @@ static float xlua_pre_timer_master_cb(
 }
 bool liveThread=false;
 bool run=true;
-
+bool active=false;
 static float xlua_post_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
@@ -192,23 +192,26 @@ static void do_during_physics(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	while(liveThread&&run){
-		std::vector<XTCmd> runItems=get_runQueue();
-		for(XTCmd item:runItems){
-			item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
+		if(active){
+			std::vector<XTCmd> runItems=get_runQueue();
+			for(XTCmd item:runItems){
+				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
+			}
+			xlua_do_timers_for_time(xlua_get_simulated_time());
+			std::vector<string> msgItems=get_runMessages();
+			for(string item:msgItems){
+				printf("XTLua:do threaded callout %s\n",item.c_str());
+				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+					(*m)->do_callout(item.c_str());
+			}
+			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+				(*m)->pre_physics();
+			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+				(*m)->post_physics();
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));//100fps or less
 		}
-		xlua_do_timers_for_time(xlua_get_simulated_time());
-		std::vector<string> msgItems=get_runMessages();
-		for(string item:msgItems){
-			printf("do threaded callout %s\n",item.c_str());
-			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-				(*m)->do_callout(item.c_str());
-		}
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-			(*m)->pre_physics();
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-			(*m)->post_physics();
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));//100fps or less
-		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));//100fps or less
+		else
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	if(g_is_acf_inited)
 	{
@@ -222,7 +225,7 @@ static void do_during_physics(){
 	g_modules.clear();
     //sprintf(gBob_debstr2,"simulation thread stopped\n");
     //XPLMDebugString(gBob_debstr2);
-	printf("during_physics thread stopped\n");
+	printf("XTLua:during_physics thread stopped\n");
 }
 std::thread m_thread(&do_during_physics);
 PLUGIN_API int XPluginStart(
@@ -351,10 +354,14 @@ PLUGIN_API void	XPluginStop(void)
 
 PLUGIN_API void XPluginDisable(void)
 {
+	printf("XTLua sleeping\n");
+	active=false;
 }
 
 PLUGIN_API int XPluginEnable(void)
 {
+	printf("XTLua active\n");
+	active=true;
 	xlua_relink_all_drefs();
 	return 1;
 }
@@ -391,7 +398,7 @@ PLUGIN_API void XPluginReceiveMessage(
 			g_is_acf_inited = 1;							
 		}
 		xlua_add_callout("flight_start");
-
+		
 		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 		//	(*m)->flight_init();
 		break;
