@@ -1,6 +1,0 @@
-build/obj64/src/xlua.o: src/xlua.cpp SDK/CHeaders/XPLM/XPLMPlugin.h \
- SDK/CHeaders/XPLM/XPLMDefs.h SDK/CHeaders/XPLM/XPLMDataAccess.h \
- SDK/CHeaders/XPLM/XPLMUtilities.h SDK/CHeaders/XPLM/XPLMProcessing.h \
- src/module.h lua_sdk/lua.h lua_sdk/luaconf.h lua_sdk/lualib.h \
- lua_sdk/lua.h lua_sdk/lauxlib.h src/xpdatarefs.h src/xpcommands.h \
- src/xptimers.h
