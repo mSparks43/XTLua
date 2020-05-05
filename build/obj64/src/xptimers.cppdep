@@ -1,2 +1,0 @@
-build/obj64/src/xptimers.o: src/xptimers.cpp src/xptimers.h \
- SDK/CHeaders/XPLM/XPLMDataAccess.h SDK/CHeaders/XPLM/XPLMDefs.h

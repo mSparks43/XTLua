@@ -1,5 +1,0 @@
-build/obj64/src/xpdatarefs.o: src/xpdatarefs.cpp src/xpcommands.h \
- SDK/CHeaders/XPLM/XPLMUtilities.h SDK/CHeaders/XPLM/XPLMDefs.h \
- src/xpdatarefs.h SDK/CHeaders/XPLM/XPLMPlugin.h \
- SDK/CHeaders/XPLM/XPLMProcessing.h src/xpmtdatarefs.h \
- SDK/CHeaders/XPLM/XPLMDataAccess.h src/xpmtdatatypes.h

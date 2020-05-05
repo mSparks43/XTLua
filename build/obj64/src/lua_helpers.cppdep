@@ -1,6 +1,0 @@
-build/obj64/src/lua_helpers.o: src/lua_helpers.cpp src/lua_helpers.h \
- lua_sdk/lua.h lua_sdk/luaconf.h lua_sdk/lauxlib.h lua_sdk/lua.h \
- SDK/CHeaders/XPLM/XPLMDataAccess.h SDK/CHeaders/XPLM/XPLMDefs.h \
- src/xpmtdatarefs.h src/xpcommands.h src/xpmtdatatypes.h \
- SDK/CHeaders/XPLM/XPLMProcessing.h SDK/CHeaders/XPLM/XPLMUtilities.h \
- src/xpdatarefs.h
