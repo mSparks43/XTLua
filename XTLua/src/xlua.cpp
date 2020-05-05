@@ -74,10 +74,14 @@ struct lua_alloc_request_t {
 #define		ALLOC_LOCK		0x00A110C4
 #define		ALLOC_UNLOCK	0x00A110C5
 
+#if IBM
+	#include <Windows.h>
 
-
-
-
+	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
+	{
+		return TRUE;
+	}
+#endif
 
 /*static void lua_lock()
 {

@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include <vector>
+
 static std::mutex data_mutex;
 
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
@@ -86,8 +88,8 @@ void XTLuaDataRefs::updateStringDataRefs(){
         if(val.get&&!val.set){
            int size=XPLMGetDatab(val.ref,NULL,0,0);
             
-           char inVals[size+1]={0};
-           XPLMGetDatab(val.ref,inVals,0,size);
+           std::vector<char> inVals(size + 1);
+           XPLMGetDatab(val.ref,inVals.data(),0,size);
            //printf("get char %s = %s(%d)\n",x.first.c_str(),inVals,size);
            //val.values.clear();
            XTLuaChars newval;
@@ -110,7 +112,7 @@ void XTLuaDataRefs::updateStringDataRefs(){
              newval.get=false;
              newval.set=false;
              
-             char outVals[val.values.size()+1]={0};
+             std::vector<char> outVals(val.values.size() + 1);
               for(int i=0;i<val.values.size();i++){
                 outVals[i]=val.values[i];
                 newval.values.push_back(outVals[i]);//.push_back(outVals[i]);
@@ -118,7 +120,7 @@ void XTLuaDataRefs::updateStringDataRefs(){
             //newval.values.push_back(0);
             //printf("set char %s to %s(%d)\n",x.first.c_str(),outVals,val.values.size());
             incomingStringdataRefs[x.first]=newval;
-            XPLMSetDatab(val.ref,outVals,0,val.values.size());
+            XPLMSetDatab(val.ref,outVals.data(),0,val.values.size());
 
         }
         
@@ -193,8 +195,8 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             int size=val.size();
             if(val[0]->type == xplmType_Int)
             {
-                int inVals[size]={0}; 
-                int outVals[val.size()]={0}; 
+                std::vector<int> inVals(size); 
+                std::vector<int> outVals(val.size());
                 for(int i=0;i<val.size();i++){
                     if(val[i]->get){
                         hasGetUpdate=true;
@@ -205,7 +207,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
                 //printf("update array int %p get = %d\n",val[i]->ref,hasGetUpdate);
                 if(hasGetUpdate)
-                    XPLMGetDatavi(val[0]->ref,inVals,0,size);           
+                    XPLMGetDatavi(val[0]->ref,inVals.data(),0,size);           
                 
                 for(int i=0;i<size;i++){
                     if(val[i]->set){
@@ -228,14 +230,14 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     //    printf("set array int %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(),val[i]->value);    
                 }
                 if(hasSetUpdate){
-                    XPLMSetDatavi(val[0]->ref,outVals,0,val.size());
+                    XPLMSetDatavi(val[0]->ref,outVals.data(),0,val.size());
                     
                 }
             }
             else
             {
-                float inVals[size]={0}; 
-                float outVals[val.size()]={0}; 
+                std::vector<float> inVals(size); 
+                std::vector<float> outVals(val.size());
 
                 for(int i=0;i<val.size();i++){
                     if(val[i]->get){
@@ -246,7 +248,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 }
                 //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
                 if(hasGetUpdate)
-                    XPLMGetDatavf(val[0]->ref,inVals,0,size);           
+                    XPLMGetDatavf(val[0]->ref,inVals.data(),0,size);           
                 
                 for(int i=0;i<size;i++){
                     if(val[i]->set){
@@ -268,7 +270,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                        // printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(), val[i]->value);
                 }
                 if(hasSetUpdate)
-                    XPLMSetDatavf(val[0]->ref,outVals,0,val.size());
+                    XPLMSetDatavf(val[0]->ref,outVals.data(),0,val.size());
             }
             
             
@@ -375,12 +377,12 @@ int XTLuaDataRefs::resolveQueue(){
                     printf("Resolved float array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
                 }
                 
-                float inVals[size]={0};
-                int inIVals[size]={0};
+                std::vector<float> inVals(size);
+                std::vector<int> inIVals(size);
                 if(!(d->m_types & xplmType_FloatArray))
-                    XPLMGetDatavi(d->m_dref,inIVals,0,size);
+                    XPLMGetDatavi(d->m_dref,inIVals.data(),0,size);
                 else
-                    XPLMGetDatavf(d->m_dref,inVals,0,size);
+                    XPLMGetDatavf(d->m_dref,inVals.data(),0,size);
                 //XTLuaFloat newval;
                // newval.ref=d->m_dref;
                 //newval.get=false;
