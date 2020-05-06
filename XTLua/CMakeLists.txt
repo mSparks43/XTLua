@@ -12,6 +12,7 @@ target_compile_definitions(XTLua PUBLIC "XPLM200=1" "XPLM210=1" "XPLM300=1")
 
 target_include_directories(XTLua PUBLIC "include" "${CMAKE_SOURCE_DIR}/../X-Plane SDK/CHeaders/XPLM" "${CMAKE_SOURCE_DIR}/../Lua SDK/include")
 
+set_target_properties(XTLua PROPERTIES PREFIX "")
 set_target_properties(XTLua PROPERTIES SUFFIX ".xpl")
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
@@ -34,8 +35,8 @@ elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 	target_link_options(XTLua PUBLIC "-shared" "-rdynamic" "-nodefaultlibs" "-undefined_warning")
 
 	find_library(LUA_SDK "libluajit.a" PATHS "${CMAKE_SOURCE_DIR}/../Lua SDK/lib")
+	target_link_libraries(XTLua PUBLIC ${LUA_SDK})
 
-	set_target_properties(XTLua PROPERTIES PREFIX "")
 	set_target_properties(XTLua PROPERTIES OUTPUT_NAME "lin")
 
 	install(TARGETS XTLua LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/../deploy/xtlua/64")
