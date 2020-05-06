@@ -35,6 +35,7 @@ elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 	target_link_options(XTLua PUBLIC "-shared" "-rdynamic" "-nodefaultlibs" "-undefined_warning")
 
 	find_library(LUA_SDK "libluajit.a" PATHS "${CMAKE_SOURCE_DIR}/../Lua SDK/lib")
+	target_link_libraries(XTLua PUBLIC ${LUA_SDK})
 
 	set_target_properties(XTLua PROPERTIES OUTPUT_NAME "lin")
 
