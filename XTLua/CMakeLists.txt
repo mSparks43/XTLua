@@ -31,10 +31,11 @@ elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 	target_compile_definitions(XTLua PRIVATE "LIN=1")
 
 	target_compile_options(XTLua PRIVATE "-fvisibility=hidden" "-fPIC")
-	target_link_options(XTLua PRIVATE "-shared" "-rdynamic" "-nodefaultlibs" "-undefined_warning" "--version-script=${CMAKE_SOURCE_DIR}/exports.txt")
+	target_link_options(XTLua PRIVATE "-shared" "-rdynamic" "-nodefaultlibs" "-undefined_warning")
 
 	find_library(LUA_SDK "libluajit.a" PATHS "${CMAKE_SOURCE_DIR}/../Lua SDK/lib")
 
+	set_target_properties(XTLua PROPERTIES PREFIX "")
 	set_target_properties(XTLua PROPERTIES OUTPUT_NAME "lin")
 
 	install(TARGETS XTLua LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/../deploy/xtlua/64")
