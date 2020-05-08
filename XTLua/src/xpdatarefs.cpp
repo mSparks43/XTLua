@@ -430,11 +430,11 @@ void			xlua_dref_set_string(xlua_dref * d, const string& value)
 	}
 	if(d->m_types & xplmType_Data)
 	{
-		const char * begin = value.c_str();
-		const char * end = begin + value.size();
-		if(end > begin)
+		//const char * begin = value.c_str();
+		//const char * end = begin + value.size();
+		//if(end > begin)
 		{
-			xtluaDefs.XTSetDatab(d, (void *) begin, 0, end - begin,d->m_ours);
+			xtluaDefs.XTSetDatab(d, value);
 		}
 	}
 }

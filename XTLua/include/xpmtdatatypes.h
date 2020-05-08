@@ -9,19 +9,7 @@
 //	See LICENSE.txt for the full terms of the license.
 
 #include <vector>
-class XTLuaDouble
-{
-    public:
-    std::vector<double> values;
-    void * ref;
-    int size;
-    int end;//maybe we dont parse every value
-    int start;//maybe we dont parse every value
-    bool isArray;//more than one value
-    bool get;//do we get this data
-    bool set;//do we set this data
 
-};
 class XTLuaArrayFloat{
     public:
     float value;
@@ -31,28 +19,15 @@ class XTLuaArrayFloat{
     bool get;//do we get this data
     bool set;//do we set this data
 };
-class XTLuaFloat
+
+class XTLuaCharArray
 {
     public:
-    
-    std::vector<XTLuaArrayFloat> values;
+    std::string value;
     void * ref;
+    int index;
     bool get;//do we get this data
     bool set;//do we set this data
-
-};
-class XTLuaInteger
-{
-    public:
-    std::vector<int> values;
-    void * ref;
-    int size;
-    int end;//maybe we dont parse every value
-    int start;//maybe we dont parse every value
-    bool isArray;//more than one value
-    bool get;//do we get this data
-    bool set;//do we set this data
-
 };
 class XTLuaChars
 {

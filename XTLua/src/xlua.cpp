@@ -5,7 +5,7 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "0.0.3a4"
+#define VERSION "0.0.5b1"
 
 #include <stdio.h>
 #include <string.h>

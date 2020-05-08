@@ -62,7 +62,8 @@ private:
     std::unordered_map<std::string,std::vector<XTLuaArrayFloat*>> floatdataRefs;
     //std::unordered_map<std::string, XTLuaDouble> doubledataRefs;
     //std::unordered_map<std::string, XTLuaInteger> intdataRefs;
-    std::unordered_map<std::string, XTLuaChars> stringdataRefs;
+    //std::unordered_map<std::string, XTLuaChars> stringdataRefs;
+    std::unordered_map<std::string, XTLuaCharArray*> stringdataRefs;
     std::vector<xlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
     std::unordered_map<std::string, xlua_cmd*> cmdHandlerResolveQueue;
@@ -132,7 +133,5 @@ public:
                                    int                  inMaxBytes,bool local);
     void                 XTSetDatab(
                                    xlua_dref * d,    
-                                   void *               inValue,    
-                                   int                  inOffset,    
-                                   int                  inLength,bool local);                                                             
+                                   std::string value);                                                             
 };

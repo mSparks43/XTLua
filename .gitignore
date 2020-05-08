@@ -1,2 +1,6 @@
 .vs
 XTLua/CMakeSettings.json
+XTLua/CMakeCache.txt
+XTLua/CMakeFiles/*
+XTLua/Makefile
+XTLua/cmake_install.cmake
