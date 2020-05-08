@@ -3,4 +3,8 @@ XTLua/CMakeSettings.json
 XTLua/CMakeCache.txt
 XTLua/CMakeFiles/*
 XTLua/Makefile
+XTLua/Release
+XTLua/Debug
+XTLua/xtlua.vcxproj.user
+deploy/xtlua/64/win.pdb
 XTLua/cmake_install.cmake
