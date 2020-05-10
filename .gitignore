@@ -1,5 +1,6 @@
 xlua.xcodeproj/*
 !xlua.xcodeproj/project.pbxproj
 build/*
+deploy/xtlua/*
 !xlua.xcodeproj/xcshareddata/
 
