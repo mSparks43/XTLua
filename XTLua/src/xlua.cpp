@@ -137,6 +137,7 @@ static float xlua_pre_timer_master_cb(
 bool liveThread=false;
 bool run=true;
 bool active=false;
+bool sleeping=false;
 static float xlua_post_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
@@ -197,6 +198,7 @@ static void do_during_physics(){
 	}
 	while(liveThread&&run){
 		if(active){
+			sleeping=false;
 			std::vector<XTCmd> runItems=get_runQueue();
 			for(XTCmd item:runItems){
 				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
@@ -214,8 +216,10 @@ static void do_during_physics(){
 				(*m)->post_physics();
 			std::this_thread::sleep_for(std::chrono::milliseconds(50));//100fps or less
 		}
-		else
+		else{
+			sleeping=true;
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
 	}
 	if(g_is_acf_inited)
 	{
@@ -358,15 +362,19 @@ PLUGIN_API void	XPluginStop(void)
 
 PLUGIN_API void XPluginDisable(void)
 {
-	printf("XTLua sleeping\n");
+	printf("XTLua going to sleep\n");
 	active=false;
+	while(!sleeping)
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	printf("XTLua sleeping\n");
 }
 
 PLUGIN_API int XPluginEnable(void)
 {
 	printf("XTLua active\n");
-	active=true;
+	
 	xlua_relink_all_drefs();
+	active=true;
 	return 1;
 }
 
