@@ -1,0 +1,3 @@
+build/obj64/src/xpcommands.o: src/xpcommands.cpp src/xpcommands.h \
+ SDK/CHeaders/XPLM/XPLMUtilities.h SDK/CHeaders/XPLM/XPLMDefs.h \
+ SDK/CHeaders/XPLM/XPLMProcessing.h

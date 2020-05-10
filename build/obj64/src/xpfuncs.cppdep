@@ -1,0 +1,4 @@
+build/obj64/src/xpfuncs.o: src/xpfuncs.cpp src/xpfuncs.h lua_sdk/lua.h \
+ lua_sdk/luaconf.h lua_sdk/lauxlib.h lua_sdk/lua.h src/lua_helpers.h \
+ src/xpdatarefs.h src/xpcommands.h src/xptimers.h src/module.h \
+ lua_sdk/lualib.h

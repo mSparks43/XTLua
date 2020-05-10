@@ -30,7 +30,7 @@ using std::vector;
 //#define TRACE_DATAREFS printf
 #define TRACE_DATAREFS(...)
 
-
+static bool active=false; //local marker to enable/disable dataref read and writes during startup and shutdown
 struct	xlua_dref {
 	xlua_dref *				m_next;
 	string					m_name;
@@ -52,6 +52,8 @@ static xlua_dref *		s_drefs = NULL;
 // For nunmbers
 static int	xlua_geti(void * ref)
 {
+	if(!active)
+		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	return r->m_number_storage;
@@ -59,6 +61,8 @@ static int	xlua_geti(void * ref)
 
 static void	xlua_seti(void * ref, int v)
 {
+	if(!active)
+		return;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	double vv = v;
@@ -72,6 +76,8 @@ static void	xlua_seti(void * ref, int v)
 
 static float xlua_getf(void * ref)
 {
+	if(!active)
+		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	return r->m_number_storage;
@@ -79,6 +85,8 @@ static float xlua_getf(void * ref)
 
 static void	xlua_setf(void * ref, float v)
 {
+	if(!active)
+		return;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	double vv = v;
@@ -92,6 +100,8 @@ static void	xlua_setf(void * ref, float v)
 
 static double xlua_getd(void * ref)
 {
+	if(!active)
+		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	return r->m_number_storage;
@@ -99,6 +109,8 @@ static double xlua_getd(void * ref)
 
 static void	xlua_setd(void * ref, double v)
 {
+	if(!active)
+		return;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	double vv = v;
@@ -113,6 +125,8 @@ static void	xlua_setd(void * ref, double v)
 // For arrays
 static int xlua_getvi(void * ref, int * values, int offset, int max)
 {
+	if(!active)
+		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	if(values == NULL)
@@ -127,6 +141,8 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 
 static void xlua_setvi(void * ref, int * values, int offset, int max)
 {
+	if(!active)
+		return;
 	assert(values);
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
@@ -149,6 +165,8 @@ static void xlua_setvi(void * ref, int * values, int offset, int max)
 
 static int xlua_getvf(void * ref, float * values, int offset, int max)
 {
+	if(!active)
+		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	if(values == NULL)
@@ -163,6 +181,8 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 
 static void xlua_setvf(void * ref, float * values, int offset, int max)
 {
+	if(!active)
+		return;
 	assert(values);
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
@@ -186,6 +206,8 @@ static void xlua_setvf(void * ref, float * values, int offset, int max)
 // For strings
 static int xlua_getvb(void * ref, void * values, int offset, int max)
 {
+	if(!active)
+		return 0;
 	char * dst = (char *) values;
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
@@ -201,6 +223,8 @@ static int xlua_getvb(void * ref, void * values, int offset, int max)
 
 static void xlua_setvb(void * ref, void * values, int offset, int max)
 {
+	if(!active)
+		return;
 	assert(values);
 	const char * src = (const char *) values;
 	int new_len = offset + max;
@@ -607,15 +631,17 @@ void			xlua_relink_all_drefs()
 		if(d->m_ours)
 		if(dre != XPLM_NO_PLUGIN_ID)
 		{
-			printf("registered: %s\n", d->m_name.c_str());
+			//printf("registered: %s\n", d->m_name.c_str());
 			XPLMSendMessageToPlugin(dre, MSG_ADD_DATAREF, (void *)d->m_name.c_str());		
 		}		
 #endif
 	}
+	active=true;
 }
 
 void			xlua_dref_cleanup()
 {
+	active=false;
 	while(s_drefs)
 	{
 		xlua_dref *	kill = s_drefs;
@@ -628,6 +654,7 @@ void			xlua_dref_cleanup()
 		
 		delete kill;
 	}
+	printf("XLua Cleanup");
 }
 
 

@@ -1,0 +1,116 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../Lua SDK/include/lauxlib.h
+stddef.h
+-
+stdio.h
+-
+lua.h
+../Lua SDK/include/lua.h
+
+../Lua SDK/include/lua.h
+stdarg.h
+-
+stddef.h
+-
+luaconf.h
+../Lua SDK/include/luaconf.h
+
+../Lua SDK/include/luaconf.h
+limits.h
+-
+stddef.h
+-
+assert.h
+-
+
+../Lua SDK/include/lualib.h
+lua.h
+../Lua SDK/include/lua.h
+
+../X-Plane SDK/CHeaders/XPLM/XPLMDataAccess.h
+XPLMDefs.h
+../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+
+../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+windows.h
+-
+stdint.h
+-
+
+../X-Plane SDK/CHeaders/XPLM/XPLMPlugin.h
+XPLMDefs.h
+../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+
+../X-Plane SDK/CHeaders/XPLM/XPLMProcessing.h
+XPLMDefs.h
+../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+
+../X-Plane SDK/CHeaders/XPLM/XPLMUtilities.h
+XPLMDefs.h
+../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xlua.cpp
+stdio.h
+-
+string.h
+-
+assert.h
+-
+vector
+-
+thread
+-
+XPLMPlugin.h
+-
+XPLMDataAccess.h
+-
+XPLMUtilities.h
+-
+XPLMProcessing.h
+-
+module.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/module.h
+xpdatarefs.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xpdatarefs.h
+xpcommands.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xpcommands.h
+xptimers.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xptimers.h
+lua.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lua.h
+lualib.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lualib.h
+lauxlib.h
+/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lauxlib.h
+Windows.h
+-
+
+include/module.h
+lua.h
+-
+lualib.h
+-
+lauxlib.h
+-
+string
+-
+
+include/xpcommands.h
+
+include/xpdatarefs.h
+string
+-
+vector
+-
+xpcommands.h
+include/xpcommands.h
+
+include/xptimers.h
+
