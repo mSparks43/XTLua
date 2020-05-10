@@ -1,4 +1,0 @@
-build/obj64/src/module.o: src/module.cpp src/module.h lua_sdk/lua.h \
- lua_sdk/luaconf.h lua_sdk/lualib.h lua_sdk/lua.h lua_sdk/lauxlib.h \
- SDK/CHeaders/XPLM/XPLMUtilities.h SDK/CHeaders/XPLM/XPLMDefs.h \
- src/xpfuncs.h src/lua_helpers.h
