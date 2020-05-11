@@ -614,10 +614,10 @@ void			xlua_dref_cleanup()
 		xlua_dref *	kill = s_drefs;
 		s_drefs = s_drefs->m_next;
 		
-		if(kill->m_dref && kill->m_ours)
+		/*if(kill->m_dref && kill->m_ours)
 		{
 			XPLMUnregisterDataAccessor(kill->m_dref);
-		}
+		}*/ //never
 		
 		delete kill;
 	}
