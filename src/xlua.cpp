@@ -49,7 +49,7 @@ extern "C" {
 }
 
 #if !MOBILE
-static void *			g_alloc = NULL;
+//static void *			g_alloc = NULL;
 #endif
 static vector<module *>g_modules;
 static XPLMFlightLoopID	g_pre_loop = NULL;
@@ -76,7 +76,7 @@ struct lua_alloc_request_t {
 
 
 
-static void lua_lock()
+/*static void lua_lock()
 {
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_LOCK, NULL);
 }
@@ -108,7 +108,7 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	r.nsize = nsize;
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_REALLOC,&r);
 	return r.ptr;
-}
+}*/
 
 static float xlua_pre_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
@@ -158,15 +158,15 @@ PLUGIN_API int XPluginStart(
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
 #if !MOBILE
-	g_alloc = lj_alloc_create();
+	/*g_alloc = lj_alloc_create();
 	if (g_alloc == NULL)
 	{
 		XPLMDebugString("Unable to get allocator from X-Plane.");
 		printf("No allocator\n");
 		return 0;
-	}
+	}*/
 #endif
-	
+	printf("Starting XLua");
 	XPLMCreateFlightLoop_t pre = { 0 };
 	XPLMCreateFlightLoop_t post = { 0 };
 	pre.structSize = sizeof(pre);
@@ -231,9 +231,8 @@ PLUGIN_API int XPluginStart(
 			g_modules.push_back(new module(
 							mod_path.c_str(),
 							init_script_path.c_str(),
-							script_path.c_str(),
-							lj_alloc_f,
-							g_alloc));
+							script_path.c_str()
+							));
 #else
 			g_modules.push_back(new module(
 				mod_path.c_str(),
@@ -249,7 +248,7 @@ PLUGIN_API int XPluginStart(
 			break;
 	}
 
-
+	printf("XLua Started\n");
 	return 1;
 }
 
@@ -267,22 +266,23 @@ PLUGIN_API void	XPluginStop(void)
 	g_modules.clear();
 
 #if !MOBILE
-	if(g_alloc)
+	/*if(g_alloc)
 	{
 		lj_alloc_destroy(g_alloc);
 		g_alloc = NULL;
-	}
+	}*/
 #endif
-	
-	xlua_dref_cleanup();
-	xlua_cmd_cleanup();
-	xlua_timer_cleanup();
-	
 	XPLMDestroyFlightLoop(g_pre_loop);
 	XPLMDestroyFlightLoop(g_post_loop);
 	g_pre_loop = NULL;
 	g_post_loop = NULL;	
 	g_is_acf_inited = 0;
+	xlua_dref_cleanup();
+	xlua_cmd_cleanup();
+	xlua_timer_cleanup();
+	
+	
+	printf("Stopped XLua\n");
 }
 
 PLUGIN_API void XPluginDisable(void)
@@ -291,6 +291,7 @@ PLUGIN_API void XPluginDisable(void)
 
 PLUGIN_API int XPluginEnable(void)
 {
+	printf("XLua Enable\n");
 	xlua_relink_all_drefs();
 	return 1;
 }

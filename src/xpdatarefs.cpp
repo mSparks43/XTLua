@@ -649,8 +649,9 @@ void			xlua_dref_cleanup()
 		
 		if(kill->m_dref && kill->m_ours)
 		{
-			printf("Unregistered %s\n",kill->m_name);
+			printf("Unregistered %s\n",kill->m_name.c_str());
 			XPLMUnregisterDataAccessor(kill->m_dref);
+			XPLMUnregisterDataAccessor(XPLMFindDataRef(kill->m_name.c_str()));
 		}
 		
 		delete kill;
