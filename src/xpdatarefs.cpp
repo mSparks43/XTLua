@@ -649,12 +649,13 @@ void			xlua_dref_cleanup()
 		
 		if(kill->m_dref && kill->m_ours)
 		{
+			printf("Unregistered %s\n",kill->m_name);
 			XPLMUnregisterDataAccessor(kill->m_dref);
 		}
 		
 		delete kill;
 	}
-	printf("XLua Cleanup");
+	printf("XLua Cleanup\n");
 }
 
 
