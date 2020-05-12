@@ -203,7 +203,7 @@
       <SubSystem>Console</SubSystem>
       <ImportLibrary>.\Release\64\xlua.lib</ImportLibrary>
       <AdditionalLibraryDirectories>SDK\Libraries\Win;lua_sdk;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;XPLM_64.lib;XPWidgets_64.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;XPLM_64.lib;XPWidgets_64.lib;lua_sdk\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
