@@ -114,7 +114,9 @@ if(errcode != 0) { \
 module::module(
 							const char *		in_module_path,
 							const char *		in_init_script,
-							const char *		in_module_script) :
+							const char *		in_module_script,
+							void* (*in_alloc_func)(void* msp, void* ptr, size_t osize, size_t nsize),
+							void* in_alloc_ref) :
 	m_interp(NULL),
 	m_memory(NULL),
 	m_path(in_module_path)
@@ -125,7 +127,7 @@ module::module(
 #if MOBILE
 	m_interp = luaL_newstate();
 #else
-	m_interp = luaL_newstate();
+	m_interp = lua_newstate(in_alloc_func, in_alloc_ref);// luaL_newstate();
 #endif
 
 	if(m_interp == NULL)

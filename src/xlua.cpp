@@ -49,7 +49,7 @@ extern "C" {
 }
 
 #if !MOBILE
-//static void *			g_alloc = NULL;
+static void *			g_alloc = NULL;
 #endif
 static vector<module *>g_modules;
 static XPLMFlightLoopID	g_pre_loop = NULL;
@@ -76,7 +76,7 @@ struct lua_alloc_request_t {
 
 
 
-/*static void lua_lock()
+static void lua_lock()
 {
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_LOCK, NULL);
 }
@@ -108,7 +108,7 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	r.nsize = nsize;
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_REALLOC,&r);
 	return r.ptr;
-}*/
+}
 
 static float xlua_pre_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
@@ -158,13 +158,13 @@ PLUGIN_API int XPluginStart(
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
 #if !MOBILE
-	/*g_alloc = lj_alloc_create();
+	g_alloc = lj_alloc_create();
 	if (g_alloc == NULL)
 	{
 		XPLMDebugString("Unable to get allocator from X-Plane.");
 		printf("No allocator\n");
 		return 0;
-	}*/
+	}
 #endif
 	printf("Starting XLua");
 	XPLMCreateFlightLoop_t pre = { 0 };
@@ -231,7 +231,9 @@ PLUGIN_API int XPluginStart(
 			g_modules.push_back(new module(
 							mod_path.c_str(),
 							init_script_path.c_str(),
-							script_path.c_str()
+							script_path.c_str(),
+				lj_alloc_f,
+				g_alloc
 							));
 #else
 			g_modules.push_back(new module(

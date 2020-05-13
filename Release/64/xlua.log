@@ -1,2 +1,9 @@
-﻿     Creating library .\Release\64\xlua.lib and object .\Release\64\xlua.exp
+﻿  module.cpp
+  xlua.cpp
+  xpfuncs.cpp
+Z:\XLua\src\module.cpp(33,11): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
+Z:\XLua\src\xpfuncs.cpp(261,42): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+Z:\XLua\src\xpfuncs.cpp(272,24): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+     Creating library .\Release\64\xlua.lib and object .\Release\64\xlua.exp
   xlua.vcxproj -> Z:\XLua\.\Release\plugins\xlua\64\win.xpl
