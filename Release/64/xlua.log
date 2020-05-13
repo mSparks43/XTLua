@@ -1,8 +1,35 @@
-﻿  module.cpp
+﻿  lua_helpers.cpp
+  module.cpp
   xlua.cpp
-  xpfuncs.cpp
+  xpcommands.cpp
+  xpdatarefs.cpp
 Z:\XLua\src\module.cpp(33,11): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(59,10): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(83,10): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(133,35): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(138,44): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(138,44): warning C4244:         with
+Z:\XLua\src\xpdatarefs.cpp(138,44): warning C4244:         [
+Z:\XLua\src\xpdatarefs.cpp(138,44): warning C4244:             _Ty=double
+Z:\XLua\src\xpdatarefs.cpp(138,44): warning C4244:         ]
+Z:\XLua\src\xpdatarefs.cpp(173,35): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(178,44): warning C4244: '=': conversion from '_Ty' to 'float', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(178,44): warning C4244:         with
+Z:\XLua\src\xpdatarefs.cpp(178,44): warning C4244:         [
+Z:\XLua\src\xpdatarefs.cpp(178,44): warning C4244:             _Ty=double
+Z:\XLua\src\xpdatarefs.cpp(178,44): warning C4244:         ]
+Z:\XLua\src\xpdatarefs.cpp(215,36): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(432,37): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(500,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(505,10): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(515,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(519,27): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(560,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+Z:\XLua\src\xpdatarefs.cpp(565,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  xpfuncs.cpp
+Z:\XLua\src\xpdatarefs.cpp(605,51): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
 Z:\XLua\src\xpfuncs.cpp(261,42): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  xptimers.cpp
   Generating Code...
 Z:\XLua\src\xpfuncs.cpp(272,24): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
      Creating library .\Release\64\xlua.lib and object .\Release\64\xlua.exp

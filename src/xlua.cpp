@@ -3,7 +3,7 @@
 //	See LICENSE.txt for the full terms of the license.
 
 
-#define VERSION "1.0.1r1"
+#define VERSION "1.0.2r1"
 
 #include <stdio.h>
 #include <string.h>
@@ -268,11 +268,11 @@ PLUGIN_API void	XPluginStop(void)
 	g_modules.clear();
 
 #if !MOBILE
-	/*if(g_alloc)
+	if(g_alloc)
 	{
 		lj_alloc_destroy(g_alloc);
 		g_alloc = NULL;
-	}*/
+	}
 #endif
 	XPLMDestroyFlightLoop(g_pre_loop);
 	XPLMDestroyFlightLoop(g_post_loop);

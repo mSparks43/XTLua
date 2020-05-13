@@ -3,4 +3,5 @@ xlua.xcodeproj/*
 build/*
 deploy/xtlua/*
 !xlua.xcodeproj/xcshareddata/
+.vs/*
 

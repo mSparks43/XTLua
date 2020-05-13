@@ -122,8 +122,9 @@ module::module(
 	m_path(in_module_path)
 {
 	int boiler_plate_paths = length_of_dir(in_init_script);
-	printf("Running %s\n", in_module_script+boiler_plate_paths);
-	
+	char debugString[256];
+	sprintf(debugString,"Running %s\n", in_module_script+boiler_plate_paths);
+	XPLMDebugString(debugString);
 #if MOBILE
 	m_interp = luaL_newstate();
 #else
