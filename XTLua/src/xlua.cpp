@@ -5,7 +5,7 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "0.0.5b1"
+#define VERSION "0.0.6a2"
 
 #include <stdio.h>
 #include <string.h>
@@ -90,7 +90,7 @@ struct lua_alloc_request_t {
 static void lua_unlock()
 {
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_UNLOCK, NULL);
-}
+}*/
 
 static void *lj_alloc_create(void)
 {
@@ -115,7 +115,7 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	r.nsize = nsize;
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_REALLOC,&r);
 	return r.ptr;
-}*/
+}
 bool ready=false;
 bool loadedModules=false;
 static float xlua_pre_timer_master_cb(
@@ -181,7 +181,9 @@ static void do_during_physics(){
 			g_modules.push_back(new module(
 							mod_paths[i].c_str(),
 							init_script_path.c_str(),
-							script_paths[i].c_str()));
+							script_paths[i].c_str(),
+				lj_alloc_f,
+				g_alloc));
 #else
 			g_modules.push_back(new module(
 				mod_paths[i].c_str(),
@@ -249,7 +251,7 @@ PLUGIN_API int XPluginStart(
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
-/*#if !MOBILE
+#if !MOBILE
 	g_alloc = lj_alloc_create();
 	if (g_alloc == NULL)
 	{
@@ -257,7 +259,7 @@ PLUGIN_API int XPluginStart(
 		printf("No allocator\n");
 		return 0;
 	}
-#endif*/
+#endif
 	
 	XPLMCreateFlightLoop_t pre = { 0 };
 	XPLMCreateFlightLoop_t post = { 0 };
@@ -342,11 +344,11 @@ PLUGIN_API void	XPluginStop(void)
 
 
 #if !MOBILE
-	/*if(g_alloc)
+	if(g_alloc)
 	{
 		lj_alloc_destroy(g_alloc);
 		g_alloc = NULL;
-	}*/
+	}
 #endif
 	
 	xlua_dref_cleanup();
