@@ -5,12 +5,13 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "0.0.6a2"
-
+#define VERSION "0.0.6a3"
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <vector>
+#include <chrono>
 
 #include <thread>
 #ifndef XPLM200
@@ -201,6 +202,7 @@ static void do_during_physics(){
 	while(liveThread&&run){
 		if(active){
 			sleeping=false;
+			auto start = std::chrono::high_resolution_clock::now();
 			std::vector<XTCmd> runItems=get_runQueue();
 			for(XTCmd item:runItems){
 				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
@@ -216,7 +218,11 @@ static void do_during_physics(){
 				(*m)->pre_physics();
 			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 				(*m)->post_physics();
-			std::this_thread::sleep_for(std::chrono::milliseconds(50));//100fps or less
+			auto finish = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double, std::milli> elapsed = finish - start;
+			int diff=round(elapsed.count());
+			if(diff<20)
+				std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
 		}
 		else{
 			sleeping=true;
