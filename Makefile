@@ -11,14 +11,14 @@ SOURCES = \
 	src/xpfuncs.cpp \
 	src/xptimers.cpp
 
-LIBS = -lluajit
+LIBS = -lluajit 
 
 INCLUDES = \
 	-I$(SRC_BASE)/lua_sdk \
 	-I$(SRC_BASE)/SDK/CHeaders/XPLM \
 	-I$(SRC_BASE)/SDK/CHeaders/Widgets
 
-DEFINES = -DAPL=0 -DIBM=0 -DLIN=1
+DEFINES = -DAPL=0 -DIBM=0 -DLIN=1 
 
 ############################################################################
 

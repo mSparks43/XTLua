@@ -17,7 +17,9 @@
 #include <vector>
 #include <assert.h>
 #include <algorithm>
+//#include <chrono>
 
+//#include <thread>
 using std::min;
 using std::max;
 using std::vector;
@@ -647,10 +649,12 @@ void			xlua_dref_cleanup()
 		xlua_dref *	kill = s_drefs;
 		s_drefs = s_drefs->m_next;
 		
-		if(kill->m_dref && kill->m_ours)
+		//if(kill->m_dref && 
+		if(kill->m_ours)
 		{
 			printf("Unregistered %s\n",kill->m_name.c_str());
-			XPLMUnregisterDataAccessor(kill->m_dref);
+			//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			//XPLMUnregisterDataAccessor(kill->m_dref);
 			XPLMUnregisterDataAccessor(XPLMFindDataRef(kill->m_name.c_str()));
 		}
 		
