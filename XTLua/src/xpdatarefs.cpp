@@ -445,6 +445,7 @@ void			xlua_relink_all_drefs()
 {
 #if !MOBILE
 	XPLMPluginID dre = XPLMFindPluginBySignature(STAT_PLUGIN_SIG);
+	
 	if(dre != XPLM_NO_PLUGIN_ID)
 	if(!XPLMIsPluginEnabled(dre))
 	{
@@ -574,6 +575,10 @@ void xlua_add_callout(string callout){
 	data_mutex.lock();
 	messageQueue.push_back(callout);
 	data_mutex.unlock();
+}
+bool xlua_ispaused(){
+	int retVal=xtluaDefs.isPaused;
+	return retVal==1;
 }
 double xlua_get_simulated_time(){
 	//printf("get sim time\n");

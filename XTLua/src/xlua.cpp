@@ -200,7 +200,7 @@ static void do_during_physics(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	while(liveThread&&run){
-		if(active){
+		if(active&&!xlua_ispaused()){
 			sleeping=false;
 			auto start = std::chrono::high_resolution_clock::now();
 			std::vector<XTCmd> runItems=get_runQueue();

@@ -73,9 +73,10 @@ private:
     std::vector<XTCmd> commandQueue;
     std::vector<XTCmd> runQueue;
     double timeT=0;
+    void *paused_ref=NULL;
     int updateRoll=0;
 public:
-
+    int isPaused=true;
     void XTCommandBegin(xlua_cmd * cmd);
     void XTCommandEnd(xlua_cmd * cmd);
     void XTCommandOnce(xlua_cmd * cmd);

@@ -63,6 +63,7 @@ std::vector<XTCmd> get_runQueue();
 std::vector<string> get_runMessages();
 void xlua_add_callout(string callout);
 double xlua_get_simulated_time();
+bool xlua_ispaused();//get the paused state for the run thread
 string			xlua_dref_get_string(xlua_dref * who);
 void			xlua_dref_set_string(xlua_dref * who, const string& value);
 

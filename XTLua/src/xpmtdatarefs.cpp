@@ -319,6 +319,7 @@ void XTLuaDataRefs::updateDataRefs(){
     data_mutex.lock();
     //printf("updateDataRefs\n");
         timeT = XPLMGetElapsedTime();
+        isPaused=XPLMGetDatai(paused_ref);
         if(updateRoll==0)
         {
             updateStringDataRefs();
@@ -379,6 +380,9 @@ void XTLuaDataRefs::XTqueueresolve_cmd(xlua_cmd * d){
 int XTLuaDataRefs::resolveQueue(){
     int retVal=0;
     data_mutex.lock();
+    if(paused_ref==NULL)
+        paused_ref=XPLMFindDataRef("sim/time/paused");
+    //printf("XTLua:Resolving queue\n");
     for(xlua_dref * d:drefResolveQueue){
         assert(d->m_dref == NULL);
         assert(d->m_types == 0);
