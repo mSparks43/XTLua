@@ -644,6 +644,19 @@ void			xlua_relink_all_drefs()
 void			xlua_dref_cleanup()
 {
 	active=false;
+	xlua_dref * pdrefs=s_drefs;
+	while(pdrefs)
+	{
+		xlua_dref *	kill = pdrefs;
+		pdrefs = pdrefs->m_next;
+	
+		if(kill->m_ours)
+		{
+			if(kill->m_dref)
+				XPLMUnregisterDataAccessor(kill->m_dref);	
+		}
+
+	}//try the old fashioned way
 	while(s_drefs)
 	{
 		xlua_dref *	kill = s_drefs;
@@ -652,10 +665,16 @@ void			xlua_dref_cleanup()
 		//if(kill->m_dref && 
 		if(kill->m_ours)
 		{
-			printf("Unregistered %s\n",kill->m_name.c_str());
-			//std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			//XPLMUnregisterDataAccessor(kill->m_dref);
-			XPLMUnregisterDataAccessor(XPLMFindDataRef(kill->m_name.c_str()));
+			
+
+			XPLMDataRef other = XPLMFindDataRef(kill->m_name.c_str());
+			if(other)
+				printf("Forcibly Unregistering %s\n",kill->m_name.c_str());
+			while(other){
+				XPLMUnregisterDataAccessor(other);
+				other = XPLMFindDataRef(kill->m_name.c_str());
+			}
+			
 		}
 		
 		delete kill;
