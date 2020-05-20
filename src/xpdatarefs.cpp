@@ -670,9 +670,11 @@ void			xlua_dref_cleanup()
 			XPLMDataRef other = XPLMFindDataRef(kill->m_name.c_str());
 			if(other)
 				printf("Forcibly Unregistering %s\n",kill->m_name.c_str());
-			while(other){
+			int i=0;
+			while(other&&i<4){
 				XPLMUnregisterDataAccessor(other);
 				other = XPLMFindDataRef(kill->m_name.c_str());
+				i++;
 			}
 			
 		}
