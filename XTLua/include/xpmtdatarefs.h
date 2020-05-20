@@ -67,16 +67,17 @@ private:
     std::vector<xlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
     std::unordered_map<std::string, xlua_cmd*> cmdHandlerResolveQueue;
-    std::unordered_map<std::string, XTCmd> startCmds;
-    std::unordered_map<std::string, XTCmd> stopCmds;
-    std::unordered_map<std::string, XTCmd> fireCmds;
-    std::vector<XTCmd> commandQueue;
+    //std::unordered_map<std::string, XTCmd> startCmds;
+    //std::unordered_map<std::string, XTCmd> stopCmds;
+    //std::unordered_map<std::string, XTCmd> fireCmds;
+    std::vector<XTCmd*> commandQueue;
     std::vector<XTCmd> runQueue;
     double timeT=0;
-    void *paused_ref=NULL;
+    
     int updateRoll=0;
 public:
     int isPaused=true;
+    void *paused_ref=NULL;
     void XTCommandBegin(xlua_cmd * cmd);
     void XTCommandEnd(xlua_cmd * cmd);
     void XTCommandOnce(xlua_cmd * cmd);

@@ -453,6 +453,7 @@ void			xlua_relink_all_drefs()
 		dre = XPLM_NO_PLUGIN_ID;
 	}
 #endif
+	xtluaDefs.paused_ref=NULL;
 	for(xlua_dref * d = s_drefs; d; d = d->m_next)
 	{
 		if(d->m_dref == NULL)

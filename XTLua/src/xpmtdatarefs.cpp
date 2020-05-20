@@ -20,9 +20,11 @@ static std::mutex data_mutex;
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
     data_mutex.lock();
     printf("Command start %s\n",cmd->m_name.c_str());
-    XTCmd xtcmd;
-    xtcmd.xluaref=cmd;
-    xtcmd.start=true;
+    XTCmd* xtcmd=new XTCmd();
+    xtcmd->xluaref=cmd;
+    xtcmd->start=true;
+    xtcmd->stop=false;
+    xtcmd->fire=false;
     commandQueue.push_back(xtcmd);
     data_mutex.unlock();
 }
@@ -32,9 +34,11 @@ void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
 
     printf("Command stop %s\n",cmd->m_name.c_str());
        
-    XTCmd xtcmd;
-    xtcmd.xluaref=cmd;
-    xtcmd.stop=true;
+    XTCmd* xtcmd=new XTCmd();
+    xtcmd->xluaref=cmd;
+    xtcmd->stop=true;
+    xtcmd->fire=false;
+    xtcmd->start=false;
     commandQueue.push_back(xtcmd);
 
     
@@ -47,19 +51,18 @@ void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
     sprintf(namec,"%p",cmd);
     std::string name=namec;
                                      
-    if(fireCmds.find(name)==fireCmds.end()){
+    //if(fireCmds.find(name)==fireCmds.end()){
         printf("Command once %s\n",cmd->m_name.c_str());
        
-        XTCmd xtcmd;
-        xtcmd.xluaref=cmd;
-        xtcmd.fire=true;
+        XTCmd* xtcmd=new XTCmd();
+        xtcmd->xluaref=cmd;
+        xtcmd->fire=true;
+        xtcmd->stop=false;
+        xtcmd->start=false;
         commandQueue.push_back(xtcmd);
-        fireCmds[name]=xtcmd;
-    }
-    else
-    {
-        //printf("skip Command once %s - in queue\n",cmd->m_name.c_str());
-    }    
+        //fireCmds[name]=xtcmd;
+    
+  
     data_mutex.unlock();
 }
 
@@ -157,24 +160,25 @@ void XTLuaDataRefs::updateStringDataRefs(){
     }*/
 }
 void XTLuaDataRefs::updateCommands(){
-    for(XTCmd c:commandQueue){
-        xlua_cmd* cmd=c.xluaref;
-        if(c.fire){
-            //printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+    for(XTCmd* c:commandQueue){
+        xlua_cmd* cmd=c->xluaref;
+        if(c->fire){
+            printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandOnce(cmd->m_cmd);
         
         }
-        if(c.start){
-            //printf("Do Command Begin %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+        if(c->start){
+            printf("Do Command Begin %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandBegin(cmd->m_cmd);
         }
-        if(c.stop){
-            //printf("Do Command End %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
+        if(c->stop){
+            printf("Do Command End %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandEnd(cmd->m_cmd);
         }
+        delete c;
     }
     commandQueue.clear();
-    fireCmds.clear();
+   // fireCmds.clear();
 }
 void XTLuaDataRefs::updateFloatDataRefs(){
     //std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;

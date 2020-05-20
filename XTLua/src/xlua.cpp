@@ -200,7 +200,7 @@ static void do_during_physics(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	while(liveThread&&run){
-		if(active&&!xlua_ispaused()){
+		if(active){
 			sleeping=false;
 			auto start = std::chrono::high_resolution_clock::now();
 			std::vector<XTCmd> runItems=get_runQueue();
@@ -214,10 +214,12 @@ static void do_during_physics(){
 				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 					(*m)->do_callout(item.c_str());
 			}
-			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-				(*m)->pre_physics();
-			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-				(*m)->post_physics();
+			if(!xlua_ispaused()){
+				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+					(*m)->pre_physics();
+				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+					(*m)->post_physics();
+			}
 			auto finish = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double, std::milli> elapsed = finish - start;
 			int diff=round(elapsed.count());
@@ -253,7 +255,7 @@ PLUGIN_API int XPluginStart(
     strcpy(outName, "XTLua " VERSION);
     strcpy(outSig, "com.x-plane.xtlua." VERSION);
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
-
+	printf("XTLua being started\n");
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
