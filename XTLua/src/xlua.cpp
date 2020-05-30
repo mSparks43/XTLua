@@ -220,11 +220,17 @@ static void do_during_physics(){
 				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 					(*m)->post_physics();
 			}
+			xtlua_localNavData();
 			auto finish = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double, std::milli> elapsed = finish - start;
 			int diff=round(elapsed.count());
 			if(diff<20)
 				std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
+			else
+			{
+				printf("warn: xtlua time overflow!=%d\n",diff);
+			}
+				
 		}
 		else{
 			sleeping=true;

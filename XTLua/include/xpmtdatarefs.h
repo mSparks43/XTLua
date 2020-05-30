@@ -55,7 +55,19 @@ struct xlua_cmd {
 /*static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
 static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
 static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);*/
-
+class NavAid
+{
+    public:
+    int    id;
+    int    type;
+    float  latitude;    /* Can be NULL */
+    float  longitude;  
+    int    frequency;
+    float  heading;
+    std::string name;
+    std::string ident;
+    NavAid * next;
+};
 class XTLuaDataRefs
 {
 private:
@@ -67,12 +79,22 @@ private:
     std::vector<xlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
     std::unordered_map<std::string, xlua_cmd*> cmdHandlerResolveQueue;
+    std::unordered_map<int, NavAid*> localNavaids;
+    std::string localNavaidString;
+    std::string localFMSString;
     //std::unordered_map<std::string, XTCmd> startCmds;
     //std::unordered_map<std::string, XTCmd> stopCmds;
     //std::unordered_map<std::string, XTCmd> fireCmds;
     std::vector<XTCmd*> commandQueue;
     std::vector<XTCmd> runQueue;
     double timeT=0;
+    NavAid * navaids=NULL;
+    NavAid * lastnavaid=NULL;
+    XPLMDataRef latR;
+    XPLMDataRef lonR;
+    double lat;
+    double lon;
+    NavAid * current_navaid=NULL;
     
     int updateRoll=0;
 public:
@@ -87,6 +109,16 @@ public:
     void updateDataRefs();
     void updateStringDataRefs();
     void updateFloatDataRefs();
+    void updateNavDataRefs();
+    void update_localNavData();
+    void addNavData(int    id,
+        int    type,
+        float  latitude,
+        float  longitude, 
+        int    frequency,
+        float  heading,
+        char * name,
+        char * ident);
     void updateCommands();
     void cleanup();
     void                 XTqueueresolve_dref(xlua_dref * d);//can be called from anywhere

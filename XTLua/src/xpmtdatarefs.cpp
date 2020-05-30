@@ -9,12 +9,13 @@
 //	See LICENSE.txt for the full terms of the license.
 
 #include <XPLMDataAccess.h>
+#include <XPLMNavigation.h>
 #include "xpmtdatarefs.h"
 #include <stdio.h>
 #include <assert.h>
-
+#include "json/json.hpp"
 #include <vector>
-
+using nlohmann::json;
 static std::mutex data_mutex;
 
 void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
@@ -180,6 +181,140 @@ void XTLuaDataRefs::updateCommands(){
     commandQueue.clear();
    // fireCmds.clear();
 }
+void XTLuaDataRefs::addNavData(int    id,
+        int    type,
+        float  latitude,
+        float  longitude, 
+        int    frequency,
+        float  heading,
+        char * name,char * ident){
+
+        NavAid* navaid=new NavAid(); 
+        navaid->id=id;
+        navaid->type=type;
+        navaid->latitude=latitude;
+        navaid->longitude=longitude;
+        navaid->frequency=frequency;
+        navaid->heading=heading;
+        navaid->name=std::string(name);
+         navaid->ident=std::string(ident);
+        navaid->next=NULL;
+        if(lastnavaid==NULL)
+            navaids=navaid;
+        else 
+            lastnavaid->next=navaid;
+        lastnavaid=navaid;
+}
+void XTLuaDataRefs::updateNavDataRefs(){
+    int entries=XPLMCountFMSEntries();
+
+    json nVdata =json::array();
+    int count=0;
+    for(int i=0;i<entries;i++){
+          XPLMNavType         outType;
+          char                outID[32]={0}; 
+          XPLMNavRef          outRef=XPLM_NAV_NOT_FOUND;
+          int                 outAltitude;
+          float               outLat;
+          float               outLon;
+          XPLMGetFMSEntryInfo(i,&outType,outID,&outRef,&outAltitude,&outLat,&outLon); 
+          if(outRef!=XPLM_NAV_NOT_FOUND){
+              XPLMNavType         outType;   
+              float               outLatitude;    
+              float               outLongitude;   
+              float               outHeight;    
+              int                 outFrequency=0;   
+              float               outHeading;    
+                 
+              char                outName[256]={0};    
+              char                outReg[1]={0};
+              XPLMGetNavAidInfo(outRef,&outType,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
+              //printf("%d=%d,%d ,%s\n",i,outType,outFrequency,outID); 
+              nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID)});
+              count++;
+          }
+    }
+    
+    
+    
+    localFMSString=nVdata.dump();
+    if(navaids==NULL){
+        XPLMNavRef nAid=XPLMGetFirstNavAid();
+        latR = XPLMFindDataRef("sim/flightmodel/position/latitude");
+        lonR = XPLMFindDataRef("sim/flightmodel/position/longitude");
+        while(nAid!=XPLM_NAV_NOT_FOUND){
+                XPLMNavType         outType;    /* Can be NULL */
+                float               outLatitude=-200;    /* Can be NULL */
+                float               outLongitude=-200;    /* Can be NULL */
+                float               outHeight;    /* Can be NULL */
+                int                 outFrequency=0;    /* Can be NULL */
+                float               outHeading=0;    /* Can be NULL */
+                char                outID[32];    /* Can be NULL */
+                char                outName[256];    /* Can be NULL */
+                char                outReg[1];
+                XPLMGetNavAidInfo(nAid,&outType,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
+                /*double latDif=outLatitude-lat;
+                double lonDif=outLongitude-lon;
+                if(outType!=512&&latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2)
+                //if(outType!=512)
+                    printf("%d=%d,%d,%f,%f,%f,%s\n",nAid,outType,outFrequency,latDif,lonDif,outHeading,outName); */
+                if(outType!=512)
+                    addNavData(nAid,outType,outLatitude,outLongitude,outFrequency,outHeading,outName,outID);
+                nAid=XPLMGetNextNavAid(nAid); 
+            }
+    }
+    lat=XPLMGetDatad(latR);
+    lon=XPLMGetDatad(lonR);
+}
+void XTLuaDataRefs::update_localNavData(){
+    if(current_navaid==NULL){
+        current_navaid=navaids;
+         //printf("Nav Rollover\n");
+    }
+    int count=0;
+    int cSize=localNavaids.size();
+    while(current_navaid!=NULL&&count<100){
+        double latDif=current_navaid->latitude-lat;
+        double lonDif=current_navaid->longitude-lon;
+        if(latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2){
+            localNavaids[current_navaid->id]=current_navaid;
+            //printf("%d=%d,%d,%f,%f,%f,%s\n",current_navaid->id,current_navaid->type,current_navaid->frequency,latDif,lonDif,current_navaid->heading,current_navaid->name.c_str());
+        }
+        current_navaid=current_navaid->next;
+        count++;
+    }
+    std::vector<int> left;
+
+    count=0;
+    json nVdata =json::array();
+    for (auto x : localNavaids) {
+        NavAid* val=x.second;
+        double latDif=val->latitude-lat;
+        double lonDif=val->longitude-lon;
+        if(latDif>2||latDif<-2||lonDif<-2||lonDif>2)
+            left.push_back(val->id);//localNavaids.erase(val->id);
+        else{
+            nVdata[count]=json::array({val->id,val->type,val->frequency,val->heading,val->latitude,val->longitude,val->name,val->ident});
+            count++;
+         }
+         
+    }
+    
+    if(left.size()>0||localNavaids.size()!=cSize)
+        localNavaidString=nVdata.dump();//printf("erasing %d\n",left.size());
+    for (int id:left)
+        localNavaids.erase(id);
+    /*
+   
+    for (auto x : localNavaids) {
+        NavAid* val=x.second;
+        nVdata[count]=json::array({val->id,val->type,val->frequency,val->heading,val->latitude,val->longitude,val->name});
+        count++;
+    }
+
+
+    localNavaidString=nVdata.dump();*/
+}
 void XTLuaDataRefs::updateFloatDataRefs(){
     //std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;
     for (auto x : floatdataRefs) {
@@ -336,7 +471,7 @@ void XTLuaDataRefs::updateDataRefs(){
         //else if(updateRoll==2)
         {
             updateCommands(); //always do command queue
-            
+            updateNavDataRefs();
         } 
         updateRoll++;
     data_mutex.unlock();
@@ -362,6 +497,12 @@ void XTLuaDataRefs::cleanup(){
         
      }
      stringdataRefs.clear();
+     NavAid* cNav=navaids;
+     while(cNav!=NULL){
+         navaids=navaids->next;
+         delete cNav;
+         cNav=navaids;
+     }
      printf("XTLua:Cleaned up data\n");
     data_mutex.unlock();
 }
@@ -392,6 +533,10 @@ int XTLuaDataRefs::resolveQueue(){
         assert(d->m_types == 0);
         assert(d->m_index == -1);
         assert(d->m_ours == 0);
+        if(d->m_name.rfind("xtlua/", 0) == 0){
+            d->m_types =xplmType_Data;
+            continue;
+        }
         d->m_dref = XPLMFindDataRef(d->m_name.c_str());
         //initialise our datasets
         if(d->m_dref)
@@ -649,10 +794,48 @@ int XTLuaDataRefs::XTGetDatab(
                                    int                  inOffset,    
                                    int                  inMaxBytes,bool local)
 {
+    char *outValues =(char *)outValue;
+
+    if(d->m_name.rfind("xtlua/navaids", 0) == 0){
+       // std::string tS="testString";
+        //printf("reading navaids %d\n",localNavaidString.length());
+         if(outValues!=NULL){
+             
+
+             const char * charArray=localNavaidString.c_str();
+                for(int i=inOffset;i<localNavaidString.length()&&i-inOffset<inMaxBytes;i++){
+                    outValues[i-inOffset]=charArray[i];
+                    //val[i]->get=true;
+                    //retVal++;
+                    //printf("apply XTGetDatavf %s %s[%d/%d] %s = %f\n",d->m_name.c_str(),name.c_str(),inOffset,inMax,outValues!=NULL?"values":"size",val[i]->value);
+                }
+         }
+         
+        
+        return localNavaidString.length();
+    }
+    if(d->m_name.rfind("xtlua/fms", 0) == 0){
+       // std::string tS="testString";
+        //printf("reading navaids %d\n",localNavaidString.length());
+         if(outValues!=NULL){
+             
+
+             const char * charArray=localFMSString.c_str();
+                for(int i=inOffset;i<localFMSString.length()&&i-inOffset<inMaxBytes;i++){
+                    outValues[i-inOffset]=charArray[i];
+                    //val[i]->get=true;
+                    //retVal++;
+                    //printf("apply XTGetDatavf %s %s[%d/%d] %s = %f\n",d->m_name.c_str(),name.c_str(),inOffset,inMax,outValues!=NULL?"values":"size",val[i]->value);
+                }
+         }
+         
+        
+        return localFMSString.length();
+    }
     data_mutex.lock();
     //outValue will be an array of chars
     XPLMDataRef  inDataRef=d->m_dref;
-    char *outValues =(char *)outValue;
+    
     char namec[32];
     sprintf(namec,"%p",inDataRef);
     std::string name=namec;

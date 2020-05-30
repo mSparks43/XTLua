@@ -404,7 +404,7 @@ string			xlua_dref_get_string(xlua_dref * d)
 	//if(d->m_ours)
 	//	return d->m_string_storage;
 	
-	if(d->m_types & xplmType_Data)
+	if(d->m_types & xplmType_Data||d->m_name.rfind("xtlua/", 0) == 0)
 	{
 		int l = xtluaDefs.XTGetDatab(d, NULL, 0, 0,d->m_ours);
 		if(l > 0)
@@ -561,6 +561,11 @@ std::vector<XTCmd> get_runQueue(){
 	runQueue.clear();
 	data_mutex.unlock();
 	return items;
+}
+void xtlua_localNavData(){
+	data_mutex.lock();
+	xtluaDefs.update_localNavData();//runs on lua thread, but lat/lon come from sim
+	data_mutex.unlock();
 }
 std::vector<string> get_runMessages(){
 	std::vector<string> items;
