@@ -5,7 +5,7 @@ XTLua/CMakeFiles/*
 XTLua/Makefile
 XTLua/Release
 XTLua/Debug
-XTLua/.vs
+XTLua/.vs/*
 build/*
 vscode/
 XTLua/xtlua.vcxproj.user
