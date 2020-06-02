@@ -10,7 +10,7 @@ add_library(XTLua SHARED ${SOURCE_FILES})
 
 target_compile_definitions(XTLua PUBLIC "XPLM200=1" "XPLM210=1" "XPLM300=1")
 
-target_include_directories(XTLua PUBLIC "include" "${CMAKE_SOURCE_DIR}/../XPlaneSDK/CHeaders/XPLM" "${CMAKE_SOURCE_DIR}/../Lua SDK/include")
+target_include_directories(XTLua PUBLIC "include" "${CMAKE_SOURCE_DIR}/../XPlaneSDK/CHeaders/XPLM" "${CMAKE_SOURCE_DIR}/../LuaSDK/include")
 
 set_target_properties(XTLua PROPERTIES PREFIX "")
 set_target_properties(XTLua PROPERTIES SUFFIX ".xpl")
