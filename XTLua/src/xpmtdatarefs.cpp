@@ -13,6 +13,7 @@
 #include "xpmtdatarefs.h"
 #include <stdio.h>
 #include <assert.h>
+
 #include "json/json.hpp"
 #include <vector>
 using nlohmann::json;
@@ -318,7 +319,7 @@ void XTLuaDataRefs::update_localNavData(){
 void XTLuaDataRefs::updateFloatDataRefs(){
     //std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;
     for (auto x : floatdataRefs) {
-        int i=0;
+        //int i=0;
         string name=x.first;
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
         if(val.size()==1){
@@ -481,7 +482,7 @@ void XTLuaDataRefs::cleanup(){
     drefResolveQueue.clear();
     cmdResolveQueue.clear();
      for (auto x : floatdataRefs) {
-        int i=0;
+        //int i=0;
         string name=x.first;
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
         for(XTLuaArrayFloat* k:val){
@@ -490,7 +491,7 @@ void XTLuaDataRefs::cleanup(){
      }
      floatdataRefs.clear();
      for (auto x : stringdataRefs) {
-        int i=0;
+       // int i=0;
         string name=x.first;
         XTLuaCharArray* val=stringdataRefs[name];
         delete val;

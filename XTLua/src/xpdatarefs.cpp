@@ -139,7 +139,7 @@ xlua_dref *		xlua_find_dref(const char * name)
 
 xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, int writable, xlua_dref_notify_f func, void * ref)
 {
-	printf("ERROR: xTLua cannot create datarefs - us xLua.\n",name);
+	printf("ERROR: xTLua cannot create datarefs - us xLua.\n");
 	return NULL;
 	/*
 	assert(type != xlua_none);
@@ -597,7 +597,7 @@ int xlua_dref_resolveDREFQueue(){
 	int retVal=xtluaDefs.resolveQueue();
 	if(retVal>0){
 		std::vector<xlua_cmd*> commandstoHandle=xtluaDefs.XTGetHandlers();
-		printf("have %d commands to handle registering\n",commandstoHandle.size());
+		printf("have %d commands to handle registering\n",(int)commandstoHandle.size());
 		for(xlua_cmd* cmd: commandstoHandle){
 			if(cmd->m_pre_handler){
 				printf("XPLMRegisterPreCommandHandler %s\n",cmd->m_name.c_str());

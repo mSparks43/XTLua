@@ -9,6 +9,7 @@
 //	See LICENSE.txt for the full terms of the license.
 
 #include <vector>
+#include <string>
 
 class XTLuaArrayFloat{
     public:

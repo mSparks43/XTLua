@@ -71,7 +71,7 @@ class NavAid
 class XTLuaDataRefs
 {
 private:
-    std::unordered_map<std::string,std::vector<XTLuaArrayFloat*>> floatdataRefs;
+    std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > floatdataRefs;
     //std::unordered_map<std::string, XTLuaDouble> doubledataRefs;
     //std::unordered_map<std::string, XTLuaInteger> intdataRefs;
     //std::unordered_map<std::string, XTLuaChars> stringdataRefs;
