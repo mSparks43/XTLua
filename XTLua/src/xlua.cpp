@@ -226,7 +226,7 @@ static void do_during_physics(){
 			int diff=round(elapsed.count());
 			if(diff<20)
 				std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
-			else
+			else if(diff>30)
 			{
 				printf("warn: xtlua time overflow!=%d\n",diff);
 			}

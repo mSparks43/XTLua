@@ -17,7 +17,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "lua_helpers.h"
-
+#include <chrono>
+#include <math.h>
 static const char * shorten_to_file(const char * path)
 {
 	const char * p = path, * t = path;
@@ -247,7 +248,14 @@ void		module::pre_physics()
 
 void		module::post_physics()
 {
+	//auto start = std::chrono::high_resolution_clock::now();
 	do_callout("after_physics");
+	/*auto finish = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> elapsed = finish - start;
+	int diff=round(elapsed.count());
+	if(diff>=10){
+		printf("warn: xtlua time overflow!=%d for %s\n",diff,m_path.c_str());
+	}*/
 }
 
 void		module::post_replay()

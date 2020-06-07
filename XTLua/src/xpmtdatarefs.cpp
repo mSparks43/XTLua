@@ -274,7 +274,7 @@ void XTLuaDataRefs::update_localNavData(){
     }
     int count=0;
     int cSize=localNavaids.size();
-    while(current_navaid!=NULL&&count<100){
+    while(current_navaid!=NULL&&count<50){
         double latDif=current_navaid->latitude-lat;
         double lonDif=current_navaid->longitude-lon;
         if(latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2){
@@ -530,14 +530,15 @@ int XTLuaDataRefs::resolveQueue(){
         paused_ref=XPLMFindDataRef("sim/time/paused");
     //printf("XTLua:Resolving queue\n");
     for(xlua_dref * d:drefResolveQueue){
-        assert(d->m_dref == NULL);
-        assert(d->m_types == 0);
-        assert(d->m_index == -1);
-        assert(d->m_ours == 0);
+        
         if(d->m_name.rfind("xtlua/", 0) == 0){
             d->m_types =xplmType_Data;
             continue;
         }
+        assert(d->m_dref == NULL);
+        assert(d->m_types == 0);
+        assert(d->m_index == -1);
+        assert(d->m_ours == 0);
         d->m_dref = XPLMFindDataRef(d->m_name.c_str());
         //initialise our datasets
         if(d->m_dref)
@@ -729,7 +730,7 @@ float XTLuaDataRefs::XTGetDataf(
         //floatdataRefs[name]=val;
     }
     else{
-        printf("didn't initialise %s",name.c_str());
+        printf("didn't initialise %s\n",name.c_str());
         /*XTLuaFloat val;
         //val.isArray=false;
         //val.end=1;
@@ -769,7 +770,7 @@ void  XTLuaDataRefs::XTSetDataf(
         }
     }
     else{
-        printf("didn't initialise %s",name.c_str());
+        printf("didn't initialise %s\n",name.c_str());
        /* XTLuaFloat val;
         //val.isArray=false;
         //val.end=1;
