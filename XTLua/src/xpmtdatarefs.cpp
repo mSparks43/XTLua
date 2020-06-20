@@ -513,7 +513,7 @@ void XTLuaDataRefs::cleanup(){
 }
 
 
-void XTLuaDataRefs::XTqueueresolve_dref(xlua_dref * d){
+void XTLuaDataRefs::XTqueueresolve_dref(xtlua_dref * d){
     data_mutex.lock();
     drefResolveQueue.push_back(d);//this needs to be done on another thread
     data_mutex.unlock();
@@ -533,7 +533,7 @@ int XTLuaDataRefs::resolveQueue(){
     if(paused_ref==NULL)
         paused_ref=XPLMFindDataRef("sim/time/paused");
     //printf("XTLua:Resolving queue\n");
-    for(xlua_dref * d:drefResolveQueue){
+    for(xtlua_dref * d:drefResolveQueue){
         
         if(d->m_name.rfind("xtlua/", 0) == 0){
             d->m_types =xplmType_Data;
@@ -795,7 +795,7 @@ void  XTLuaDataRefs::XTSetDataf(
 }
 
 int XTLuaDataRefs::XTGetDatab(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    void *               outValue,    /* Can be NULL */
                                    int                  inOffset,    
                                    int                  inMaxBytes,bool local)
@@ -900,7 +900,7 @@ int XTLuaDataRefs::XTGetDatab(
 }
 
 void XTLuaDataRefs::XTSetDatab(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    std::string value)
 {
     
@@ -944,7 +944,7 @@ void XTLuaDataRefs::XTSetDatab(
     data_mutex.unlock();
 }      
 int XTLuaDataRefs::XTGetDatavf(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    float *              outValues,    /* Can be NULL */
                                    int                  inOffset,    
                                    int                  inMax,bool local)
@@ -1006,7 +1006,7 @@ int XTLuaDataRefs::XTGetDatavf(
 }
 
 void XTLuaDataRefs::XTSetDatavf(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    float              inValue,    
                                    int                  index)
 {

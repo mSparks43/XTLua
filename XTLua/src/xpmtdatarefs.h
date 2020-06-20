@@ -17,14 +17,14 @@
 #include <string>
 #include <mutex>
 #include "xpdatarefs.h"
-struct	xlua_dref {
-	xlua_dref *				m_next;
+struct	xtlua_dref {
+	xtlua_dref *				m_next;
 	std::string				m_name;
 	XPLMDataRef				m_dref;
 	int						m_index;	// -1 if index is NOT bound.
 	XPLMDataTypeID			m_types;
 	int						m_ours;		// 1 if we made, 0 if system
-	//xlua_dref_notify_f		m_notify_func;
+	//xtlua_dref_notify_f		m_notify_func;
 	//void *					m_notify_ref;
 	
 	// IF we made the dataref, this is where our storage is!
@@ -76,7 +76,7 @@ private:
     //std::unordered_map<std::string, XTLuaInteger> intdataRefs;
     //std::unordered_map<std::string, XTLuaChars> stringdataRefs;
     std::unordered_map<std::string, XTLuaCharArray*> stringdataRefs;
-    std::vector<xlua_dref*> drefResolveQueue;
+    std::vector<xtlua_dref*> drefResolveQueue;
     std::vector<xlua_cmd*> cmdResolveQueue;
     std::unordered_map<std::string, xlua_cmd*> cmdHandlerResolveQueue;
     std::unordered_map<int, NavAid*> localNavaids;
@@ -121,17 +121,17 @@ public:
         char * ident);
     void updateCommands();
     void cleanup();
-    void                 XTqueueresolve_dref(xlua_dref * d);//can be called from anywhere
+    void                 XTqueueresolve_dref(xtlua_dref * d);//can be called from anywhere
     void                 XTqueueresolve_cmd(xlua_cmd * d);//can be called from anywhere
     int                 resolveQueue();//only to be called from flight loop thread
     std::vector<xlua_cmd*> XTGetHandlers();
     int                  XTGetDatavf(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    float *              outValues,    /* Can be NULL */
                                    int                  inOffset,    
                                    int                  inMax,bool local);
     void                 XTSetDatavf(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    float              inValue,    
                                    int                  index);                               
     int                  XTGetDatavi(
@@ -161,11 +161,11 @@ public:
                                    XPLMDataRef          inDataRef,    
                                    int                  inValue,bool local); 
     int                  XTGetDatab(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    void *               outValue,    /* Can be NULL */
                                    int                  inOffset,    
                                    int                  inMaxBytes,bool local);
     void                 XTSetDatab(
-                                   xlua_dref * d,    
+                                   xtlua_dref * d,    
                                    std::string value);                                                             
 };

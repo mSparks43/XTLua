@@ -43,17 +43,17 @@ static XTLuaDataRefs xtluaDefs=XTLuaDataRefs();
 
 
 
-static xlua_dref *		s_drefs = NULL;
+static xtlua_dref *		s_drefs = NULL;
 
 // For nunmbers
 
-static void resolve_dref(xlua_dref * d)
+static void resolve_dref(xtlua_dref * d)
 {
 	xtluaDefs.XTqueueresolve_dref(d);
 }
 
 //moved to xpmtdatatypes.cpp
-/*static void do_resolve_dref(xlua_dref * d)
+/*static void do_resolve_dref(xtlua_dref * d)
 {
 	assert(d->m_dref == NULL);
 	assert(d->m_types == 0);
@@ -98,7 +98,7 @@ static void resolve_dref(xlua_dref * d)
 
 void			xlua_validate_drefs()
 {
-	for(xlua_dref * f = s_drefs; f; f = f->m_next)
+	for(xtlua_dref * f = s_drefs; f; f = f->m_next)
 	{
 	#if MOBILE
 		assert(f->m_dref != NULL);
@@ -109,16 +109,16 @@ void			xlua_validate_drefs()
 	}
 }
 
-xlua_dref *		xlua_find_dref(const char * name)
+xtlua_dref *		xlua_find_dref(const char * name)
 {
-	for(xlua_dref * f = s_drefs; f; f = f->m_next)
+	for(xtlua_dref * f = s_drefs; f; f = f->m_next)
 	if(f->m_name == name)
 	{
 		TRACE_DATAREFS("Found %s as %p\n", name,f);
 		return f;
 	}
 	// We have never tried to find this dref before - make a new record
-	xlua_dref * d = new xlua_dref;
+	xtlua_dref * d = new xtlua_dref;
 	d->m_next = s_drefs;
 	s_drefs = d;
 	d->m_name = name;
@@ -137,7 +137,7 @@ xlua_dref *		xlua_find_dref(const char * name)
 	return d;
 }
 
-xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, int writable, xlua_dref_notify_f func, void * ref)
+xtlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim, int writable, xtlua_dref_notify_f func, void * ref)
 {
 	printf("ERROR: xTLua cannot create datarefs - us xLua.\n");
 	return NULL;
@@ -148,7 +148,7 @@ xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, i
 	assert(writable || func == NULL);
 	
 	string n(name);
-	xlua_dref * f;
+	xtlua_dref * f;
 	for(f = s_drefs; f; f = f->m_next)
 	if(f->m_name == n)
 	{
@@ -174,10 +174,10 @@ xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, i
 		return NULL;
 	}
 	
-	xlua_dref * d = f;
+	xtlua_dref * d = f;
 	if(!d)
 	{
-		d = new xlua_dref;
+		d = new xtlua_dref;
 		d->m_next = s_drefs;
 		s_drefs = d;
 		TRACE_DATAREFS("Creating %s as %p\n", name,d);		
@@ -231,7 +231,7 @@ xlua_dref *		xlua_create_dref(const char * name, xlua_dref_type type, int dim, i
 	return d;*/
 }
 
-xlua_dref_type	xlua_dref_get_type(xlua_dref * who)
+xtlua_dref_type	xtlua_dref_get_type(xtlua_dref * who)
 {
 	if(who->m_types & xplmType_Data)
 		return xlua_string;
@@ -244,16 +244,16 @@ xlua_dref_type	xlua_dref_get_type(xlua_dref * who)
 	return xlua_none;
 }
 
-void			xlua_dref_preUpdate(){
+void			xtlua_dref_preUpdate(){
 	
 }
 // meat of setting drefs in here - lock the lua thread and update all datarefs to/from X-Plane
-void			xlua_dref_postUpdate(){
+void			xtlua_dref_postUpdate(){
 
 	//xtluaDefs.ShowDataRefs();
 	xtluaDefs.updateDataRefs();
 }
-int	xlua_dref_get_dim(xlua_dref * who)
+int	xtlua_dref_get_dim(xtlua_dref * who)
 {
 	//if(who->m_ours)
 	//	return who->m_array_storage.size();
@@ -274,7 +274,7 @@ int	xlua_dref_get_dim(xlua_dref * who)
 	return 0;
 }
 
-double			xlua_dref_get_number(xlua_dref * d)
+double			xtlua_dref_get_number(xtlua_dref * d)
 {
 	//if(d->m_ours)
 	//	return d->m_number_storage;
@@ -312,7 +312,7 @@ double			xlua_dref_get_number(xlua_dref * d)
 	return 0.0;
 }
 
-void			xlua_dref_set_number(xlua_dref * d, double value)
+void			xtlua_dref_set_number(xtlua_dref * d, double value)
 {
 	/*if(d->m_ours)
 	{
@@ -348,7 +348,7 @@ void			xlua_dref_set_number(xlua_dref * d, double value)
 	}*/
 }
 
-double			xlua_dref_get_array(xlua_dref * d, int n)
+double			xtlua_dref_get_array(xtlua_dref * d, int n)
 {
 	assert(n >= 0);
 	/*if(d->m_ours)
@@ -376,7 +376,7 @@ double			xlua_dref_get_array(xlua_dref * d, int n)
 	return 0.0;
 }
 
-void			xlua_dref_set_array(xlua_dref * d, int n, double value)
+void			xtlua_dref_set_array(xtlua_dref * d, int n, double value)
 {
 	assert(n >= 0);
 	/*(d->m_ours)
@@ -399,7 +399,7 @@ void			xlua_dref_set_array(xlua_dref * d, int n, double value)
 	}*/
 }
 
-string			xlua_dref_get_string(xlua_dref * d)
+string			xtlua_dref_get_string(xtlua_dref * d)
 {
 	//if(d->m_ours)
 	//	return d->m_string_storage;
@@ -421,7 +421,7 @@ string			xlua_dref_get_string(xlua_dref * d)
 	return string();
 }
 
-void			xlua_dref_set_string(xlua_dref * d, const string& value)
+void			xtlua_dref_set_string(xtlua_dref * d, const string& value)
 {
 	if(d->m_ours)
 	{
@@ -454,7 +454,7 @@ void			xlua_relink_all_drefs()
 	}
 #endif
 	xtluaDefs.paused_ref=NULL;
-	for(xlua_dref * d = s_drefs; d; d = d->m_next)
+	for(xtlua_dref * d = s_drefs; d; d = d->m_next)
 	{
 		if(d->m_dref == NULL)
 		{
@@ -593,7 +593,7 @@ double xlua_get_simulated_time(){
 	data_mutex.unlock();
 	return retVal;
 }
-int xlua_dref_resolveDREFQueue(){
+int xtlua_dref_resolveDREFQueue(){
 	int retVal=xtluaDefs.resolveQueue();
 	if(retVal>0){
 		std::vector<xlua_cmd*> commandstoHandle=xtluaDefs.XTGetHandlers();
@@ -618,11 +618,11 @@ int xlua_dref_resolveDREFQueue(){
 }
 
 
-void			xlua_dref_cleanup()
+void			xtlua_dref_cleanup()
 {
 	while(s_drefs)
 	{
-		xlua_dref *	kill = s_drefs;
+		xtlua_dref *	kill = s_drefs;
 		s_drefs = s_drefs->m_next;
 		
 		/*if(kill->m_dref && kill->m_ours)

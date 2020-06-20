@@ -138,14 +138,14 @@ static int XLuaFindDataRef(lua_State * L)
 {
 	const char * name = luaL_checkstring(L, -1);
 
-	xlua_dref * r = xlua_find_dref(name);
+	xtlua_dref * r = xlua_find_dref(name);
 	assert(r);
 	
 	lua_pushlightuserdata(L, r);
 	return 1;
 }
 
-static void xlua_notify_helper(xlua_dref * who, void * ref)
+static void xlua_notify_helper(xtlua_dref * who, void * ref)
 {
 	lua_State * L = setup_lua_callback(ref);
 	if(L)
@@ -173,7 +173,7 @@ static int XLuaCreateDataRef(lua_State * L)
 	else 
 		return luaL_argerror(L, 3, "writable must be 'yes' or 'no'");
 	
-	xlua_dref_type my_type = xlua_none;
+	xtlua_dref_type my_type = xlua_none;
 	int my_dim = 1;
 	const char * c = typestr;
 	if(strcmp(c,"string") == 0)
@@ -193,7 +193,7 @@ static int XLuaCreateDataRef(lua_State * L)
 	else
 		return luaL_argerror(L, 2, "Type must be number, string, or array[n]");
 	
-	xlua_dref * r = xlua_create_dref(
+	xtlua_dref * r = xlua_create_dref(
 							name,
 							my_type,
 							my_dim,
@@ -210,9 +210,9 @@ static int XLuaCreateDataRef(lua_State * L)
 // dref -> "array[4]"
 static int XLuaGetDataRefType(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 
-	xlua_dref_type dt = xlua_dref_get_type(d);
+	xtlua_dref_type dt = xtlua_dref_get_type(d);
 	
 	switch(dt) {
 	case xlua_none:
@@ -224,7 +224,7 @@ static int XLuaGetDataRefType(lua_State * L)
 	case xlua_array:
 		{
 			char buf[256];
-			sprintf(buf,"array[%d]",xlua_dref_get_dim(d));
+			sprintf(buf,"array[%d]",xtlua_dref_get_dim(d));
 			lua_pushstring(L,buf);
 		}
 		break;
@@ -238,58 +238,58 @@ static int XLuaGetDataRefType(lua_State * L)
 // XPLMGetNumber dref -> value
 static int XLuaGetNumber(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	
-	lua_pushnumber(L, xlua_dref_get_number(d));
+	lua_pushnumber(L, xtlua_dref_get_number(d));
 	return 1;	
 }
 
 // XPLMSetNumber dref value
 static int XLuaSetNumber(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	double v = luaL_checknumber(L, 2);
 	
-	xlua_dref_set_number(d,v);
+	xtlua_dref_set_number(d,v);
 	return 0;	
 }
 
 // XPLMGetArray dref idx -> value
 static int XLuaGetArray(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	double idx = luaL_checknumber(L, 2);	
 	
-	lua_pushnumber(L, xlua_dref_get_array(d,idx));
+	lua_pushnumber(L, xtlua_dref_get_array(d,idx));
 	return 1;	
 }
 
 // XPLMSetArray dref dix value
 static int XLuaSetArray(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	double idx = luaL_checknumber(L, 2);
 	double v = luaL_checknumber(L, 3);
 	
-	xlua_dref_set_array(d,idx,v);
+	xtlua_dref_set_array(d,idx,v);
 	return 0;		
 }
 
 // XPLMGetString dref -> value
 static int XLuaGetString(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	
-	lua_pushstring(L, xlua_dref_get_string(d).c_str());
+	lua_pushstring(L, xtlua_dref_get_string(d).c_str());
 	return 1;	
 }
 
 // XPLMSetString dref value
 static int XLuaSetString(lua_State * L)
 {
-	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
+	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
 	const char * s = luaL_checkstring(L, 2);
-	xlua_dref_set_string(d,string(s));
+	xtlua_dref_set_string(d,string(s));
 	return 0;	
 }
 

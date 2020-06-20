@@ -131,7 +131,7 @@ static float xlua_pre_timer_master_cb(
 	if(XPLMGetDataf(g_sim_period) > 0.0f)	
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)	
 		(*m)->pre_physics();*/
-	if(loadedModules&&xlua_dref_resolveDREFQueue()==0)
+	if(loadedModules&&xtlua_dref_resolveDREFQueue()==0)
 		ready=true;
 	return -1;
 }
@@ -155,7 +155,7 @@ static float xlua_post_timer_master_cb(
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 		(*m)->post_replay();*/
 
-	xlua_dref_postUpdate();
+	xtlua_dref_postUpdate();
 
 	liveThread=true;
 	return -1;
@@ -365,7 +365,7 @@ PLUGIN_API void	XPluginStop(void)
 	}
 #endif
 	
-	xlua_dref_cleanup();
+	xtlua_dref_cleanup();
 	xlua_cmd_cleanup();
 	xlua_timer_cleanup();
 	
