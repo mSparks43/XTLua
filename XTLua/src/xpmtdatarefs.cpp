@@ -208,7 +208,7 @@ void XTLuaDataRefs::addNavData(int    id,
 }
 void XTLuaDataRefs::updateNavDataRefs(){
     int entries=XPLMCountFMSEntries();
-
+    int currentIndex=XPLMGetDestinationFMSEntry();
     json nVdata =json::array();
     int count=0;
     for(int i=0;i<entries;i++){
@@ -231,7 +231,11 @@ void XTLuaDataRefs::updateNavDataRefs(){
               char                outReg[1]={0};
               XPLMGetNavAidInfo(outRef,&outType,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
               //printf("%d=%d,%d ,%s\n",i,outType,outFrequency,outID); 
-              nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID)});
+              nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
+              count++;
+          }
+          else{
+              nVdata[count]=json::array({outRef,outType,0,0,outLat,outLon,string("latlon"),string("latlon"),outAltitude,(i==currentIndex)});
               count++;
           }
     }
@@ -342,7 +346,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 
             }
             else if(val[0]->set){ 
-                //printf("set float %s[%d] = %f(%d)\n",x.first.c_str(),i,v,val.size());
+                //printf("set float %s[0] = %f(%d)\n",x.first.c_str(),v,val.size());
                 if(val[0]->type == xplmType_Double){
                     XPLMSetDatad(val[0]->ref,v);
                     

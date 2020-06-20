@@ -129,8 +129,13 @@ module::module(
 	
 #if MOBILE
 	m_interp = luaL_newstate();
+/*#elseif defined(__linux__)
+	m_interp = luaL_newstate();
+	m_interp = lua_newstate(in_alloc_func, in_alloc_ref);*/
+#elif !IBM
+	m_interp = luaL_newstate();
 #else
-	m_interp = lua_newstate(in_alloc_func, in_alloc_ref);
+	m_interp = lua_fnewstate(in_alloc_func, in_alloc_ref);
 #endif
 
 	if(m_interp == NULL)
