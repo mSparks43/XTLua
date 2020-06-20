@@ -19,7 +19,7 @@
 using nlohmann::json;
 static std::mutex data_mutex;
 
-void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
+void XTLuaDataRefs::XTCommandBegin(xtlua_cmd * cmd){
     data_mutex.lock();
     printf("Command start %s\n",cmd->m_name.c_str());
     XTCmd* xtcmd=new XTCmd();
@@ -31,7 +31,7 @@ void XTLuaDataRefs::XTCommandBegin(xlua_cmd * cmd){
     data_mutex.unlock();
 }
 
-void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
+void XTLuaDataRefs::XTCommandEnd(xtlua_cmd * cmd){
     data_mutex.lock();
 
     printf("Command stop %s\n",cmd->m_name.c_str());
@@ -47,7 +47,7 @@ void XTLuaDataRefs::XTCommandEnd(xlua_cmd * cmd){
     data_mutex.unlock();
 }
 
-void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
+void XTLuaDataRefs::XTCommandOnce(xtlua_cmd * cmd){
     data_mutex.lock(); 
     char namec[32]={0};
     sprintf(namec,"%p",cmd);
@@ -69,7 +69,7 @@ void XTLuaDataRefs::XTCommandOnce(xlua_cmd * cmd){
 }
 
 
-void XTLuaDataRefs::XTRegisterCommandHandler(xlua_cmd * cmd){
+void XTLuaDataRefs::XTRegisterCommandHandler(xtlua_cmd * cmd){
     char namec[32]={0};
     sprintf(namec,"%p",cmd);
     std::string name=namec;
@@ -163,7 +163,7 @@ void XTLuaDataRefs::updateStringDataRefs(){
 }
 void XTLuaDataRefs::updateCommands(){
     for(XTCmd* c:commandQueue){
-        xlua_cmd* cmd=c->xluaref;
+        xtlua_cmd* cmd=c->xluaref;
         if(c->fire){
             printf("Do Command once %s %p\n",cmd->m_name.c_str(),cmd->m_cmd);
             XPLMCommandOnce(cmd->m_cmd);
@@ -518,7 +518,7 @@ void XTLuaDataRefs::XTqueueresolve_dref(xtlua_dref * d){
     drefResolveQueue.push_back(d);//this needs to be done on another thread
     data_mutex.unlock();
 }
-void XTLuaDataRefs::XTqueueresolve_cmd(xlua_cmd * d){
+void XTLuaDataRefs::XTqueueresolve_cmd(xtlua_cmd * d){
     data_mutex.lock();
     cmdResolveQueue.push_back(d);//this needs to be done on another thread
     data_mutex.unlock();
@@ -543,6 +543,10 @@ int XTLuaDataRefs::resolveQueue(){
         assert(d->m_types == 0);
         assert(d->m_index == -1);
         assert(d->m_ours == 0);
+        grabLocal(d);
+        if(d->m_ours)
+            continue;
+
         d->m_dref = XPLMFindDataRef(d->m_name.c_str());
         //initialise our datasets
         if(d->m_dref)
@@ -693,7 +697,7 @@ int XTLuaDataRefs::resolveQueue(){
 
     drefResolveQueue.clear();
 
-    for(xlua_cmd * d:cmdResolveQueue){
+    for(xtlua_cmd * d:cmdResolveQueue){
         XPLMCommandRef c = XPLMFindCommand(d->m_name.c_str());	
 	    if(c == NULL){
 		    printf("ERROR: Command %s not found\n",d->m_name.c_str());
@@ -709,18 +713,27 @@ int XTLuaDataRefs::resolveQueue(){
     data_mutex.unlock();
     return retVal;
 }
-std::vector<xlua_cmd*> XTLuaDataRefs::XTGetHandlers(){
-    std::vector<xlua_cmd*> retval;
+std::vector<xtlua_cmd*> XTLuaDataRefs::XTGetHandlers(){
+    std::vector<xtlua_cmd*> retval;
     for (auto x : cmdHandlerResolveQueue) {
-        xlua_cmd * cmd=x.second;
+        xtlua_cmd * cmd=x.second;
         retval.push_back(cmd);
     }
     return retval;
 }
 float XTLuaDataRefs::XTGetDataf(
-                                   XPLMDataRef          inDataRef,bool local){
+                                   xtlua_dref * d,bool local){
+
     data_mutex.lock();
     float retVal=0;
+    if(d->m_ours){
+        data_mutex.unlock();
+        retVal=xlua_dref_get_number(d->local_dref);
+        
+        return retVal; 
+    }
+    XPLMDataRef  inDataRef=d->m_dref;
+    
    // if(!local)
      //   retVal=XPLMGetDataf(inDataRef);
     char namec[32]={0};
@@ -756,13 +769,19 @@ float XTLuaDataRefs::XTGetDataf(
     return retVal;                                   
 }
 void  XTLuaDataRefs::XTSetDataf(
-                                   XPLMDataRef          inDataRef,    
+                                   xtlua_dref * d,    
                                    float                inValue,bool local)
 {
     //printf("set %p=%f\n",inDataRef,inValue) ;
     //if(!local)
      //   XPLMSetDataf(inDataRef,inValue);
      data_mutex.lock();
+     if(d->m_ours){
+        data_mutex.unlock();
+        xlua_dref_set_number(d->local_dref,inValue);
+        return; 
+    }
+     XPLMDataRef          inDataRef=d->m_dref;
     char namec[32]={0};
     sprintf(namec,"%p",inDataRef);
     std::string name=namec;
@@ -1034,7 +1053,7 @@ void XTLuaDataRefs::XTSetDatavf(
 
 //TODO
 int  XTLuaDataRefs::XTGetDatavi(
-                                   XPLMDataRef          inDataRef,    
+                                   xtlua_dref * d,    
                                    int *                outValues,    /* Can be NULL */
                                    int                  inOffset,    
                                    int                  inMax,bool local){
@@ -1050,7 +1069,7 @@ int  XTLuaDataRefs::XTGetDatavi(
     return 0;    
 } 
 void XTLuaDataRefs::XTSetDatavi(
-                                   XPLMDataRef          inDataRef,    
+                                   xtlua_dref * d,    
                                    int *                inValues,    
                                    int                  inOffset,    
                                    int                  inLength,bool local)
@@ -1059,7 +1078,7 @@ void XTLuaDataRefs::XTSetDatavi(
 }                                   
 
 double XTLuaDataRefs::XTGetDatad(
-                                   XPLMDataRef          inDataRef,bool local){
+                                   xtlua_dref * d,bool local){
     double retVal=0.0;
     printf("dont do this getd?\n") ;
     /*data_mutex.lock();
@@ -1089,7 +1108,7 @@ double XTLuaDataRefs::XTGetDatad(
     return retVal;                                   
 }
 void  XTLuaDataRefs::XTSetDatad(
-                                   XPLMDataRef          inDataRef,    
+                                   xtlua_dref * d,    
                                    double                inValue,bool local)
 {
     printf("dont do this setd?\n") ;
@@ -1122,7 +1141,7 @@ void  XTLuaDataRefs::XTSetDatad(
 
 }
 int XTLuaDataRefs::XTGetDatai(
-                                   XPLMDataRef          inDataRef,bool local)
+                                   xtlua_dref * d,bool local)
 
 {
     int retVal=0;
@@ -1151,7 +1170,7 @@ int XTLuaDataRefs::XTGetDatai(
     return retVal; 
 }
 void XTLuaDataRefs::XTSetDatai(
-                                   XPLMDataRef          inDataRef,    
+                                   xtlua_dref * d,    
                                    int                  inValue,bool local) 
  {
      /*data_mutex.lock();

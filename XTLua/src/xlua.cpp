@@ -56,6 +56,7 @@ extern "C" {
 static void *			g_alloc = NULL;
 #endif
 static vector<module *>g_modules;
+static vector<module *>xp_modules;
 static XPLMFlightLoopID	g_pre_loop = NULL;
 static XPLMFlightLoopID	g_post_loop = NULL;
 static int				g_is_acf_inited = 0;
@@ -93,7 +94,7 @@ static void lua_unlock()
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_UNLOCK, NULL);
 }*/
 
-static void *lj_alloc_create(void)
+/*static void *lj_alloc_create(void)
 {
 	struct lua_alloc_request_t r = { 0 };
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_OPEN,&r);
@@ -116,7 +117,7 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 	r.nsize = nsize;
 	XPLMSendMessageToPlugin(XPLM_PLUGIN_XPLANE, ALLOC_REALLOC,&r);
 	return r.ptr;
-}
+}*/
 bool ready=false;
 bool loadedModules=false;
 static float xlua_pre_timer_master_cb(
@@ -183,8 +184,7 @@ static void do_during_physics(){
 							mod_paths[i].c_str(),
 							init_script_path.c_str(),
 							script_paths[i].c_str(),
-				lj_alloc_f,
-				g_alloc));
+							true));
 #else
 			g_modules.push_back(new module(
 				mod_paths[i].c_str(),
@@ -265,15 +265,7 @@ PLUGIN_API int XPluginStart(
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
-#if !MOBILE
-	g_alloc = lj_alloc_create();
-	if (g_alloc == NULL)
-	{
-		XPLMDebugString("Unable to get allocator from X-Plane.");
-		printf("No allocator\n");
-		return 0;
-	}
-#endif
+
 	
 	XPLMCreateFlightLoop_t pre = { 0 };
 	XPLMCreateFlightLoop_t post = { 0 };
@@ -302,15 +294,65 @@ PLUGIN_API int XPluginStart(
 	plugin_base_path.erase(lp+1);
 	//strcpy(outSig, "com.x-plane.xtlua." VERSION);
 	sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),VERSION);
+	
+	
+	//do create datarefs on thread
+	string scripts_dir_path(plugin_base_path);
+	init_script_path=plugin_base_path;
+	init_script_path += "init/init.lua";
+	scripts_dir_path += "init/scripts";
+	int offset = 0;
+	int mf, fcount;
+	while(1)
+	{
+		char fname_buf[2048];
+		char * fptr;
+		XPLMGetDirectoryContents(
+								scripts_dir_path.c_str(),
+								offset,
+								fname_buf,
+								sizeof(fname_buf),
+								&fptr,
+								1,
+								&mf,
+								&fcount);
+		if(fcount == 0)
+			break;
+		
+		if(strcmp(fptr, ".DS_Store") != 0)
+		{		
+			string mod_path(scripts_dir_path);
+			mod_path += "/";
+			mod_path += fptr;
+			mod_path += "/";
+			string script_path(mod_path);
+			script_path += fptr;
+			script_path += ".lua";
+			xp_modules.push_back(new module(
+							mod_path.c_str(),
+							init_script_path.c_str(),
+							script_path.c_str(),
+							false));
+			//printf("Do init script %s\n",script_path.c_str());				
+
+		}
+			
+		++offset;
+		if(offset == mf)
+			break;
+	}
+	
+	
+	//begin xtlua
 	init_script_path=plugin_base_path;
 	
 	init_script_path += "init.lua";
-	string scripts_dir_path(plugin_base_path);
+	scripts_dir_path=plugin_base_path;
 	
 	scripts_dir_path += "scripts";
 
-	int offset = 0;
-	int mf, fcount;
+	offset = 0;
+
 	while(1)
 	{
 		char fname_buf[2048];
@@ -357,23 +399,20 @@ PLUGIN_API void	XPluginStop(void)
 		m_thread.join();
 
 
-#if !MOBILE
-	if(g_alloc)
-	{
-		lj_alloc_destroy(g_alloc);
-		g_alloc = NULL;
-	}
-#endif
+	for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
+		delete (*m);
+	xp_modules.clear();
 	
-	xtlua_dref_cleanup();
-	xlua_cmd_cleanup();
-	xlua_timer_cleanup();
+	
 	
 	XPLMDestroyFlightLoop(g_pre_loop);
 	XPLMDestroyFlightLoop(g_post_loop);
 	g_pre_loop = NULL;
 	g_post_loop = NULL;	
 	g_is_acf_inited = 0;
+	xtlua_dref_cleanup();
+	xtlua_cmd_cleanup();
+	xtlua_timer_cleanup();
 }
 
 PLUGIN_API void XPluginDisable(void)

@@ -11,23 +11,23 @@
 #ifndef xpcommands_h
 #define xpcommands_h
 
-struct	xlua_cmd;
+struct	xtlua_cmd;
 
-typedef void (* xlua_cmd_handler_f)(xlua_cmd * cmd, int phase, float duration, void * ref);
+typedef void (* xtlua_cmd_handler_f)(xtlua_cmd * cmd, int phase, float duration, void * ref);
 
-xlua_cmd * xlua_find_cmd(const char * name);
-xlua_cmd * xlua_create_cmd(const char * name, const char * desc);
+xtlua_cmd * xlua_find_cmd(const char * name);
+xtlua_cmd * xlua_create_cmd(const char * name, const char * desc);
 
 // The main handler can be used to provide guts to our command or REPLACE an existing
 // command. The pre/post handlers always augment.
-void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref);
-void xlua_cmd_install_pre_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref);
-void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref);
+void xtlua_cmd_install_handler(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref);
+void xtlua_cmd_install_pre_wrapper(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref);
+void xtlua_cmd_install_post_wrapper(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref);
 
-void xlua_cmd_start(xlua_cmd * cmd);
-void xlua_cmd_stop(xlua_cmd * cmd);
-void xlua_cmd_once(xlua_cmd * cmd);
-//void xlua_std_pre_cmd(xlua_cmd * cmd,int phase);
-void xlua_cmd_cleanup();
+void xtlua_cmd_start(xtlua_cmd * cmd);
+void xtlua_cmd_stop(xtlua_cmd * cmd);
+void xtlua_cmd_once(xtlua_cmd * cmd);
+//void xlua_std_pre_cmd(xtlua_cmd * cmd,int phase);
+void xtlua_cmd_cleanup();
 
 #endif /* xpcommands_h */

@@ -117,26 +117,19 @@ if(errcode != 0) { \
 module::module(
 							const char *		in_module_path,
 							const char *		in_init_script,
-							const char *		in_module_script,
-							void* (*in_alloc_func)(void* msp, void* ptr, size_t osize, size_t nsize),
-							void* in_alloc_ref) :
+							const char *		in_module_script,bool isThread) :
 	m_interp(NULL),
 	m_memory(NULL),
 	m_path(in_module_path)
 {
 	int boiler_plate_paths = length_of_dir(in_init_script);
-	printf("Running %s\n", in_module_script+boiler_plate_paths);
-	
-#if MOBILE
+	if(isThread)
+		printf("Running %s\n", in_module_script+boiler_plate_paths);
+	else	
+		printf("Init init/%s\n", in_module_script+boiler_plate_paths);
+
 	m_interp = luaL_newstate();
-/*#elseif defined(__linux__)
-	m_interp = luaL_newstate();
-	m_interp = lua_newstate(in_alloc_func, in_alloc_ref);*/
-#elif !IBM
-	m_interp = luaL_newstate();
-#else
-	m_interp = lua_fnewstate(in_alloc_func, in_alloc_ref);
-#endif
+
 
 	if(m_interp == NULL)
 	{
@@ -148,7 +141,7 @@ module::module(
 	lua_pushlightuserdata(m_interp, this);
 	lua_setglobal(m_interp, "__module_ptr");		
 		
-	add_xpfuncs_to_interp(m_interp);
+	add_xpfuncs_to_interp(m_interp,isThread);
 	
 	// Mobile devices like Android don't use a regular file system...they have a bundle of resources in-memory so
 	// we need to load the Lua script from an already allocated memory buffer.

@@ -40,18 +40,328 @@ using std::vector;
 //#define TRACE_DATAREFS printf
 #define TRACE_DATAREFS(...)
 static XTLuaDataRefs xtluaDefs=XTLuaDataRefs();
+static bool active=false; //local marker to enable/disable dataref read and writes during startup and shutdown
+struct	xlua_dref {
+	xlua_dref *				m_next;
+	string					m_name;
+	XPLMDataRef				m_dref;
+	int						m_index;	// -1 if index is NOT bound.
+	XPLMDataTypeID			m_types;
+	int						m_ours;		// 1 if we made, 0 if system
+	xlua_dref_notify_f		m_notify_func;
+	void *					m_notify_ref;
+	
+	// IF we made the dataref, this is where our storage is!
+	double					m_number_storage;
+	vector<double>			m_array_storage;
+	string					m_string_storage;
+};
 
+static xlua_dref *		l_drefs = NULL;
 
 
 static xtlua_dref *		s_drefs = NULL;
-
+static std::mutex xlua_data_mutex;
 // For nunmbers
+static int	xlua_geti(void * ref)
+{
+	if(!active)
+		return 0;
+	
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();	
+	int retVal=r->m_number_storage;
+	xlua_data_mutex.unlock();
+	return retVal;
+}
 
+static void	xlua_seti(void * ref, int v)
+{
+	if(!active)
+		return;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	double vv = v;
+	bool changed=false;
+	xlua_data_mutex.lock();	
+	if(r->m_number_storage != vv)
+	{
+		r->m_number_storage = vv;
+		changed=true;
+	}
+	xlua_data_mutex.unlock();
+	if(changed && r->m_notify_func)
+		r->m_notify_func(r,r->m_notify_ref);	
+}
+
+static float xlua_getf(void * ref)
+{
+	if(!active)
+		return 0;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();	
+	float retVal=r->m_number_storage;
+	xlua_data_mutex.unlock();
+	return retVal;
+}
+
+static void	xlua_setf(void * ref, float v)
+{
+	if(!active)
+		return;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	double vv = v;
+	bool changed=false;
+	xlua_data_mutex.lock();	
+	if(r->m_number_storage != vv)
+	{
+		r->m_number_storage = vv;
+		changed=true;
+	}
+	xlua_data_mutex.unlock();
+	if(changed && r->m_notify_func)
+		r->m_notify_func(r,r->m_notify_ref);
+}
+
+static double xlua_getd(void * ref)
+{
+	if(!active)
+		return 0;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();	
+	double retVal=r->m_number_storage;
+	xlua_data_mutex.unlock();
+	return retVal;
+}
+
+static void	xlua_setd(void * ref, double v)
+{
+	if(!active)
+		return;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	double vv = v;
+	bool changed = false;
+	xlua_data_mutex.lock();
+	if(r->m_number_storage != vv)
+	{
+		r->m_number_storage = vv;
+		changed = true;
+	}
+	
+	xlua_data_mutex.unlock();
+	if(changed && r->m_notify_func)
+		r->m_notify_func(r,r->m_notify_ref);
+}
+
+// For arrays
+static int xlua_getvi(void * ref, int * values, int offset, int max)
+{
+	if(!active)
+		return 0;
+	xlua_dref * r = (xlua_dref *) ref;
+	xlua_data_mutex.lock();
+	int count=0;
+	assert(r->m_ours);
+	if(values == NULL){
+		count= r->m_array_storage.size();
+		xlua_data_mutex.unlock();
+		return count;
+	}
+	//if(offset >= r->m_array_storage.size())
+	//	return 0;
+	count = min(max, (int) r->m_array_storage.size() - offset);
+	for(int i = 0; i < count; ++i)
+		values[i] = r->m_array_storage[i + offset];
+	xlua_data_mutex.unlock();
+	return count;
+}
+
+static void xlua_setvi(void * ref, int * values, int offset, int max)
+{
+	if(!active)
+		return;
+	assert(values);
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();
+	//if(offset >= r->m_array_storage.size()){
+	//	return;
+	//}
+	int count = min(max, (int) r->m_array_storage.size() - offset);
+	bool changed = false;
+	for(int i = 0; i < count; ++i)
+	{
+		double vv = values[i];
+		if(r->m_array_storage[i + offset] != vv)
+		{
+			r->m_array_storage[i + offset] = vv;
+			changed = true;
+		}
+	}
+	xlua_data_mutex.unlock();
+	if(changed && r->m_notify_func)
+		r->m_notify_func(r,r->m_notify_ref);
+	
+}
+
+static int xlua_getvf(void * ref, float * values, int offset, int max)
+{
+	if(!active)
+		return 0;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();
+	int count=0;
+	if(values == NULL){
+		count=r->m_array_storage.size();
+		xlua_data_mutex.unlock();
+		return count;
+	}
+	//if(offset >= r->m_array_storage.size())
+	//	return 0;
+	count = min(max, (int) r->m_array_storage.size() - offset);
+	for(int i = 0; i < count; ++i)
+		values[i] = r->m_array_storage[i + offset];
+	xlua_data_mutex.unlock();
+	return count;
+}
+
+static void xlua_setvf(void * ref, float * values, int offset, int max)
+{
+	if(!active)
+		return;
+	assert(values);
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	//if(offset >= r->m_array_storage.size())
+	//	return;
+	xlua_data_mutex.lock();
+	bool changed = false;
+	int count = min(max, (int) r->m_array_storage.size() - offset);
+	for(int i = 0; i < count; ++i)
+	{
+		double vv = values[i];
+		if(r->m_array_storage[i + offset] != vv)
+		{
+			r->m_array_storage[i + offset] = vv;
+			changed = true;
+		}
+	}
+	xlua_data_mutex.unlock();
+	if(changed && r->m_notify_func)
+		r->m_notify_func(r,r->m_notify_ref);
+	
+}
+
+// For strings
+static int xlua_getvb(void * ref, void * values, int offset, int max)
+{
+	if(!active)
+		return 0;
+	char * dst = (char *) values;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();
+	int count = 0;
+	if(values == NULL){
+		count=r->m_string_storage.size();
+		xlua_data_mutex.unlock();
+		return count;
+	}
+	//if(offset >= r->m_string_storage.size())
+	//	return 0;
+	count = min(max, (int) r->m_string_storage.size() - offset);
+	for(int i = 0; i < count; ++i)
+		dst[i] = r->m_string_storage[i + offset];
+	xlua_data_mutex.unlock();
+	return count;
+}
+
+static void xlua_setvb(void * ref, void * values, int offset, int max)
+{
+	if(!active)
+		return;
+	assert(values);
+	const char * src = (const char *) values;
+	int new_len = offset + max;
+	xlua_dref * r = (xlua_dref *) ref;
+	assert(r->m_ours);
+	xlua_data_mutex.lock();
+	string orig(r->m_string_storage);
+	r->m_string_storage.resize(new_len);
+	for(int i = 0; i < max; ++i)
+		r->m_string_storage[i + offset] = src[i];
+	bool changed=r->m_string_storage != orig;
+	xlua_data_mutex.unlock();
+	if(r->m_notify_func && changed)
+		r->m_notify_func(r,r->m_notify_ref);
+	
+}
+void	grabLocal(xtlua_dref * who){
+	xlua_dref * f;
+	for(f = l_drefs; f; f = f->m_next)
+	if(f->m_name == who->m_name&&f->m_ours==1)
+	{
+		who->local_dref=f;
+		who->m_index=f->m_index;
+		who->m_types=f->m_types;
+		who->m_ours=1;
+		return;
+		
+	}
+
+}
 static void resolve_dref(xtlua_dref * d)
 {
 	xtluaDefs.XTqueueresolve_dref(d);
 }
-
+static void resolve_xp_dref(xlua_dref * d)
+{
+	assert(d->m_dref == NULL);
+	assert(d->m_types == 0);
+	assert(d->m_index == -1);
+	assert(d->m_ours == 0);
+	d->m_dref = XPLMFindDataRef(d->m_name.c_str());
+	if(d->m_dref)
+	{
+		d->m_index = -1;
+		d->m_types = XPLMGetDataRefTypes(d->m_dref);
+	}
+	else
+	{
+		string::size_type obrace = d->m_name.find('[');
+		string::size_type cbrace = d->m_name.find(']');
+		if(obrace != d->m_name.npos && cbrace != d->m_name.npos)			// Gotta have found the braces
+		if(obrace > 0)														// dref name can't be empty
+		if(cbrace > obrace)													// braces must be in-order - avoids unsigned math insanity
+		if((cbrace - obrace) > 1)											// Gotta have SOMETHING in between the braces
+		{
+			string number = d->m_name.substr(obrace+1,cbrace - obrace - 1);
+			string refname = d->m_name.substr(0,obrace);
+			
+			XPLMDataRef arr = XPLMFindDataRef(refname.c_str());				// Only if we have a valid name
+			if(arr)
+			{
+				XPLMDataTypeID tid = XPLMGetDataRefTypes(arr);
+				if(tid & (xplmType_FloatArray | xplmType_IntArray))			// AND are array type
+				{
+					int idx = atoi(number.c_str());							// AND have a non-negetive index
+					if(idx >= 0)
+					{
+						d->m_dref = arr;									// Now we know we're good, record all of our info
+						d->m_types = tid;
+						d->m_index = idx;
+					}
+				}
+			}
+		}
+	}
+}
 //moved to xpmtdatatypes.cpp
 /*static void do_resolve_dref(xtlua_dref * d)
 {
@@ -137,19 +447,19 @@ xtlua_dref *		xlua_find_dref(const char * name)
 	return d;
 }
 
-xtlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim, int writable, xtlua_dref_notify_f func, void * ref)
+xlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim, int writable, xlua_dref_notify_f func, void * ref)
 {
-	printf("ERROR: xTLua cannot create datarefs - us xLua.\n");
-	return NULL;
-	/*
+	//printf("ERROR: xTLua cannot create datarefs - us xLua.\n");
+	//return NULL;
+	
 	assert(type != xlua_none);
 	assert(name);
 	assert(type != xlua_array || dim > 0);
 	assert(writable || func == NULL);
 	
 	string n(name);
-	xtlua_dref * f;
-	for(f = s_drefs; f; f = f->m_next)
+	xlua_dref * f;
+	for(f = l_drefs; f; f = f->m_next)
 	if(f->m_name == n)
 	{
 		if(f->m_ours || f->m_dref)
@@ -174,20 +484,20 @@ xtlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim,
 		return NULL;
 	}
 	
-	xtlua_dref * d = f;
+	xlua_dref * d = f;
 	if(!d)
 	{
-		d = new xtlua_dref;
-		d->m_next = s_drefs;
-		s_drefs = d;
+		d = new xlua_dref;
+		d->m_next = l_drefs;
+		l_drefs = d;
 		TRACE_DATAREFS("Creating %s as %p\n", name,d);		
 	}
 	d->m_name = name;
 	d->m_index = -1;
 	d->m_ours = 1;
-	//d->m_notify_func = func;
-	//d->m_notify_ref = ref;
-	//d->m_number_storage = 0;
+	d->m_notify_func = func;
+	d->m_notify_ref = ref;
+	d->m_number_storage = 0;
 
 	switch(type) {
 	case xlua_number:
@@ -228,7 +538,7 @@ xtlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim,
 		break;
 	}
 
-	return d;*/
+	return d;
 }
 
 xtlua_dref_type	xtlua_dref_get_type(xtlua_dref * who)
@@ -273,8 +583,206 @@ int	xtlua_dref_get_dim(xtlua_dref * who)
 		return 1;
 	return 0;
 }
+int	xlua_dref_get_dim(xlua_dref * who)
+{
+	int retVal=0;
+	xlua_data_mutex.lock();
+	if(who->m_ours)
+		retVal=who->m_array_storage.size();
+	else if(who->m_types & xplmType_Data)
+		retVal=0;
+	else if(who->m_index >= 0)
+		retVal=1;
+	else if(who->m_types & xplmType_FloatArray)
+	{
+		retVal=XPLMGetDatavf(who->m_dref, NULL, 0, 0);
+	}
+	else if(who->m_types & xplmType_IntArray)
+	{
+		retVal=XPLMGetDatavi(who->m_dref, NULL, 0, 0);
+	}
+	else if(who->m_types & (xplmType_Int|xplmType_Float|xplmType_Double))
+		retVal=1;
+	xlua_data_mutex.unlock();
+	return 0;
+}
+double			xlua_dref_get_number(xlua_dref * d)
+{
+	double retVal=0.0;
+	xlua_data_mutex.lock();
+	if(d->m_ours)
+		retVal=d->m_number_storage;
+	else if(d->m_index >= 0)
+	{
+		if(d->m_types & xplmType_FloatArray)
+		{
+			float r;
+			if(XPLMGetDatavf(d->m_dref, &r, d->m_index, 1))
+				retVal=r;
+			else
+				retVal=0.0;
+		}
+		else if(d->m_types & xplmType_IntArray)
+		{
+			int r;
+			if(XPLMGetDatavi(d->m_dref, &r, d->m_index, 1))
+				retVal=r;
+			else
+				retVal=0.0;
+		}
+		else
+			retVal=0.0;
+	}
+	else if(d->m_types & xplmType_Double)
+	{
+		retVal=XPLMGetDatad(d->m_dref);
+	}
+	else if(d->m_types & xplmType_Float)
+	{
+		retVal=XPLMGetDataf(d->m_dref);
+	}
+	else if(d->m_types & xplmType_Int)
+	{
+		retVal=XPLMGetDatai(d->m_dref);
+	}
+	xlua_data_mutex.unlock();
+	return retVal;
+}
 
-double			xtlua_dref_get_number(xtlua_dref * d)
+void			xlua_dref_set_number(xlua_dref * d, double value)
+{
+	if(d->m_ours)
+	{
+		xlua_data_mutex.lock();
+		d->m_number_storage = value;
+		xlua_data_mutex.unlock();
+		return;
+	}
+
+	if(d->m_index >= 0)
+	{
+		if(d->m_types & xplmType_FloatArray)
+		{
+			float r = value;
+			XPLMSetDatavf(d->m_dref, &r, d->m_index, 1);
+		}
+		if(d->m_types & xplmType_IntArray)
+		{
+			int r = value;
+			XPLMSetDatavi(d->m_dref, &r, d->m_index, 1);
+		}
+	}
+	if(d->m_types & xplmType_Double)
+	{
+		XPLMSetDatad(d->m_dref, value);
+	}
+	if(d->m_types & xplmType_Float)
+	{
+		XPLMSetDataf(d->m_dref, value);
+	}
+	if(d->m_types & xplmType_Int)
+	{
+		XPLMSetDatai(d->m_dref, value);
+	}
+}
+double			xlua_dref_get_array(xlua_dref * d, int n)
+{
+	assert(n >= 0);
+	if(d->m_ours)
+	{
+		xlua_data_mutex.lock();
+		double retVal=0.0;
+		if(n < d->m_array_storage.size())
+			retVal=d->m_array_storage[n];
+		xlua_data_mutex.unlock();
+		return retVal;
+	}
+	if(d->m_types & xplmType_FloatArray)
+	{
+		float r;
+		if(XPLMGetDatavf(d->m_dref, &r, n, 1))
+			return r;
+		return 0.0;
+	}
+	if(d->m_types & xplmType_IntArray)
+	{
+		int r;
+		if(XPLMGetDatavi(d->m_dref, &r, n, 1))
+			return r;
+		return 0.0;
+	}
+	return 0.0;
+}
+
+void			xlua_dref_set_array(xlua_dref * d, int n, double value)
+{
+	assert(n >= 0);
+	if(d->m_ours)
+	{
+		xlua_data_mutex.lock();
+		if(n < d->m_array_storage.size())
+			d->m_array_storage[n] = value;
+		xlua_data_mutex.unlock();
+		return;
+	}
+	if(d->m_types & xplmType_FloatArray)
+	{
+		float r = value;
+		XPLMSetDatavf(d->m_dref, &r, n, 1);
+	}
+	if(d->m_types & xplmType_IntArray)
+	{
+		int r = value;
+		XPLMSetDatavi(d->m_dref, &r, n, 1);
+	}
+}
+
+string			xlua_dref_get_string(xlua_dref * d)
+{
+	if(d->m_ours){
+		xlua_data_mutex.lock();
+		string retVal=d->m_string_storage;
+		xlua_data_mutex.unlock();
+		return retVal;
+	}
+	
+	if(d->m_types & xplmType_Data)
+	{
+		int l = XPLMGetDatab(d->m_dref, NULL, 0, 0);
+		if(l > 0)
+		{
+			vector<char>	buf(l);
+			l = XPLMGetDatab(d->m_dref, &buf[0], 0, l);
+			assert(l <= buf.size());
+			if(l == buf.size())
+			{
+				return string(buf.begin(),buf.end());
+			}
+		}
+	}
+	return string();
+}
+
+void			xlua_dref_set_string(xlua_dref * d, const string& value)
+{
+	if(d->m_ours)
+	{
+		xlua_data_mutex.lock();
+		d->m_string_storage = value;
+		xlua_data_mutex.unlock();
+		return;
+	}
+	if(d->m_types & xplmType_Data)
+	{
+		const char * begin = value.c_str();
+		const char * end = begin + value.size();
+		if(end > begin)
+		{
+			XPLMSetDatab(d->m_dref, (void *) begin, 0, end - begin);
+		}
+	}
+}
+double	xtlua_dref_get_number(xtlua_dref * d)
 {
 	//if(d->m_ours)
 	//	return d->m_number_storage;
@@ -291,7 +799,7 @@ double			xtlua_dref_get_number(xtlua_dref * d)
 		if(d->m_types & xplmType_IntArray)
 		{
 			int r;
-			if(xtluaDefs.XTGetDatavi(d->m_dref, &r, d->m_index, 1,d->m_ours))
+			if(xtluaDefs.XTGetDatavi(d, &r, d->m_index, 1,d->m_ours))
 				return r;
 			return 0.0;
 		}
@@ -303,7 +811,7 @@ double			xtlua_dref_get_number(xtlua_dref * d)
 	}*/
 	if(d->m_types & xplmType_Float||d->m_types & xplmType_Int||d->m_types & xplmType_Double)
 	{
-		return xtluaDefs.XTGetDataf(d->m_dref,d->m_ours);
+		return xtluaDefs.XTGetDataf(d,d->m_ours);
 	}
 	/*if(d->m_types & xplmType_Int)
 	{
@@ -340,7 +848,7 @@ void			xtlua_dref_set_number(xtlua_dref * d, double value)
 	}*/
 	if(d->m_types & xplmType_Float || d->m_types & xplmType_Double || d->m_types & xplmType_Int)
 	{
-		xtluaDefs.XTSetDataf(d->m_dref, value,d->m_ours);
+		xtluaDefs.XTSetDataf(d, value,d->m_ours);
 	}
 	/*if(d->m_types & xplmType_Int)
 	{
@@ -470,6 +978,23 @@ void			xlua_relink_all_drefs()
 		}		
 #endif
 	}
+	for(xlua_dref * d = l_drefs; d; d = d->m_next)
+	{
+		if(d->m_dref == NULL)
+		{
+			assert(!d->m_ours);
+			resolve_xp_dref(d);
+		}
+#if !MOBILE
+		if(d->m_ours)
+		if(dre != XPLM_NO_PLUGIN_ID)
+		{
+			//printf("registered: %s\n", d->m_name.c_str());
+			XPLMSendMessageToPlugin(dre, MSG_ADD_DATAREF, (void *)d->m_name.c_str());		
+		}		
+#endif
+	}
+	active=true;
 }
 
 std::vector<XTCmd> runQueue;
@@ -478,7 +1003,7 @@ std::mutex data_mutex;
 static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
 
-	xlua_cmd * me = (xlua_cmd *) ref;
+	xtlua_cmd * me = (xtlua_cmd *) ref;
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_pre_handler){
@@ -504,7 +1029,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 
 static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
-	xlua_cmd * me = (xlua_cmd *) ref;
+	xtlua_cmd * me = (xtlua_cmd *) ref;
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_main_handler){
@@ -530,7 +1055,7 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 
 static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
-	xlua_cmd * me = (xlua_cmd *) ref;
+	xtlua_cmd * me = (xtlua_cmd *) ref;
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_post_handler){
@@ -596,9 +1121,9 @@ double xlua_get_simulated_time(){
 int xtlua_dref_resolveDREFQueue(){
 	int retVal=xtluaDefs.resolveQueue();
 	if(retVal>0){
-		std::vector<xlua_cmd*> commandstoHandle=xtluaDefs.XTGetHandlers();
+		std::vector<xtlua_cmd*> commandstoHandle=xtluaDefs.XTGetHandlers();
 		printf("have %d commands to handle registering\n",(int)commandstoHandle.size());
-		for(xlua_cmd* cmd: commandstoHandle){
+		for(xtlua_cmd* cmd: commandstoHandle){
 			if(cmd->m_pre_handler){
 				printf("XPLMRegisterPreCommandHandler %s\n",cmd->m_name.c_str());
 				XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
@@ -620,6 +1145,7 @@ int xtlua_dref_resolveDREFQueue(){
 
 void			xtlua_dref_cleanup()
 {
+	active=false;//stop writing to our local drefs
 	while(s_drefs)
 	{
 		xtlua_dref *	kill = s_drefs;
@@ -632,6 +1158,45 @@ void			xtlua_dref_cleanup()
 		
 		delete kill;
 	}
+	xlua_dref * pdrefs=l_drefs;
+	while(pdrefs)
+	{
+		xlua_dref *	kill = pdrefs;
+		pdrefs = pdrefs->m_next;
+	
+		if(kill->m_ours)
+		{
+			if(kill->m_dref)
+				XPLMUnregisterDataAccessor(kill->m_dref);	
+		}
+
+	}//try the old fashioned way
+	while(l_drefs)
+	{
+		xlua_dref *	kill = l_drefs;
+		l_drefs = l_drefs->m_next;
+		
+		//if(kill->m_dref && 
+		if(kill->m_ours)
+		{
+			
+
+			XPLMDataRef other = XPLMFindDataRef(kill->m_name.c_str());
+			if(other)
+				printf("Forcibly Unregistering %s\n",kill->m_name.c_str());
+			int i=0;
+			while(other&&i<4){
+				XPLMUnregisterDataAccessor(other);
+				other = XPLMFindDataRef(kill->m_name.c_str());
+				i++;
+			}
+			
+		}
+		
+		delete kill;
+	}
+	printf("XLua Cleanup\n");
+	
 	xtluaDefs.cleanup();
 }
 
@@ -649,16 +1214,16 @@ void			xtlua_dref_cleanup()
 // Merged by Mark Parker on 04/23/2020
 
 
-static xlua_cmd *		s_cmds = NULL;
+static xtlua_cmd *		s_cmds = NULL;
 
 
-static void resolve_cmd(xlua_cmd * d)
+static void resolve_cmd(xtlua_cmd * d)
 {
 	xtluaDefs.XTqueueresolve_cmd(d);
 }
-xlua_cmd * xlua_find_cmd(const char * name)
+xtlua_cmd * xlua_find_cmd(const char * name)
 {
-	for(xlua_cmd * i = s_cmds; i; i = i->m_next)
+	for(xtlua_cmd * i = s_cmds; i; i = i->m_next)
 	if(i->m_name == name)
 		return i;
 		
@@ -667,7 +1232,7 @@ xlua_cmd * xlua_find_cmd(const char * name)
 		printf("ERROR: Command %s not found\n",name);
 	} return NULL;*/	
 		
-	xlua_cmd * nc = new xlua_cmd;
+	xtlua_cmd * nc = new xtlua_cmd;
 	nc->m_next = s_cmds;
 	s_cmds = nc;
 	nc->m_name = name;
@@ -676,12 +1241,12 @@ xlua_cmd * xlua_find_cmd(const char * name)
 	return nc;
 }
 
-xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
+xtlua_cmd * xlua_create_cmd(const char * name, const char * desc)
 {
 	printf("ERROR: xTLua cannot create command - %s - use xLua and wrap them here.\n",name);
 	return NULL;
 	/*
-	for(xlua_cmd * i = s_cmds; i; i = i->m_next)
+	for(xtlua_cmd * i = s_cmds; i; i = i->m_next)
 	if(i->m_name == name)
 	{
 		if(i->m_ours)
@@ -704,7 +1269,7 @@ xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
 //		return NULL;
 //	}
 
-	xlua_cmd * nc = new xlua_cmd;
+	xtlua_cmd * nc = new xtlua_cmd;
 	nc->m_next = s_cmds;
 	s_cmds = nc;
 	nc->m_name = name;
@@ -713,7 +1278,7 @@ xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
 	return nc;*/
 }
 
-void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
+void xtlua_cmd_install_handler(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref)
 {
 	if(cmd->m_main_handler != NULL)
 	{
@@ -728,7 +1293,7 @@ void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void *
 }
 
 
-void xlua_cmd_install_pre_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
+void xtlua_cmd_install_pre_wrapper(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref)
 {
 	if(cmd->m_pre_handler != NULL)
 	{
@@ -741,7 +1306,7 @@ void xlua_cmd_install_pre_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, vo
 	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_pre_handler, 1, cmd);
 }
 
-void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
+void xtlua_cmd_install_post_wrapper(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, void * ref)
 {
 	if(cmd->m_post_handler != NULL)
 	{
@@ -754,28 +1319,28 @@ void xlua_cmd_install_post_wrapper(xlua_cmd * cmd, xlua_cmd_handler_f handler, v
 	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_post_handler, 0, cmd);
 }
 
-void xlua_cmd_start(xlua_cmd * cmd)
+void xtlua_cmd_start(xtlua_cmd * cmd)
 {
 	xtluaDefs.XTCommandBegin(cmd);
 	//XPLMCommandBegin(cmd->m_cmd);
 }
-void xlua_cmd_stop(xlua_cmd * cmd)
+void xtlua_cmd_stop(xtlua_cmd * cmd)
 {
 	xtluaDefs.XTCommandEnd(cmd);
 	//XPLMCommandEnd(cmd->m_cmd);
 }
 
-void xlua_cmd_once(xlua_cmd * cmd)
+void xtlua_cmd_once(xtlua_cmd * cmd)
 {
 	xtluaDefs.XTCommandOnce(cmd);
 	//XPLMCommandOnce(cmd->m_cmd);
 }
 
-void xlua_cmd_cleanup()
+void xtlua_cmd_cleanup()
 {
 	while(s_cmds)
 	{
-		xlua_cmd * k = s_cmds;
+		xtlua_cmd * k = s_cmds;
 		if(k->m_pre_handler)
 			XPLMUnregisterCommandHandler(k->m_cmd, xlua_std_pre_handler, 1, k);
 		if(k->m_main_handler)

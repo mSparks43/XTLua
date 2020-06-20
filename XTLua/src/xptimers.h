@@ -19,7 +19,7 @@ void				xlua_run_timer(xlua_timer * t, double delay, double repeat);
 int				xlua_is_timer_scheduled(xlua_timer * t);
 
 void xlua_do_timers_for_time(double now);
-void xlua_timer_cleanup();
+void xtlua_timer_cleanup();
 
 
 

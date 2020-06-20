@@ -16,7 +16,7 @@ extern "C" {
 #include <lauxlib.h>
 };
 
-void	add_xpfuncs_to_interp(lua_State * interp);
+void	add_xpfuncs_to_interp(lua_State * interp,bool isXT);
 
 
 #endif /* xpfuncs_h */

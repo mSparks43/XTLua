@@ -32,8 +32,7 @@ public:
 							const char *		in_module_path,
 							const char *		in_init_script,
 							const char *		in_module_script,
-							void* (*in_alloc_func)(void* msp, void* ptr, size_t osize, size_t nsize),
-							void* in_alloc_ref);
+							bool isThread);
 						~module();
 
 	static module *		module_from_interp(lua_State * interp);

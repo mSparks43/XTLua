@@ -80,7 +80,7 @@ void xlua_do_timers_for_time(double now)
 	}	
 }
 
-void xlua_timer_cleanup()
+void xtlua_timer_cleanup()
 {
 	while(s_timers)
 	{
