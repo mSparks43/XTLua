@@ -5,7 +5,7 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "0.0.6a3"
+#define VERSION "2.0.2a4"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -126,7 +126,7 @@ static float xlua_pre_timer_master_cb(
                                    int                  inCounter,    
                                    void *               inRefcon)
 {
-	//xlua_do_timers_for_time(xlua_get_simulated_time());
+	xlua_do_timers_for_time(xlua_get_simulated_time());
 	
 	/*if(XPLMGetDatai(g_replay_active) == 0)
 	if(XPLMGetDataf(g_sim_period) > 0.0f)	
@@ -134,6 +134,7 @@ static float xlua_pre_timer_master_cb(
 		(*m)->pre_physics();*/
 	if(loadedModules&&xtlua_dref_resolveDREFQueue()==0)
 		ready=true;
+	xtlua_dref_preUpdate();
 	return -1;
 }
 bool liveThread=false;
@@ -207,7 +208,7 @@ static void do_during_physics(){
 			for(XTCmd item:runItems){
 				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
 			}
-			xlua_do_timers_for_time(xlua_get_simulated_time());
+			xtlua_do_timers_for_time(xlua_get_simulated_time());
 			std::vector<string> msgItems=get_runMessages();
 			for(string item:msgItems){
 				printf("XTLua:do threaded callout %s\n",item.c_str());

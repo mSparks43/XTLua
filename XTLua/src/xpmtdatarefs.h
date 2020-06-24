@@ -52,7 +52,17 @@ struct xtlua_cmd {
 	void *				m_post_ref;
 	float				m_down_time;
 };
+struct xlua_cmd {
+	xlua_cmd() : m_next(NULL),m_cmd(NULL),
+    m_main_handler(NULL),m_main_ref(NULL) { }
 
+	xlua_cmd *			m_next;
+	std::string				m_name;
+	XPLMCommandRef		m_cmd;
+    xtlua_cmd_handler_f	m_main_handler;
+	void *				m_main_ref;
+
+};
 /*static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
 static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
 static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);*/
@@ -81,7 +91,9 @@ private:
     std::vector<xtlua_cmd*> cmdResolveQueue;
     std::unordered_map<std::string, xtlua_cmd*> cmdHandlerResolveQueue;
     std::unordered_map<int, NavAid*> localNavaids;
+    std::string incomingNavaidString;
     std::string localNavaidString;
+    std::string incomingFMSString;
     std::string localFMSString;
     //std::unordered_map<std::string, XTCmd> startCmds;
     //std::unordered_map<std::string, XTCmd> stopCmds;
@@ -135,32 +147,14 @@ public:
                                    xtlua_dref * d,    
                                    float              inValue,    
                                    int                  index);                               
-    int                  XTGetDatavi(
-                                   xtlua_dref * d,    
-                                   int *                outValues,    /* Can be NULL */
-                                   int                  inOffset,    
-                                   int                  inMax,bool local);
-    void                 XTSetDatavi(
-                                   xtlua_dref * d,    
-                                   int *                inValues,    
-                                   int                  inoffset,    
-                                   int                  inCount,bool local);                                 
+                                  
     float                XTGetDataf(
                                    xtlua_dref * d,bool local);
     void                 XTSetDataf(
                                    xtlua_dref * d,    
                                    float                inValue,bool local);    
-    double               XTGetDatad(
-                                   xtlua_dref * d,bool local); 
-    void                 XTSetDatad(
-                                   xtlua_dref * d,    
-                                   double               inValue,bool local); 
-    int                  XTGetDatai(
-                                   xtlua_dref * d,bool local);    
-
-    void                 XTSetDatai(
-                                   xtlua_dref * d,    
-                                   int                  inValue,bool local); 
+    
+    
     int                  XTGetDatab(
                                    xtlua_dref * d,    
                                    void *               outValue,    /* Can be NULL */

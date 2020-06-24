@@ -41,7 +41,8 @@ enum xtlua_dref_type {
 
 typedef void (* xtlua_dref_notify_f)(xtlua_dref * who, void * ref);
 typedef void (* xlua_dref_notify_f)(xlua_dref * who, void * ref);
-xtlua_dref *		xlua_find_dref(const char * name);
+xlua_dref *		xlua_find_dref(const char * name);
+xtlua_dref *		xtlua_find_dref(const char * name);
 xlua_dref *		xlua_create_dref(
 						const char *				name, 
 						xtlua_dref_type			type, 
@@ -51,9 +52,10 @@ xlua_dref *		xlua_create_dref(
 						void *					ref);
 
 xtlua_dref_type	xtlua_dref_get_type(xtlua_dref * who);
+xtlua_dref_type	xlua_dref_get_type(xlua_dref * who);
 int				xtlua_dref_get_dim(xtlua_dref * who);
 int				xlua_dref_get_dim(xlua_dref * who);
-
+void	xlua_dref_ours(xlua_dref * who);
 double			xtlua_dref_get_number(xtlua_dref * who);
 void			xtlua_dref_set_number(xtlua_dref * who, double value);
 double			xlua_dref_get_number(xlua_dref * who);

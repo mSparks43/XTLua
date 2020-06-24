@@ -1,18 +1,3 @@
--- Wanna use STP with XLua?  Copy StackTracePlus.lua to be next to init.lua in the same folder
--- https://github.com/ignacio/StackTracePlus
-
--- Grab STP conditionally, do not squawk if it is missing.
---if pcall(
---	function()
---		local STP_chunk = XLuaGetCode("../../StackTracePlus.lua")
---		local STP = STP_chunk()
---		debug.traceback = STP.stacktrace
---	end)
---then
---	print("Using STP as debugger.")
---end
-
-
 
 function dump(o)
    if type(o) == 'table' then
@@ -39,7 +24,7 @@ function dref_array_read(table,key)
 	if idx == nil then
 		return nil
 	end
-	return XTLuaGetArray(table.dref,idx)
+	return XLuaGetArray(table.dref,idx)
 end
 
 function dref_array_write(table,key,value)
@@ -47,7 +32,7 @@ function dref_array_write(table,key,value)
 	if idx == nil then
 		return
 	end
-	XTLuaSetArray(table.dref,idx,value)
+	XLuaSetArray(table.dref,idx,value)
 end
 
 function wrap_dref_array(in_dref, dim)
@@ -65,10 +50,10 @@ end
 function wrap_dref_number(in_dref)
 	return {
 		__get = function(self)
-			return XTLuaGetNumber(self.dref)
+			return XLuaGetNumber(self.dref)
 		end,
 		__set = function(self,v)
-			XTLuaSetNumber(self.dref,v)
+			XLuaSetNumber(self.dref,v)
 		end,
 		dref = in_dref
 	}
@@ -77,10 +62,10 @@ end
 function wrap_dref_string(in_dref)
 	return {
 		__get = function(self)
-			return XTLuaGetString(self.dref)
+			return XLuaGetString(self.dref)
 		end,
 		__set = function(self,v)
-			XTLuaSetString(self.dref,v)
+			XLuaSetString(self.dref,v)
 		end,
 		dref = in_dref
 	}
@@ -122,9 +107,9 @@ function wrap_dref_any_deferred(in_dref)
 				return self.arr
 			end
 			if t == "string" then
-				return XTLuaGetString(self.dref)
+				return XLuaGetString(self.dref)
 			elseif t == "number" then
-				return XTLuaGetNumber(self.dref)
+				return XLuaGetNumber(self.dref)
 			else
 				return 0.0
 			end			
@@ -135,9 +120,9 @@ function wrap_dref_any_deferred(in_dref)
 			end
 			t = XLuaGetDataRefType(self.dref)
 			if t == "string" then
-				return XTLuaSetString(self.dref,v)
+				return XLuaSetString(self.dref,v)
 			elseif t == "number" then
-				return XTLuaSetNumber(self.dref,v)
+				return XLuaSetNumber(self.dref,v)
 			else
 				return 0.0
 				--error("Previously unresolved dataref is being written to but is an array or is still undefined.")
@@ -167,20 +152,19 @@ function wrap_dref_any(dref,t)
 end
 
 function find_dataref(name)	
-	dref = XTLuaFindDataRef(name)
+	dref = XLuaFindDataRef(name)
 	t = XLuaGetDataRefType(dref)
 	return wrap_dref_any(dref,t)
 end
 
 function create_dataref(name,type,notifier)
-  error("create_dataref unsupported - use xLua")
-	--[[if notifier == nil then
+	if notifier == nil then
 		dref = XLuaCreateDataRef(name,type,"no",nil)
 	else
 		dref = XLuaCreateDataRef(name,type,"yes",notifier)
 	end
 	return wrap_dref_any(dref,type)
-  ]]
+  
 end
 
 --------------------------------------------------------------------------------
