@@ -471,6 +471,8 @@ void			xlua_validate_drefs()
 		if(f->m_dref == NULL)
 			printf("WARNING: xtlua dataref %s is used but not defined.\n", f->m_name.c_str());
 	#endif
+
+
 	}
 	for(xlua_dref * f = l_drefs; f; f = f->m_next)
 	{
@@ -481,6 +483,9 @@ void			xlua_validate_drefs()
 			printf("WARNING: xlua dataref %s is used but not defined.\n", f->m_name.c_str());
 	#endif
 	}
+	xtluaDefs.refreshAllDataRefs();
+
+
 }
 
 xlua_dref *		xlua_find_dref(const char * name)
@@ -1055,18 +1060,22 @@ string			xtlua_dref_get_string(xtlua_dref * d)
 		xlua_data_mutex.unlock();
 		return string();
 	}*/
-	
+	//printf("get string %s %d\n",d->m_name.c_str(),d->m_types);
 	if(d->m_types & xplmType_Data||d->m_name.rfind("xtlua/", 0) == 0)
 	{
 		int l = xtluaDefs.XTGetDatab(d, NULL, 0, 0,d->m_ours);
+		//printf("get string local %d\n",l);
 		if(l > 0)
 		{
 			vector<char>	buf(l);
 			l = xtluaDefs.XTGetDatab(d, &buf[0], 0, l,d->m_ours);
 			assert(l <= buf.size());
+			//printf("get string local returned %d\n",l);
 			if(l == buf.size())
 			{
-				return string(buf.begin(),buf.end());
+				string retVal=string(buf.begin(),buf.end());
+				//printf("returning %s\n",retVal.c_str());
+				return retVal;
 			}
 		}
 	}
@@ -1181,7 +1190,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		runQueue.push_back(command);
 		data_mutex.unlock();
 	}
-	//printf("Pre command %s\n",me->m_name.c_str());
+	printf("Pre command %s\n",me->m_name.c_str());
 
 	/*
 	if(me->m_pre_handler)
@@ -1207,7 +1216,7 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		runQueue.push_back(command);
 		data_mutex.unlock();
 	}
-	//printf("main command %s\n",me->m_name.c_str());
+	printf("main command %s\n",me->m_name.c_str());
 	/*if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_main_handler)
@@ -1233,7 +1242,7 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		runQueue.push_back(command);
 		data_mutex.unlock();
 	}
-	//printf("post command %s\n",me->m_name.c_str());
+	printf("post command %s\n",me->m_name.c_str());
 	/*if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_post_handler)
@@ -1265,6 +1274,7 @@ std::vector<string> get_runMessages(){
 }
 void xlua_add_callout(string callout){
 	printf("xlua_add_callout %s\n",callout.c_str());
+	xtluaDefs.refreshAllDataRefs();
 	data_mutex.lock();
 	messageQueue.push_back(callout);
 	data_mutex.unlock();

@@ -83,6 +83,7 @@ class XTLuaDataRefs
 {
 private:
     std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > floatdataRefs;
+    std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > changeddataRefs;
     //std::unordered_map<std::string, XTLuaDouble> doubledataRefs;
     //std::unordered_map<std::string, XTLuaInteger> intdataRefs;
     //std::unordered_map<std::string, XTLuaChars> stringdataRefs;
@@ -120,6 +121,7 @@ public:
     double XTGetElapsedTime();
     //void ShowDataRefs();
     void updateDataRefs();
+    void refreshAllDataRefs();
     void updateStringDataRefs();
     void updateFloatDataRefs();
     void updateNavDataRefs();
