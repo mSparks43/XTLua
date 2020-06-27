@@ -1,7 +1,7 @@
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/install/strip.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/install/local.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/install.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/list_install_components.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/rebuild_cache.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/edit_cache.dir
-/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/XTLua.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/install/strip.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/install/local.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/install.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/list_install_components.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/rebuild_cache.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/edit_cache.dir
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/XTLua.dir

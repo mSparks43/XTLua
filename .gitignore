@@ -1,7 +1,14 @@
-xlua.xcodeproj/*
-!xlua.xcodeproj/project.pbxproj
-build/*
-deploy/xtlua/*
-!xlua.xcodeproj/xcshareddata/
-.vs/*
+.vs
+XTLua/CMakeSettings.json
+XTLua/CMakeCache.txt
+XTLua/CMakeFiles/*
+XTLua/Makefile
+XTLua/Release
+XTLua/Debug
 
+build/*
+vscode/
+XTLua/xtlua.vcxproj.user
+deploy/xlua/64/lin.xpl
+deploy/xtlua/64/win.pdb
+XTLua/cmake_install.cmake

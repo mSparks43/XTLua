@@ -6,23 +6,23 @@
 
 #IncludeRegexTransform: 
 
-../Lua SDK/include/lauxlib.h
+../LuaSDK/include/lauxlib.h
 stddef.h
 -
 stdio.h
 -
 lua.h
-../Lua SDK/include/lua.h
+../LuaSDK/include/lua.h
 
-../Lua SDK/include/lua.h
+../LuaSDK/include/lua.h
 stdarg.h
 -
 stddef.h
 -
 luaconf.h
-../Lua SDK/include/luaconf.h
+../LuaSDK/include/luaconf.h
 
-../Lua SDK/include/luaconf.h
+../LuaSDK/include/luaconf.h
 limits.h
 -
 stddef.h
@@ -30,33 +30,45 @@ stddef.h
 assert.h
 -
 
-../Lua SDK/include/lualib.h
+../LuaSDK/include/lualib.h
 lua.h
-../Lua SDK/include/lua.h
+../LuaSDK/include/lua.h
 
-../X-Plane SDK/CHeaders/XPLM/XPLMDataAccess.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDataAccess.h
 XPLMDefs.h
-../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 
-../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 windows.h
 -
 stdint.h
 -
 
-../X-Plane SDK/CHeaders/XPLM/XPLMPlugin.h
+../XPlaneSDK/CHeaders/XPLM/XPLMPlugin.h
 XPLMDefs.h
-../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 
-../X-Plane SDK/CHeaders/XPLM/XPLMProcessing.h
+../XPlaneSDK/CHeaders/XPLM/XPLMProcessing.h
 XPLMDefs.h
-../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 
-../X-Plane SDK/CHeaders/XPLM/XPLMUtilities.h
+../XPlaneSDK/CHeaders/XPLM/XPLMUtilities.h
 XPLMDefs.h
-../X-Plane SDK/CHeaders/XPLM/XPLMDefs.h
+../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xlua.cpp
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/module.h
+lua.h
+-
+lualib.h
+-
+lauxlib.h
+-
+string
+-
+
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xlua.cpp
+math.h
+-
 stdio.h
 -
 string.h
@@ -64,6 +76,8 @@ string.h
 assert.h
 -
 vector
+-
+chrono
 -
 thread
 -
@@ -76,41 +90,31 @@ XPLMUtilities.h
 XPLMProcessing.h
 -
 module.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/module.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/module.h
 xpdatarefs.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xpdatarefs.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xpdatarefs.h
 xpcommands.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xpcommands.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xpcommands.h
 xptimers.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/xptimers.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xptimers.h
 lua.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lua.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/lua.h
 lualib.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lualib.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/lualib.h
 lauxlib.h
-/media/storage2/X-Plane 11/Development/XLua/XTLua/src/lauxlib.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/lauxlib.h
 Windows.h
 -
 
-include/module.h
-lua.h
--
-lualib.h
--
-lauxlib.h
--
-string
--
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xpcommands.h
 
-include/xpcommands.h
-
-include/xpdatarefs.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xpdatarefs.h
 string
 -
 vector
 -
 xpcommands.h
-include/xpcommands.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xpcommands.h
 
-include/xptimers.h
+/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/src/xptimers.h
 

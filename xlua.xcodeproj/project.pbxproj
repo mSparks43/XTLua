@@ -17,7 +17,8 @@
 		D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDA916A1DEA200D1426A /* OpenGL.framework */; };
 		D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */; };
 		D6A7BDF116A1DED200D1426A /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF016A1DED200D1426A /* XPLM.framework */; };
-		D6A7BDF316A1DED200D1426A /* XPWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF216A1DED200D1426A /* XPWidgets.framework */; };
+		D6A7BDF316A1DED200D1426A /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF216A1DED200D1426A /* XPLM.framework */; };
+		F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,8 +38,11 @@
 		D607B19909A556E400699BC3 /* mac.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = mac.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = SDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
-		D6A7BDF216A1DED200D1426A /* XPWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPWidgets.framework; path = SDK/Libraries/Mac/XPWidgets.framework; sourceTree = "<group>"; };
+		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
+		D6A7BDF216A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
+		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
+		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
+		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +53,7 @@
 				D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */,
 				D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */,
 				D6A7BDF116A1DED200D1426A /* XPLM.framework in Frameworks */,
-				D6A7BDF316A1DED200D1426A /* XPWidgets.framework in Frameworks */,
+				D6A7BDF316A1DED200D1426A /* XPLM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +71,9 @@
 		D60205561CC7CC8C00933688 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */,
+				F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */,
+				F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */,
 				D60205571CC7CC8C00933688 /* lua_helpers.cpp */,
 				D60205581CC7CC8C00933688 /* lua_helpers.h */,
 				D60205591CC7CC8C00933688 /* module.cpp */,
@@ -81,7 +88,8 @@
 				D60205621CC7CC8C00933688 /* xptimers.cpp */,
 				D60205631CC7CC8C00933688 /* xptimers.h */,
 			);
-			path = src;
+			name = src;
+			path = XTLua/src;
 			sourceTree = "<group>";
 		};
 		D607B15F09A5563000699BC3 = {
@@ -108,7 +116,7 @@
 				D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */,
 				D6A7BDA916A1DEA200D1426A /* OpenGL.framework */,
 				D6A7BDF016A1DED200D1426A /* XPLM.framework */,
-				D6A7BDF216A1DED200D1426A /* XPWidgets.framework */,
+				D6A7BDF216A1DED200D1426A /* XPLM.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -134,7 +142,7 @@
 			);
 			dependencies = (
 			);
-			name = xlua;
+			name = xtlua;
 			productName = StarterPlugin;
 			productReference = D607B19909A556E400699BC3 /* mac.xpl */;
 			productType = "com.apple.product-type.library.dynamic";
@@ -176,6 +184,7 @@
 				D60205681CC7CC8C00933688 /* xpdatarefs.cpp in Sources */,
 				D60205691CC7CC8C00933688 /* xpfuncs.cpp in Sources */,
 				D60205661CC7CC8C00933688 /* xlua.cpp in Sources */,
+				F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */,
 				D60205641CC7CC8C00933688 /* lua_helpers.cpp in Sources */,
 				D60205671CC7CC8C00933688 /* xpcommands.cpp in Sources */,
 				D602056A1CC7CC8C00933688 /* xptimers.cpp in Sources */,
@@ -228,7 +237,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(XPSDK_ROOT)/CHeaders/Widgets",
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
-					lua_sdk,
+					Luasdk,
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
@@ -246,12 +255,12 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					lua_sdk/libluajit_mac.a,
+					LuaSDK/lib/libluajit_mac.a,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
-				XPSDK_ROOT = SDK;
+				XPSDK_ROOT = XPlaneSDK;
 			};
 			name = Debug;
 		};
@@ -314,24 +323,46 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					lua_sdk/libluajit_mac.a,
+					LuaSDK/lib/libluajit_mac.a,
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
-				XPSDK_ROOT = SDK;
+				XPSDK_ROOT = XPlaneSDK;
 			};
 			name = Release;
 		};
 		D607B19C09A556E400699BC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /code/design/Resources/plugins/;
-				INSTALL_PATH = /xlua/64/;
+				DSTROOT = deploy/;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					"$(XPSDK_ROOT)/CHeaders/Widgets",
+					"$(XPSDK_ROOT)/CHeaders/XPLM",
+					LuaSDK/include,
+					"$(HEADER_SEARCH_PATHS)",
+				);
+				INSTALL_PATH = xtlua/64/;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginStart",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginEnable",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginReceiveMessage",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginDisable",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginStop",
+					LuaSDK/lib/libluajit_mac.a,
 				);
 			};
 			name = Debug;
@@ -339,12 +370,34 @@
 		D607B19D09A556E400699BC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /code/design/Resources/plugins/;
-				INSTALL_PATH = /xlua/64/;
+				DSTROOT = deploy/;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					"$(XPSDK_ROOT)/CHeaders/Widgets",
+					"$(XPSDK_ROOT)/CHeaders/XPLM",
+					luaSDK/include,
+					"$(HEADER_SEARCH_PATHS)",
+				);
+				INSTALL_PATH = xtlua/64/;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+				);
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginStart",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginEnable",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginReceiveMessage",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginDisable",
+					"-Wl,-exported_symbol",
+					"-Wl,_XPluginStop",
+					LuaSDK/lib/libluajit_mac.a,
 				);
 			};
 			name = Release;

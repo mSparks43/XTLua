@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/3.13.5/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/3.13.5/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,33 +23,33 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/3.13.5/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/3.13.5/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_09419/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_09419.dir/build.make CMakeFiles/cmTC_09419.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_09419.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_09419.dir/testCCompiler.c.o   -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp/testCCompiler.c"
-Linking C executable cmTC_09419
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_09419.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_09419.dir/testCCompiler.c.o  -o cmTC_09419 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_35017/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_35017.dir/build.make CMakeFiles/cmTC_35017.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_35017.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_35017.dir/testCCompiler.c.o   -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp/testCCompiler.c"
+Linking C executable cmTC_35017
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_35017.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_35017.dir/testCCompiler.c.o  -o cmTC_35017 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_09a02/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_09a02.dir/build.make CMakeFiles/cmTC_09a02.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake3/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_09a02
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_09a02.dir/link.txt --verbose=1
-/usr/bin/cc     -v CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o  -o cmTC_09a02 
+Run Build Command:"/usr/bin/gmake" "cmTC_6f0c5/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_6f0c5.dir/build.make CMakeFiles/cmTC_6f0c5.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake3/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_6f0c5
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_6f0c5.dir/link.txt --verbose=1
+/usr/bin/cc     -v CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o  -o cmTC_6f0c5 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
@@ -59,23 +59,23 @@ Thread model: posix
 gcc version 4.8.5 20150623 (Red Hat 4.8.5-36) (GCC) 
 COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_09a02' '-mtune=generic' '-march=x86-64'
- /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_09a02 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6f0c5' '-mtune=generic' '-march=x86-64'
+ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_6f0c5 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_09a02/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_09a02.dir/build.make CMakeFiles/cmTC_09a02.dir/build]
-  ignore line: [gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake3/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_09a02]
-  ignore line: [/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_09a02.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o  -o cmTC_09a02 ]
+  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_6f0c5/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_6f0c5.dir/build.make CMakeFiles/cmTC_6f0c5.dir/build]
+  ignore line: [gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake3/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_6f0c5]
+  ignore line: [/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_6f0c5.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o  -o cmTC_6f0c5 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper]
@@ -85,8 +85,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.8.5 20150623 (Red Hat 4.8.5-36) (GCC) ]
   ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_09a02' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_09a02 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6f0c5' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_6f0c5 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o]
     arg [/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2] ==> ignore
     arg [--build-id] ==> ignore
     arg [--no-add-needed] ==> ignore
@@ -97,7 +97,7 @@ Parsed C implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_09a02] ==> ignore
+    arg [cmTC_6f0c5] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o] ==> ignore
@@ -106,7 +106,7 @@ Parsed C implicit link information from above output:
     arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
     arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
     arg [-L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../..] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../..]
-    arg [CMakeFiles/cmTC_09a02.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_6f0c5.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -131,17 +131,17 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_9cc55/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_9cc55.dir/build.make CMakeFiles/cmTC_9cc55.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9cc55.dir/feature_tests.c.o
-/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_9cc55.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.c"
-Linking C executable cmTC_9cc55
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_9cc55.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_9cc55.dir/feature_tests.c.o  -o cmTC_9cc55 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_ac70d/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_ac70d.dir/build.make CMakeFiles/cmTC_ac70d.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ac70d.dir/feature_tests.c.o
+/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_ac70d.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.c"
+Linking C executable cmTC_ac70d
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_ac70d.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_ac70d.dir/feature_tests.c.o  -o cmTC_ac70d 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -151,17 +151,17 @@ gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/C
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_23197/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_23197.dir/build.make CMakeFiles/cmTC_23197.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_23197.dir/feature_tests.c.o
-/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_23197.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.c"
-Linking C executable cmTC_23197
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_23197.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_23197.dir/feature_tests.c.o  -o cmTC_23197 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_285eb/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_285eb.dir/build.make CMakeFiles/cmTC_285eb.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_285eb.dir/feature_tests.c.o
+/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_285eb.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.c"
+Linking C executable cmTC_285eb
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_285eb.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_285eb.dir/feature_tests.c.o  -o cmTC_285eb 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -171,17 +171,17 @@ gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/C
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_00cb5/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_00cb5.dir/build.make CMakeFiles/cmTC_00cb5.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_00cb5.dir/feature_tests.c.o
-/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_00cb5.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.c"
-Linking C executable cmTC_00cb5
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_00cb5.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_00cb5.dir/feature_tests.c.o  -o cmTC_00cb5 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_96df9/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_96df9.dir/build.make CMakeFiles/cmTC_96df9.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_96df9.dir/feature_tests.c.o
+/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_96df9.dir/feature_tests.c.o   -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.c"
+Linking C executable cmTC_96df9
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_96df9.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_96df9.dir/feature_tests.c.o  -o cmTC_96df9 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -189,30 +189,30 @@ gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/C
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_ac87f/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_ac87f.dir/build.make CMakeFiles/cmTC_ac87f.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_ac87f.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_ac87f.dir/testCXXCompiler.cxx.o -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
-Linking CXX executable cmTC_ac87f
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_ac87f.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_ac87f.dir/testCXXCompiler.cxx.o  -o cmTC_ac87f 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_c283f/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_c283f.dir/build.make CMakeFiles/cmTC_c283f.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c283f.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_c283f.dir/testCXXCompiler.cxx.o -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
+Linking CXX executable cmTC_c283f
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_c283f.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_c283f.dir/testCXXCompiler.cxx.o  -o cmTC_c283f 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_6a2db/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_6a2db.dir/build.make CMakeFiles/cmTC_6a2db.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake3/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_6a2db
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_6a2db.dir/link.txt --verbose=1
-/usr/bin/c++      -v CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_6a2db 
+Run Build Command:"/usr/bin/gmake" "cmTC_97b93/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_97b93.dir/build.make CMakeFiles/cmTC_97b93.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake3/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_97b93
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_97b93.dir/link.txt --verbose=1
+/usr/bin/c++      -v CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_97b93 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
@@ -222,23 +222,23 @@ Thread model: posix
 gcc version 4.8.5 20150623 (Red Hat 4.8.5-36) (GCC) 
 COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6a2db' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_6a2db /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_97b93' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_97b93 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_6a2db/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_6a2db.dir/build.make CMakeFiles/cmTC_6a2db.dir/build]
-  ignore line: [gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake3/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_6a2db]
-  ignore line: [/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_6a2db.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_6a2db ]
+  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_97b93/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_97b93.dir/build.make CMakeFiles/cmTC_97b93.dir/build]
+  ignore line: [gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake3/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_97b93]
+  ignore line: [/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_97b93.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_97b93 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper]
@@ -248,8 +248,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 4.8.5 20150623 (Red Hat 4.8.5-36) (GCC) ]
   ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.8.5/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6a2db' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_6a2db /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_97b93' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_97b93 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.. CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crtn.o]
     arg [/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/collect2] ==> ignore
     arg [--build-id] ==> ignore
     arg [--no-add-needed] ==> ignore
@@ -260,7 +260,7 @@ Parsed CXX implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_6a2db] ==> ignore
+    arg [cmTC_97b93] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../lib64/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/crtbegin.o] ==> ignore
@@ -269,7 +269,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
     arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
     arg [-L/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../..] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../..]
-    arg [CMakeFiles/cmTC_6a2db.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_97b93.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -292,17 +292,17 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++1y] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_c23d9/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_c23d9.dir/build.make CMakeFiles/cmTC_c23d9.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_c23d9.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++1y -o CMakeFiles/cmTC_c23d9.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.cxx"
-Linking CXX executable cmTC_c23d9
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_c23d9.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_c23d9.dir/feature_tests.cxx.o  -o cmTC_c23d9 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_8cfb4/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_8cfb4.dir/build.make CMakeFiles/cmTC_8cfb4.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8cfb4.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++1y -o CMakeFiles/cmTC_8cfb4.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.cxx"
+Linking CXX executable cmTC_8cfb4
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_8cfb4.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_8cfb4.dir/feature_tests.cxx.o  -o cmTC_8cfb4 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -365,17 +365,17 @@ gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/C
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_05459/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_05459.dir/build.make CMakeFiles/cmTC_05459.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_05459.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_05459.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.cxx"
-Linking CXX executable cmTC_05459
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_05459.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_05459.dir/feature_tests.cxx.o  -o cmTC_05459 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_c25fd/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_c25fd.dir/build.make CMakeFiles/cmTC_c25fd.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c25fd.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_c25fd.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.cxx"
+Linking CXX executable cmTC_c25fd
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_c25fd.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_c25fd.dir/feature_tests.cxx.o  -o cmTC_c25fd 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -438,17 +438,17 @@ gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/C
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp
+Change Dir: /media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_a181c/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_a181c.dir/build.make CMakeFiles/cmTC_a181c.dir/build
-gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_a181c.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_a181c.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/feature_tests.cxx"
-Linking CXX executable cmTC_a181c
-/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_a181c.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_a181c.dir/feature_tests.cxx.o  -o cmTC_a181c 
-gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XLua/XTLua/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/gmake" "cmTC_5d976/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_5d976.dir/build.make CMakeFiles/cmTC_5d976.dir/build
+gmake[1]: Entering directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5d976.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_5d976.dir/feature_tests.cxx.o -c "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/feature_tests.cxx"
+Linking CXX executable cmTC_5d976
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_5d976.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_5d976.dir/feature_tests.cxx.o  -o cmTC_5d976 
+gmake[1]: Leaving directory `/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
