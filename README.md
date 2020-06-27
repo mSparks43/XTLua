@@ -7,6 +7,8 @@ The goal is to facilitate more complex Lua calcuations without impacting the X-P
 
 Release Notes
 -----------------
+2.0.2a4 - 06/27/2020
+feature complete
 
 0.0.5b1 -  05/08/2020
 rewrite XTLuaChar
