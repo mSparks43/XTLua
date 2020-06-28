@@ -9,6 +9,5 @@ XTLua/Debug
 build/*
 vscode/
 XTLua/xtlua.vcxproj.user
-deploy/xlua/64/lin.xpl
 deploy/xtlua/64/win.pdb
 XTLua/cmake_install.cmake
