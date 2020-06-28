@@ -481,7 +481,7 @@ void XTLuaDataRefs::refreshAllDataRefs(){
         string name=x.first;
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
         if(val.size()==1){
-            float v=val[0]->value;          
+            //float v=val[0]->value;          
             float newVal=XPLMGetDataf(val[0]->ref);
             if(val[0]->type == xplmType_Double){
                  newVal=XPLMGetDatad(val[0]->ref);

@@ -53,7 +53,7 @@ extern "C" {
 }
 
 #if !MOBILE
-static void *			g_alloc = NULL;
+//static void *			g_alloc = NULL;
 #endif
 static vector<module *>g_modules;
 static vector<module *>xp_modules;

@@ -662,7 +662,7 @@ xtlua_dref_type	xlua_dref_get_type(xlua_dref * who)
 	return xlua_none;
 }
 void			xtlua_dref_preUpdate(){
-	std:vector< xlua_dref *> changes;
+	vector< xlua_dref *> changes;
 	xlua_change_mutex.lock();
 	for (auto x : changedDrefs) {
         //int i=0;
