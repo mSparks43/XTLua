@@ -167,9 +167,12 @@ std::vector<string> mod_paths;
 string init_script_path;
 
 static void do_during_physics(){
+	printf("during_physics thread began\n");
 	while(!liveThread&&run){
 		std::this_thread::sleep_for(std::chrono::seconds(1));
+		sleeping=true;
 	}
+	sleeping=false; 
 	printf("during_physics thread woke up\n");
 
 	printf("begin loading scripts\n");
