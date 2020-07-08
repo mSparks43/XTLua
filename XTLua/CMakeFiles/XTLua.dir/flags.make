@@ -6,5 +6,5 @@ CXX_FLAGS = -fPIC   -fvisibility=hidden -fPIC -std=gnu++11
 
 CXX_DEFINES = -DLIN=1 -DXPLM200=1 -DXPLM210=1 -DXPLM300=1 -DXTLua_EXPORTS
 
-CXX_INCLUDES = -I"/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/include" -I"/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/../XPlaneSDK/CHeaders/XPLM" -I"/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/../LuaSDK/include" 
+CXX_INCLUDES = -I"/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/include" -I"/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../XPlaneSDK/CHeaders/XPLM" -I"/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../LuaSDK/include" 
 

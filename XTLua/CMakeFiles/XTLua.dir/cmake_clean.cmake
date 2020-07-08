@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/XTLua.dir/src/lua_helpers.cpp.o"
   "CMakeFiles/XTLua.dir/src/module.cpp.o"
   "CMakeFiles/XTLua.dir/src/xlua.cpp.o"
+  "CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o"
   "CMakeFiles/XTLua.dir/src/xpcommands.cpp.o"
   "CMakeFiles/XTLua.dir/src/xpdatarefs.cpp.o"
   "CMakeFiles/XTLua.dir/src/xpfuncs.cpp.o"

@@ -5,14 +5,14 @@
 // Modified by Mark Parker on 04/19/2020
 
 
-#define VERSION "2.0.2a4"
+
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <vector>
 #include <chrono>
-
+#define XTVERSION "2.0.3b1"
 #include <thread>
 #ifndef XPLM200
 #define XPLM200
@@ -257,16 +257,10 @@ static void do_during_physics(){
 	printf("XTLua:during_physics thread stopped\n");
 }
 std::thread m_thread(&do_during_physics);
-PLUGIN_API int XPluginStart(
-						char *		outName,
-						char *		outSig,
-						char *		outDesc)
+int XTLuaXPluginStart(char * outSig)
 {
 
-    strcpy(outName, "XTLua " VERSION);
-    strcpy(outSig, "com.x-plane.xtlua." VERSION);
-    strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
-	printf("XTLua being started\n");
+
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
@@ -298,7 +292,8 @@ PLUGIN_API int XPluginStart(
 	lp = plugin_base_path.find_last_of("/\\");
 	plugin_base_path.erase(lp+1);
 	//strcpy(outSig, "com.x-plane.xtlua." VERSION);
-	sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),VERSION);
+	if(outSig!=NULL)
+	sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),XTVERSION);
 	
 	
 	//do create datarefs on thread
@@ -397,7 +392,7 @@ PLUGIN_API int XPluginStart(
 	return 1;
 }
 
-PLUGIN_API void	XPluginStop(void)
+void	XTLuaXPluginStop(void)
 {
 	run=false;
 	if(m_thread.joinable())
@@ -420,7 +415,7 @@ PLUGIN_API void	XPluginStop(void)
 	xtlua_timer_cleanup();
 }
 
-PLUGIN_API void XPluginDisable(void)
+void XTLuaXPluginDisable(void)
 {
 	printf("XTLua going to sleep\n");
 	active=false;
@@ -429,7 +424,7 @@ PLUGIN_API void XPluginDisable(void)
 	printf("XTLua sleeping\n");
 }
 
-PLUGIN_API int XPluginEnable(void)
+int XTLuaXPluginEnable(void)
 {
 	printf("XTLua active\n");
 	
@@ -438,7 +433,7 @@ PLUGIN_API int XPluginEnable(void)
 	return 1;
 }
 
-PLUGIN_API void XPluginReceiveMessage(
+void XTLuaXPluginReceiveMessage(
 					XPLMPluginID	inFromWho,
 					int				inMessage,
 					void *			inParam)

@@ -39,6 +39,11 @@ CMakeFiles/XTLua.dir/src/xlua.cpp.o: src/xpcommands.h
 CMakeFiles/XTLua.dir/src/xlua.cpp.o: src/xpdatarefs.h
 CMakeFiles/XTLua.dir/src/xlua.cpp.o: src/xptimers.h
 
+CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o: ../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
+CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o: ../XPlaneSDK/CHeaders/XPLM/XPLMPlugin.h
+CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o: src/xluaplugin.cpp
+CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o: src/xluaplugin.h
+
 CMakeFiles/XTLua.dir/src/xpcommands.cpp.o: ../XPlaneSDK/CHeaders/XPLM/XPLMDefs.h
 CMakeFiles/XTLua.dir/src/xpcommands.cpp.o: ../XPlaneSDK/CHeaders/XPLM/XPLMProcessing.h
 CMakeFiles/XTLua.dir/src/xpcommands.cpp.o: ../XPlaneSDK/CHeaders/XPLM/XPLMUtilities.h

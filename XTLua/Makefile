@@ -48,10 +48,10 @@ RM = /usr/bin/cmake3 -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua"
+CMAKE_SOURCE_DIR = "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua"
+CMAKE_BINARY_DIR = "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles" "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/CMakeFiles" "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/CMakeFiles/progress.marks"
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/media/storage2/X-Plane 11/Development/XTXLua/XLua/XTLua/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -249,6 +249,33 @@ src/xlua.s: src/xlua.cpp.s
 src/xlua.cpp.s:
 	$(MAKE) -f CMakeFiles/XTLua.dir/build.make CMakeFiles/XTLua.dir/src/xlua.cpp.s
 .PHONY : src/xlua.cpp.s
+
+src/xluaplugin.o: src/xluaplugin.cpp.o
+
+.PHONY : src/xluaplugin.o
+
+# target to build an object file
+src/xluaplugin.cpp.o:
+	$(MAKE) -f CMakeFiles/XTLua.dir/build.make CMakeFiles/XTLua.dir/src/xluaplugin.cpp.o
+.PHONY : src/xluaplugin.cpp.o
+
+src/xluaplugin.i: src/xluaplugin.cpp.i
+
+.PHONY : src/xluaplugin.i
+
+# target to preprocess a source file
+src/xluaplugin.cpp.i:
+	$(MAKE) -f CMakeFiles/XTLua.dir/build.make CMakeFiles/XTLua.dir/src/xluaplugin.cpp.i
+.PHONY : src/xluaplugin.cpp.i
+
+src/xluaplugin.s: src/xluaplugin.cpp.s
+
+.PHONY : src/xluaplugin.s
+
+# target to generate assembly for a file
+src/xluaplugin.cpp.s:
+	$(MAKE) -f CMakeFiles/XTLua.dir/build.make CMakeFiles/XTLua.dir/src/xluaplugin.cpp.s
+.PHONY : src/xluaplugin.cpp.s
 
 src/xpcommands.o: src/xpcommands.cpp.o
 
@@ -407,6 +434,9 @@ help:
 	@echo "... src/xlua.o"
 	@echo "... src/xlua.i"
 	@echo "... src/xlua.s"
+	@echo "... src/xluaplugin.o"
+	@echo "... src/xluaplugin.i"
+	@echo "... src/xluaplugin.s"
 	@echo "... src/xpcommands.o"
 	@echo "... src/xpcommands.i"
 	@echo "... src/xpcommands.s"
