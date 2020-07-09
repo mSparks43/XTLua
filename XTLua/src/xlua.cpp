@@ -133,6 +133,7 @@ static float xlua_pre_timer_master_cb(
 bool liveThread=false;
 bool run=true;
 bool active=false;
+bool dirtyXTScripts=false;
 bool sleeping=false;
 static float xlua_post_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
@@ -158,16 +159,58 @@ static float xlua_post_timer_master_cb(
 std::vector<string> script_paths;
 std::vector<string> mod_paths;
 string init_script_path;
+string plugin_base_path;
+static void findXTScripts(){
+	string scripts_dir_path(plugin_base_path);
+	
+	//begin xtlua
+	init_script_path=plugin_base_path;
+	
+	init_script_path += "init.lua";
+	scripts_dir_path=plugin_base_path;
+	
+	scripts_dir_path += "scripts";
 
-static void do_during_physics(){
-	printf("during_physics thread began\n");
-	while(!liveThread&&run){
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		sleeping=true;
+	int offset = 0;
+
+	while(1)
+	{
+		char fname_buf[2048];
+		char * fptr;
+		XPLMGetDirectoryContents(
+								scripts_dir_path.c_str(),
+								offset,
+								fname_buf,
+								sizeof(fname_buf),
+								&fptr,
+								1,
+								&mf,
+								&fcount);
+		if(fcount == 0)
+			break;
+		
+		if(strcmp(fptr, ".DS_Store") != 0)
+		{		
+			string mod_path(scripts_dir_path);
+			mod_path += "/";
+			mod_path += fptr;
+			mod_path += "/";
+			mod_paths.push_back(mod_path);
+			string script_path(mod_path);
+			script_path += fptr;
+			script_path += ".lua";
+
+			script_paths.push_back(script_path);
+		}
+			
+		++offset;
+		if(offset == mf)
+			break;
 	}
-	sleeping=false; 
-	printf("during_physics thread woke up\n");
 
+	dirtyXTScripts=true;
+}
+static void loadXTScripts(){
 	printf("begin loading scripts\n");
 	printf("%s\n",init_script_path.c_str());
 
@@ -192,104 +235,9 @@ static void do_during_physics(){
 #endif
 		
 	}
-	loadedModules=true;
-	while(liveThread&&run&&!ready){
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	}
-	while(liveThread&&run){
-		if(active){
-			sleeping=false;
-			auto start = std::chrono::high_resolution_clock::now();
-			std::vector<XTCmd> runItems=get_runQueue();
-			for(XTCmd item:runItems){
-				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
-			}
-			xtlua_do_timers_for_time(xlua_get_simulated_time());
-			std::vector<string> msgItems=get_runMessages();
-			
-			if(!xlua_ispaused()){
-				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-					(*m)->pre_physics();
-				for(string item:msgItems){
-					printf("XTLua:do threaded callout %s\n",item.c_str());
-					for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-						(*m)->do_callout(item.c_str());
-				}	
-				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-					(*m)->post_physics();
-			}
-			xtlua_localNavData();
-			auto finish = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double, std::milli> elapsed = finish - start;
-			int diff=round(elapsed.count());
-			if(diff<20)
-				std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
-			else if(diff>30)
-			{
-				printf("warn: xtlua time overflow!=%d\n",diff);
-			}
-				
-		}
-		else{
-			sleeping=true;
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		}
-	}
-	if(g_is_acf_inited)
-	{
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-			(*m)->acf_unload();
-		g_is_acf_inited = 0;
-	}
-
-	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-		delete (*m);
-	g_modules.clear();
-    //sprintf(gBob_debstr2,"simulation thread stopped\n");
-    //XPLMDebugString(gBob_debstr2);
-	printf("XTLua:during_physics thread stopped\n");
+	dirtyXTScripts=false;
 }
-std::thread m_thread(&do_during_physics);
-int XTLuaXPluginStart(char * outSig)
-{
-
-
-	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
-	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
-
-
-	
-	XPLMCreateFlightLoop_t pre = { 0 };
-	XPLMCreateFlightLoop_t post = { 0 };
-	pre.structSize = sizeof(pre);
-	post.structSize = sizeof(post);
-	pre.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
-	post.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
-	pre.callbackFunc = xlua_pre_timer_master_cb;
-	post.callbackFunc = xlua_post_timer_master_cb;
-
-	g_pre_loop = XPLMCreateFlightLoop(&pre);
-	g_post_loop = XPLMCreateFlightLoop(&post);
-	XPLMScheduleFlightLoop(g_pre_loop, -1, 0);
-	XPLMScheduleFlightLoop(g_post_loop, -1, 0);
-	
-	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
-	
-	char path_to_me_c[2048];
-	XPLMGetPluginInfo(XPLMGetMyID(), NULL, path_to_me_c, NULL, NULL);
-	
-	// Plugin base path: pop off two dirs from the plugin name to get the base path.
-	string plugin_base_path(path_to_me_c);
-	string::size_type lp = plugin_base_path.find_last_of("/\\");
-	plugin_base_path.erase(lp);
-	lp = plugin_base_path.find_last_of("/\\");
-	plugin_base_path.erase(lp+1);
-	//strcpy(outSig, "com.x-plane.xtlua." VERSION);
-	if(outSig!=NULL)
-	sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),XTVERSION);
-	
-	
-	//do create datarefs on thread
+static void loadXPScripts(){
 	string scripts_dir_path(plugin_base_path);
 	init_script_path=plugin_base_path;
 	init_script_path += "init/init.lua";
@@ -334,52 +282,159 @@ int XTLuaXPluginStart(char * outSig)
 		if(offset == mf)
 			break;
 	}
-	
-	
-	//begin xtlua
-	init_script_path=plugin_base_path;
-	
-	init_script_path += "init.lua";
-	scripts_dir_path=plugin_base_path;
-	
-	scripts_dir_path += "scripts";
+}
 
-	offset = 0;
+static void cleanupScripts(){
+	for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
+		delete (*m);
+	xp_modules.clear();
+	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+		delete (*m);
+	g_modules.clear();
+	script_paths.clear();
+	
+	XPLMDestroyFlightLoop(g_pre_loop);
+	XPLMDestroyFlightLoop(g_post_loop);
+	g_pre_loop = NULL;
+	g_post_loop = NULL;	
+	g_is_acf_inited = 0;
+	xtlua_dref_cleanup();
+	xtlua_cmd_cleanup();
+	xtlua_timer_cleanup();
+}
 
-	while(1)
-	{
-		char fname_buf[2048];
-		char * fptr;
-		XPLMGetDirectoryContents(
-								scripts_dir_path.c_str(),
-								offset,
-								fname_buf,
-								sizeof(fname_buf),
-								&fptr,
-								1,
-								&mf,
-								&fcount);
-		if(fcount == 0)
-			break;
-		
-		if(strcmp(fptr, ".DS_Store") != 0)
-		{		
-			string mod_path(scripts_dir_path);
-			mod_path += "/";
-			mod_path += fptr;
-			mod_path += "/";
-			mod_paths.push_back(mod_path);
-			string script_path(mod_path);
-			script_path += fptr;
-			script_path += ".lua";
+static void reloadScripts(){
+	//pause XT thread
+	printf("XTLua going to sleep\n");
+	active=false;
+	while(!sleeping)
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	printf("XTLua sleeping\n");
 
-			script_paths.push_back(script_path);
-		}
-			
-		++offset;
-		if(offset == mf)
-			break;
+	//clean everything up
+	cleanupScripts();
+
+	//load XP Scripts
+	loadXPScripts();
+
+	//find XT scripts
+	findXTScripts();
+
+	//init scripts
+	xlua_add_callout("aircraft_load");
+	xlua_add_callout("flight_start");
+}
+static void do_during_physics(){
+	printf("during_physics thread began\n");
+	while(!liveThread&&run){
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		sleeping=true;
 	}
+	sleeping=false; 
+	printf("during_physics thread woke up\n");
+	loadXTScripts();
+	
+	loadedModules=true;
+	while(liveThread&&run&&!ready){
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+	while(liveThread&&run){
+		if(active){
+			sleeping=false;
+			auto start = std::chrono::high_resolution_clock::now();
+			std::vector<XTCmd> runItems=get_runQueue();
+			for(XTCmd item:runItems){
+				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
+			}
+			xtlua_do_timers_for_time(xlua_get_simulated_time());
+			std::vector<string> msgItems=get_runMessages();
+			
+			if(!xlua_ispaused()){
+				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+					(*m)->pre_physics();
+				for(string item:msgItems){
+					printf("XTLua:do threaded callout %s\n",item.c_str());
+					for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+						(*m)->do_callout(item.c_str());
+				}	
+				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+					(*m)->post_physics();
+			}
+			xtlua_localNavData();
+			auto finish = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double, std::milli> elapsed = finish - start;
+			int diff=round(elapsed.count());
+			if(diff<20)
+				std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
+			else if(diff>30)
+			{
+				printf("warn: xtlua time overflow!=%d\n",diff);
+			}
+				
+		}
+		else{
+			sleeping=true;
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			if(dirtyXTScripts)
+				loadXTScripts();
+		}
+	}
+	if(g_is_acf_inited)
+	{
+		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+			(*m)->acf_unload();
+		g_is_acf_inited = 0;
+	}
+
+	
+    //sprintf(gBob_debstr2,"simulation thread stopped\n");
+    //XPLMDebugString(gBob_debstr2);
+	printf("XTLua:during_physics thread stopped\n");
+}
+std::thread m_thread(&do_during_physics);
+int XTLuaXPluginStart(char * outSig)
+{
+
+
+	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
+	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
+
+
+	
+	XPLMCreateFlightLoop_t pre = { 0 };
+	XPLMCreateFlightLoop_t post = { 0 };
+	pre.structSize = sizeof(pre);
+	post.structSize = sizeof(post);
+	pre.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
+	post.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
+	pre.callbackFunc = xlua_pre_timer_master_cb;
+	post.callbackFunc = xlua_post_timer_master_cb;
+
+	g_pre_loop = XPLMCreateFlightLoop(&pre);
+	g_post_loop = XPLMCreateFlightLoop(&post);
+	XPLMScheduleFlightLoop(g_pre_loop, -1, 0);
+	XPLMScheduleFlightLoop(g_post_loop, -1, 0);
+	
+	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
+	
+	char path_to_me_c[2048];
+	XPLMGetPluginInfo(XPLMGetMyID(), NULL, path_to_me_c, NULL, NULL);
+	
+	// Plugin base path: pop off two dirs from the plugin name to get the base path.
+	plugin_base_path=string(path_to_me_c);
+	string::size_type lp = plugin_base_path.find_last_of("/\\");
+	plugin_base_path.erase(lp);
+	lp = plugin_base_path.find_last_of("/\\");
+	plugin_base_path.erase(lp+1);
+	//strcpy(outSig, "com.x-plane.xtlua." VERSION);
+	if(outSig!=NULL)
+		sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),XTVERSION);
+	
+	
+	//do create datarefs on thread
+	loadXPScripts();
+	
+	findXTScripts();
 
 
 	return 1;
@@ -391,21 +446,8 @@ void	XTLuaXPluginStop(void)
 	if(m_thread.joinable())
 		m_thread.join();
 
-
-	for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
-		delete (*m);
-	xp_modules.clear();
+	cleanupScripts();
 	
-	
-	
-	XPLMDestroyFlightLoop(g_pre_loop);
-	XPLMDestroyFlightLoop(g_post_loop);
-	g_pre_loop = NULL;
-	g_post_loop = NULL;	
-	g_is_acf_inited = 0;
-	xtlua_dref_cleanup();
-	xtlua_cmd_cleanup();
-	xtlua_timer_cleanup();
 }
 
 void XTLuaXPluginDisable(void)
