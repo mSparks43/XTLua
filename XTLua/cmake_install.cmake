@@ -1,4 +1,4 @@
-# Install script for directory: /media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua
+# Install script for directory: /media/storage2/X-Plane 11/Development/XLua/XTLua
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,25 +38,25 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
+  if(EXISTS "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl"
+         FILE "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
+   "/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/lin.xpl")
-  if(EXISTS "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
+file(INSTALL DESTINATION "/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/media/storage2/X-Plane 11/Development/XLua/XTLua/lin.xpl")
+  if(EXISTS "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/media/storage2/X-Plane 11/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
     endif()
   endif()
 endif()
@@ -72,5 +72,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/media/storage2/X-Plane 11/Development/Volumetric-Clouds/XLua/XTLua/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/media/storage2/X-Plane 11/Development/XLua/XTLua/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
