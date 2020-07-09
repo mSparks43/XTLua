@@ -2,6 +2,14 @@
 #include "xluaplugin.h"
 #include <stdio.h>
 #include <string.h>
+#if IBM
+	#include <Windows.h>
+
+	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
+	{
+		return TRUE;
+	}
+#endif
 PLUGIN_API int XPluginStart(
 						char *		outName,
 						char *		outSig,
