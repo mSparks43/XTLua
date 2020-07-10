@@ -616,6 +616,12 @@ void XTLuaDataRefs::cleanup(){
          delete cNav;
          cNav=navaids;
      }
+     navaids=NULL;
+     lastnavaid=NULL;
+     current_navaid=NULL;
+     changeddataRefs.clear();
+     localNavaids.clear();
+     updateRoll=0;
      printf("XTLua:Cleaned up data\n");
     data_mutex.unlock();
 }
@@ -623,6 +629,7 @@ void XTLuaDataRefs::cleanup(){
 
 void XTLuaDataRefs::XTqueueresolve_dref(xtlua_dref * d){
     data_mutex.lock();
+    printf("will resolve %s\n",d->m_name.c_str());
     drefResolveQueue.push_back(d);//this needs to be done on another thread
     data_mutex.unlock();
 }
@@ -656,7 +663,8 @@ int XTLuaDataRefs::resolveQueue(){
             printf("Resolved local dref %s\n",d->m_name.c_str());
             continue;
         }*/
-        printf("Not local dref %s\n",d->m_name.c_str());
+        if(!d->m_ours)
+            printf("Not local dref %s\n",d->m_name.c_str());
         d->m_dref = XPLMFindDataRef(d->m_name.c_str());
         //initialise our datasets
         if(d->m_dref)

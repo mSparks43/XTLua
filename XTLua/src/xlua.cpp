@@ -62,7 +62,7 @@ static XPLMFlightLoopID	g_post_loop = NULL;
 static int				g_is_acf_inited = 0;
 XPLMDataRef				g_replay_active = NULL;
 XPLMDataRef				g_sim_period = NULL;
-XPLMCommandRef	reload_cmd=NULL;
+
 struct lua_alloc_request_t {
 			void *	ud;
 			void *	ptr;
@@ -127,7 +127,7 @@ static float xlua_pre_timer_master_cb(
 		(*m)->pre_physics();*/
 	if(loadedModules&&xtlua_dref_resolveDREFQueue()==0&&!ready){
 		ready=true;
-		printf("x(t)lua set ready");
+		printf("x(t)lua set ready\n");
 	}
 	if(ready)
 		xtlua_dref_preUpdate();
@@ -311,7 +311,9 @@ static void cleanupScripts(){
 	g_modules.clear();
 	script_paths.clear();
 	
+	if(g_pre_loop!=NULL)
 	XPLMDestroyFlightLoop(g_pre_loop);
+	if(g_post_loop!=NULL)
 	XPLMDestroyFlightLoop(g_post_loop);
 	g_pre_loop = NULL;
 	g_post_loop = NULL;	
@@ -329,15 +331,20 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 		while(!sleeping)
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		printf("XTLua sleeping for scripts reload\n");
-
-		//clean everything up
-		cleanupScripts();
 		loadedModules=false;
 		ready=false;
-		registerFlightLoop();
+		//clean everything up
+		/*XPLMFlightLoopID	l_g_pre_loop = g_pre_loop;
+		XPLMFlightLoopID	l_g_post_loop = g_post_loop;
+		g_pre_loop = NULL;
+		g_post_loop = NULL;*/
+		cleanupScripts();
+		/*g_pre_loop = l_g_pre_loop;
+		g_post_loop = l_g_post_loop;*/
+		//registerFlightLoop();
 		//load XP Scripts
 		loadXPScripts();
-
+		xlua_relink_all_drefs();
 		//find XT scripts
 		findXTScripts();
 		
@@ -346,13 +353,16 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 		//init scripts
 		
 		
-		xlua_relink_all_drefs();
+		//xlua_relink_all_drefs();
 		//active=true;
-		/*
+		//xtlua_dref_resolveDREFQueue();
 		xlua_add_callout("aircraft_load");
-		xlua_add_callout("flight_start");*/
+		xlua_add_callout("flight_start");
+		registerFlightLoop();
+		active=true;
 		printf("XLua active with new scripts\n");
-
+		return 0;
+		
 	}
 }
 static void do_during_physics(){
@@ -415,6 +425,9 @@ static void do_during_physics(){
 					std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				}
 				printf("XTLua:exit sleep\n");
+				/*while(liveThread&&run){
+					std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				}*/
 			}
 		}
 	}
@@ -463,7 +476,7 @@ int XTLuaXPluginStart(char * outSig)
 	
 	findXTScripts();
 	//reload_cmd=XPLMCreateCommand("xtlua/reloadScripts","Reload all xtlua scripts");
-	XPLMRegisterCommandHandler(reload_cmd, reloadScripts, 1,  (void *)0);
+	//XPLMRegisterCommandHandler(reload_cmd, reloadScripts, 1,  (void *)0);
 	return 1;
 }
 

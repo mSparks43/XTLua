@@ -1338,8 +1338,10 @@ void			xtlua_dref_cleanup()
 	
 		if(kill->m_ours)
 		{
-			if(kill->m_dref)
+			if(kill->m_dref){
+				printf("Unregistering %s\n",kill->m_name.c_str());
 				XPLMUnregisterDataAccessor(kill->m_dref);	
+			}
 		}
 
 	}//try the old fashioned way
@@ -1367,6 +1369,7 @@ void			xtlua_dref_cleanup()
 		
 		delete kill;
 	}
+	changedDrefs.clear();
 	printf("XLua Cleanup\n");
 	
 	xtluaDefs.cleanup();
