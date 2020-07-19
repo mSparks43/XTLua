@@ -356,8 +356,9 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 		//xlua_relink_all_drefs();
 		//active=true;
 		//xtlua_dref_resolveDREFQueue();
-		xlua_add_callout("aircraft_load");
 		xlua_add_callout("flight_start");
+		xlua_add_callout("aircraft_load");
+		
 		registerFlightLoop();
 		active=true;
 		printf("XLua active with new scripts\n");
