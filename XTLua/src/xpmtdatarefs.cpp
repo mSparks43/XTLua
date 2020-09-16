@@ -275,6 +275,8 @@ void XTLuaDataRefs::updateNavDataRefs(){
     lon=XPLMGetDatad(lonR);
 }
 void XTLuaDataRefs::update_localNavData(){
+    if(skipNaviads)
+        return;
     if(current_navaid==NULL){
         current_navaid=navaids;
          //printf("Nav Rollover\n");
@@ -937,6 +939,7 @@ int XTLuaDataRefs::XTGetDatab(
     if(d->m_name.rfind("xtlua/navaids", 0) == 0){
        // std::string tS="testString";
         //printf("reading navaids %d\n",localNavaidString.length());
+         skipNaviads=false;
          if(outValues!=NULL){
              
 
@@ -955,6 +958,7 @@ int XTLuaDataRefs::XTGetDatab(
     if(d->m_name.rfind("xtlua/fms", 0) == 0){
        // std::string tS="testString";
         //printf("reading navaids %d\n",localNavaidString.length());
+        skipNaviads=false;
          if(outValues!=NULL){
              
              

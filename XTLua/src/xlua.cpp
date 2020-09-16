@@ -381,6 +381,7 @@ static void do_during_physics(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	while(liveThread&&run){
+		bool waitSleep=false;
 		if(active){
 			sleeping=false;
 			auto start = std::chrono::high_resolution_clock::now();
@@ -390,15 +391,17 @@ static void do_during_physics(){
 			}
 			xtlua_do_timers_for_time(xlua_get_simulated_time());
 			std::vector<string> msgItems=get_runMessages();
-			
+			waitSleep=false;
+			for(string item:msgItems){
+					printf("XTLua:do threaded callout %s\n",item.c_str());
+					waitSleep=true;
+					for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
+						(*m)->do_callout(item.c_str());
+				}
 			if(!xlua_ispaused()){
 				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 					(*m)->pre_physics();
-				for(string item:msgItems){
-					printf("XTLua:do threaded callout %s\n",item.c_str());
-					for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-						(*m)->do_callout(item.c_str());
-				}	
+					
 				for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 					(*m)->post_physics();
 			}
@@ -495,8 +498,13 @@ void XTLuaXPluginDisable(void)
 {
 	printf("XTLua going to sleep\n");
 	active=false;
-	while(!sleeping)
+	while(!sleeping){
+		xtlua_dref_preUpdate();
+		xtlua_dref_postUpdate();
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		xtlua_dref_postUpdate();//make double sure all calls are applied, race, but meh.
+	}
 	printf("XTLua sleeping\n");
 }
 
@@ -525,10 +533,11 @@ void XTLuaXPluginReceiveMessage(
 		//printf("XPLM_MSG_PLANE_LOADED\n");
 		break;
 	case XPLM_MSG_PLANE_UNLOADED:
-		if(g_is_acf_inited)
+		if(g_is_acf_inited){
 			xlua_add_callout("aircraft_unload");
-		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
-		//	(*m)->acf_unload();
+			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+				(*m)->acf_unload();
+		}
 		g_is_acf_inited = 0;
 		//printf("XPLM_MSG_PLANE_UNLOADED\n");
 		break;

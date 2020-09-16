@@ -109,7 +109,7 @@ private:
     double lat;
     double lon;
     NavAid * current_navaid=NULL;
-    
+    bool skipNaviads=true;
     int updateRoll=0;
 public:
     int isPaused=true;
