@@ -108,6 +108,8 @@ private:
     XPLMDataRef lonR;
     double lat;
     double lon;
+    double lastUpdatelat;
+    double lastUpdatelon;
     NavAid * current_navaid=NULL;
     bool skipNaviads=true;
     int updateRoll=0;

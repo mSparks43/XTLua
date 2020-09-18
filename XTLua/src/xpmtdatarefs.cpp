@@ -280,10 +280,41 @@ void XTLuaDataRefs::update_localNavData(){
     if(current_navaid==NULL){
         current_navaid=navaids;
          //printf("Nav Rollover\n");
+         skipNaviads=true;
+         if(localNavaids.size()>0){
+            lastUpdatelat=lat;
+            lastUpdatelon=lon;
+            std::vector<int> left;
+
+            int count=0;
+            json nVdata =json::array();
+            for (auto x : localNavaids) {
+                NavAid* val=x.second;
+                double latDif=val->latitude-lat;
+                double lonDif=val->longitude-lon;
+                if(latDif>2||latDif<-2||lonDif<-2||lonDif>2)
+                    left.push_back(val->id);//localNavaids.erase(val->id);
+                else{
+                    nVdata[count]=json::array({val->id,val->type,val->frequency,val->heading,val->latitude,val->longitude,val->name,val->ident});
+                    count++;
+                }
+                
+            }
+            
+
+                incomingNavaidString=nVdata.dump();//printf("erasing %d\n",left.size());
+            for (int id:left)
+                localNavaids.erase(id);
+            }
     }
+    double latDif=lastUpdatelat-lat;
+    double lonDif=lastUpdatelon-lon;
+    if(latDif<0.5&&latDif>-0.5&&lonDif>-0.5&&lonDif<0.5)
+        return;
+    //printf("update_localNavData\n");    
     int count=0;
     int cSize=localNavaids.size();
-    while(current_navaid!=NULL&&count<50){
+    while(current_navaid!=NULL&&count<20){
         double latDif=current_navaid->latitude-lat;
         double lonDif=current_navaid->longitude-lon;
         if(latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2){
@@ -293,27 +324,8 @@ void XTLuaDataRefs::update_localNavData(){
         current_navaid=current_navaid->next;
         count++;
     }
-    std::vector<int> left;
-
-    count=0;
-    json nVdata =json::array();
-    for (auto x : localNavaids) {
-        NavAid* val=x.second;
-        double latDif=val->latitude-lat;
-        double lonDif=val->longitude-lon;
-        if(latDif>2||latDif<-2||lonDif<-2||lonDif>2)
-            left.push_back(val->id);//localNavaids.erase(val->id);
-        else{
-            nVdata[count]=json::array({val->id,val->type,val->frequency,val->heading,val->latitude,val->longitude,val->name,val->ident});
-            count++;
-         }
-         
-    }
     
-    if(left.size()>0||localNavaids.size()!=cSize)
-        incomingNavaidString=nVdata.dump();//printf("erasing %d\n",left.size());
-    for (int id:left)
-        localNavaids.erase(id);
+    
     /*
    
     for (auto x : localNavaids) {
@@ -322,7 +334,7 @@ void XTLuaDataRefs::update_localNavData(){
         count++;
     }
 
-
+    
     localNavaidString=nVdata.dump();*/
 }
 void XTLuaDataRefs::updateFloatDataRefs(){
