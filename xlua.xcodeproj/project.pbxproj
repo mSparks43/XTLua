@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FAB123525181D370066811B /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF016A1DED200D1426A /* XPLM.framework */; };
+		3FAB123925181D370066811B /* XPWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FAB123825181D370066811B /* XPWidgets.framework */; };
+		3FAB123D25181EFC0066811B /* xluaplugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB123C25181EFC0066811B /* xluaplugin.cpp */; };
 		D60205641CC7CC8C00933688 /* lua_helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60205571CC7CC8C00933688 /* lua_helpers.cpp */; };
 		D60205651CC7CC8C00933688 /* module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60205591CC7CC8C00933688 /* module.cpp */; };
 		D60205661CC7CC8C00933688 /* xlua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D602055B1CC7CC8C00933688 /* xlua.cpp */; };
@@ -16,12 +19,13 @@
 		D602056A1CC7CC8C00933688 /* xptimers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60205621CC7CC8C00933688 /* xptimers.cpp */; };
 		D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDA916A1DEA200D1426A /* OpenGL.framework */; };
 		D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */; };
-		D6A7BDF116A1DED200D1426A /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF016A1DED200D1426A /* XPLM.framework */; };
-		D6A7BDF316A1DED200D1426A /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF216A1DED200D1426A /* XPLM.framework */; };
 		F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FAB123825181D370066811B /* XPWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPWidgets.framework; path = XPlaneSDK/Libraries/Mac/XPWidgets.framework; sourceTree = "<group>"; };
+		3FAB123B25181ED70066811B /* xluaplugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xluaplugin.h; sourceTree = "<group>"; };
+		3FAB123C25181EFC0066811B /* xluaplugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xluaplugin.cpp; sourceTree = "<group>"; };
 		D60205571CC7CC8C00933688 /* lua_helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_helpers.cpp; sourceTree = "<group>"; };
 		D60205581CC7CC8C00933688 /* lua_helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua_helpers.h; sourceTree = "<group>"; };
 		D60205591CC7CC8C00933688 /* module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = module.cpp; sourceTree = "<group>"; };
@@ -39,7 +43,6 @@
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
-		D6A7BDF216A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
 		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
 		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
@@ -52,8 +55,8 @@
 			files = (
 				D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */,
 				D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */,
-				D6A7BDF116A1DED200D1426A /* XPLM.framework in Frameworks */,
-				D6A7BDF316A1DED200D1426A /* XPLM.framework in Frameworks */,
+				3FAB123925181D370066811B /* XPWidgets.framework in Frameworks */,
+				3FAB123525181D370066811B /* XPLM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +74,8 @@
 		D60205561CC7CC8C00933688 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				3FAB123C25181EFC0066811B /* xluaplugin.cpp */,
+				3FAB123B25181ED70066811B /* xluaplugin.h */,
 				F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */,
 				F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */,
 				F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */,
@@ -113,10 +118,10 @@
 		D6A7BDAD16A1DEA700D1426A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FAB123825181D370066811B /* XPWidgets.framework */,
 				D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */,
 				D6A7BDA916A1DEA200D1426A /* OpenGL.framework */,
 				D6A7BDF016A1DED200D1426A /* XPLM.framework */,
-				D6A7BDF216A1DED200D1426A /* XPLM.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -131,9 +136,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D607B19809A556E400699BC3 /* xlua */ = {
+		D607B19809A556E400699BC3 /* xtlua */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D607B19B09A556E400699BC3 /* Build configuration list for PBXNativeTarget "xlua" */;
+			buildConfigurationList = D607B19B09A556E400699BC3 /* Build configuration list for PBXNativeTarget "xtlua" */;
 			buildPhases = (
 				D607B19609A556E400699BC3 /* Sources */,
 				D607B19709A556E400699BC3 /* Frameworks */,
@@ -153,7 +158,12 @@
 		D607B16109A5563100699BC3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					D607B19809A556E400699BC3 = {
+						ProvisioningStyle = Manual;
+					};
+				};
 			};
 			buildConfigurationList = D607B16209A5563100699BC3 /* Build configuration list for PBXProject "xlua" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -170,7 +180,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D607B19809A556E400699BC3 /* xlua */,
+				D607B19809A556E400699BC3 /* xtlua */,
 			);
 		};
 /* End PBXProject section */
@@ -188,6 +198,7 @@
 				D60205641CC7CC8C00933688 /* lua_helpers.cpp in Sources */,
 				D60205671CC7CC8C00933688 /* xpcommands.cpp in Sources */,
 				D602056A1CC7CC8C00933688 /* xptimers.cpp in Sources */,
+				3FAB123D25181EFC0066811B /* xluaplugin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,16 +208,20 @@
 		D607B16309A5563100699BC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -229,9 +244,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -257,7 +274,6 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
 				XPSDK_ROOT = XPlaneSDK;
@@ -267,16 +283,20 @@
 		D607B16409A5563100699BC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -297,9 +317,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -325,7 +347,6 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
 				XPSDK_ROOT = XPlaneSDK;
@@ -336,9 +357,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Manual;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = deploy/;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APL=1",
+					"IBM=0",
+					"LIN=0",
+					"XPLM200=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(XPSDK_ROOT)/CHeaders/Widgets",
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
@@ -349,7 +382,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac/XPLM.framework",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -371,20 +406,34 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Manual;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = deploy/;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac",
+				);
 				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APL=1",
+					"IBM=0",
+					"LIN=0",
+					"XPLM200=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(XPSDK_ROOT)/CHeaders/Widgets",
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
-					luaSDK/include,
+					LuaSDK/include,
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				INSTALL_PATH = xtlua/64/;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac/XPLM.framework",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -414,7 +463,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D607B19B09A556E400699BC3 /* Build configuration list for PBXNativeTarget "xlua" */ = {
+		D607B19B09A556E400699BC3 /* Build configuration list for PBXNativeTarget "xtlua" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D607B19C09A556E400699BC3 /* Debug */,

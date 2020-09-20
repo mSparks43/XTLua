@@ -31,7 +31,7 @@ static const char * shorten_to_file(const char * path)
 	return t;
 }
 
-static int length_of_dir(const char * p)
+static long length_of_dir(const char * p)
 {
 	const char * f = shorten_to_file(p);
 	return f - p;
@@ -122,7 +122,7 @@ module::module(
 	m_memory(NULL),
 	m_path(in_module_path)
 {
-	int boiler_plate_paths = length_of_dir(in_init_script);
+	long boiler_plate_paths = length_of_dir(in_init_script);
 	if(isThread)
 		printf("Running %s\n", in_module_script+boiler_plate_paths);
 	else	

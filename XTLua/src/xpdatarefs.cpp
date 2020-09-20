@@ -174,12 +174,12 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	xlua_data_mutex.lock();
-	int count=0;
+	unsigned long count=0;
 	assert(r->m_ours);
 	if(values == NULL){
 		count= r->m_array_storage.size();
 		xlua_data_mutex.unlock();
-		return count;
+		return (int)count;
 	}
 	//if(offset >= r->m_array_storage.size())
 	//	return 0;
@@ -187,7 +187,7 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 	for(int i = 0; i < count; ++i)
 		values[i] = r->m_array_storage[i + offset];
 	xlua_data_mutex.unlock();
-	return count;
+	return (int)count;
 }
 
 static void xlua_setvi(void * ref, int * values, int offset, int max)
@@ -225,11 +225,11 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();
-	int count=0;
+	unsigned long count=0;
 	if(values == NULL){
 		count=r->m_array_storage.size();
 		xlua_data_mutex.unlock();
-		return count;
+		return (int)count;
 	}
 	//if(offset >= r->m_array_storage.size())
 	//	return 0;
@@ -237,7 +237,7 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 	for(int i = 0; i < count; ++i)
 		values[i] = r->m_array_storage[i + offset];
 	xlua_data_mutex.unlock();
-	return count;
+	return (int)count;
 }
 
 static void xlua_setvf(void * ref, float * values, int offset, int max)
@@ -276,11 +276,11 @@ static int xlua_getvb(void * ref, void * values, int offset, int max)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();
-	int count = 0;
+	unsigned long count = 0;
 	if(values == NULL){
 		count=r->m_string_storage.size();
 		xlua_data_mutex.unlock();
-		return count;
+		return (int)count;
 	}
 	//if(offset >= r->m_string_storage.size())
 	//	return 0;
@@ -288,7 +288,7 @@ static int xlua_getvb(void * ref, void * values, int offset, int max)
 	for(int i = 0; i < count; ++i)
 		dst[i] = r->m_string_storage[i + offset];
 	xlua_data_mutex.unlock();
-	return count;
+	return (int)count;
 }
 
 static void xlua_setvb(void * ref, void * values, int offset, int max)
@@ -710,7 +710,7 @@ void	xlua_dref_ours(xlua_dref * who)
 }
 int	xlua_dref_get_dim(xlua_dref * who)
 {
-	int retVal=0;
+	unsigned long retVal=0;
 	xlua_data_mutex.lock();
 	if(who->m_ours)
 		retVal=who->m_array_storage.size();
@@ -729,7 +729,7 @@ int	xlua_dref_get_dim(xlua_dref * who)
 	else if(who->m_types & (xplmType_Int|xplmType_Float|xplmType_Double))
 		retVal=1;
 	xlua_data_mutex.unlock();
-	return 0;
+	return (int)retVal;
 }
 double			xlua_dref_get_number(xlua_dref * d)
 {
@@ -912,7 +912,7 @@ void			xlua_dref_set_string(xlua_dref * d, const string& value)
 		const char * end = begin + value.size();
 		if(end > begin)
 		{
-			XPLMSetDatab(d->m_dref, (void *) begin, 0, end - begin);
+			XPLMSetDatab(d->m_dref, (void *) begin, 0, (int)(end - begin));
 		}
 	}
 }
