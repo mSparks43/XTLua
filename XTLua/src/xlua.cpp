@@ -362,9 +362,10 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 		registerFlightLoop();
 		active=true;
 		printf("XLua active with new scripts\n");
-		return 0;
 		
 	}
+	
+	return 0;
 }
 static void do_during_physics(){
 	printf("during_physics thread open\n");
