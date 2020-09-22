@@ -2,11 +2,18 @@
 #include "xluaplugin.h"
 #include <stdio.h>
 #include <string.h>
+
 #if IBM
 	#include <Windows.h>
-
+	#include <Wincon.h>
 	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
 	{
+		BOOL chk = AllocConsole();
+		if (chk)
+		{
+			freopen("CONOUT$", "w", stdout);
+			printf("XTLua: printing to console");
+		}
 		return TRUE;
 	}
 #endif
