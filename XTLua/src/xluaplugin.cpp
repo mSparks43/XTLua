@@ -12,7 +12,7 @@
 		if (chk)
 		{
 			freopen("CONOUT$", "w", stdout);
-			printf("XTLua: printing to console");
+			printf("XTLua: printing to console\n");
 		}
 		return TRUE;
 	}
