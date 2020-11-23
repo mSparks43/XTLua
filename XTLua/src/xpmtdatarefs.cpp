@@ -223,7 +223,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
           float               outLon;
           XPLMGetFMSEntryInfo(i,&outType,outID,&outRef,&outAltitude,&outLat,&outLon); 
           if(outRef!=XPLM_NAV_NOT_FOUND){
-              XPLMNavType         outType;   
+              XPLMNavType         outType2;   
               float               outLatitude;    
               float               outLongitude;   
               float               outHeight;    
@@ -232,9 +232,28 @@ void XTLuaDataRefs::updateNavDataRefs(){
                  
               char                outName[256]={0};    
               char                outReg[1]={0};
-              XPLMGetNavAidInfo(outRef,&outType,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
+              XPLMGetNavAidInfo(outRef,&outType2,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
               //printf("%d=%d,%d ,%s\n",i,outType,outFrequency,outID); 
-              nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
+              double latDiff=outLatitude-outLat;
+              if(latDiff>180)
+                latDiff-=360;
+              if(latDiff<-180)
+                latDiff+=360;  
+              double lonDiff=outLongitude-outLon;
+              if(lonDiff>180)
+                lonDiff-=360;
+              if(lonDiff<-180)
+                lonDiff+=360; 
+              if(latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1) { 
+                nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
+              }
+              else
+              {
+                 char val[256];
+                sprintf(val,"%f %f",latDiff,lonDiff);
+                 nVdata[count]=json::array({outRef,outType,0,0,outLat,outLon,string("latlon"),string("latlon"),outAltitude,(i==currentIndex)});
+              }
+              
               count++;
           }
           else{
@@ -246,6 +265,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
     
     
     incomingFMSString=nVdata.dump();
+    
     if(navaids==NULL){
         XPLMNavRef nAid=XPLMGetFirstNavAid();
         latR = XPLMFindDataRef("sim/flightmodel/position/latitude");
@@ -291,7 +311,16 @@ void XTLuaDataRefs::update_localNavData(){
             for (auto x : localNavaids) {
                 NavAid* val=x.second;
                 double latDif=val->latitude-lat;
+                
                 double lonDif=val->longitude-lon;
+                if(lonDif>180)
+                    lonDif-=360;
+                if(lonDif<-180)
+                    lonDif+=360; 
+                if(latDif>180)
+                    latDif-=360;
+                if(latDif<-180)
+                    latDif+=360;     
                 if(latDif>2||latDif<-2||lonDif<-2||lonDif>2)
                     left.push_back(val->id);//localNavaids.erase(val->id);
                 else{
@@ -309,6 +338,14 @@ void XTLuaDataRefs::update_localNavData(){
     }
     double latDif=lastUpdatelat-lat;
     double lonDif=lastUpdatelon-lon;
+    if(lonDif>180)
+        lonDif-=360;
+    if(lonDif<-180)
+        lonDif+=360; 
+    if(latDif>180)
+        latDif-=360;
+    if(latDif<-180)
+        latDif+=360; 
     if(latDif<0.5&&latDif>-0.5&&lonDif>-0.5&&lonDif<0.5)
         return;
     //printf("update_localNavData\n");    
