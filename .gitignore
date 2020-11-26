@@ -11,3 +11,28 @@ vscode/
 XTLua/xtlua.vcxproj.user
 deploy/xtlua/64/win.pdb
 XTLua/cmake_install.cmake
+
+# Mac OS X
+*.DS_Store
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# Generated files
+*.o
+*.pyc
+
+
+#Python modules
+MANIFEST
+dist/
+build/
+
+# Backup files
+*~.nib
