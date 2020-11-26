@@ -13,6 +13,7 @@
 		{
 			freopen("CONOUT$", "w", stdout);
 			printf("XTLua: printing to console\n");
+			//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 		}
 		return TRUE;
 	}
