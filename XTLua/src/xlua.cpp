@@ -55,8 +55,8 @@ extern "C" {
 #if !MOBILE
 //static void *			g_alloc = NULL;
 #endif
-static vector<module *>g_modules;
-static vector<module *>xp_modules;
+static vector<module *>g_modules; //modules in a thread
+static vector<module *>xp_modules; //xp safe modules
 static XPLMFlightLoopID	g_pre_loop = NULL;
 static XPLMFlightLoopID	g_post_loop = NULL;
 static int				g_is_acf_inited = 0;
@@ -119,7 +119,8 @@ static float xlua_pre_timer_master_cb(
                                    int                  inCounter,    
                                    void *               inRefcon)
 {
-	xlua_do_timers_for_time(xlua_get_simulated_time());
+	if(!xlua_ispaused())
+		xlua_do_timers_for_time(xlua_get_simulated_time());
 	
 	/*if(XPLMGetDatai(g_replay_active) == 0)
 	if(XPLMGetDataf(g_sim_period) > 0.0f)	
@@ -144,13 +145,13 @@ static float xlua_post_timer_master_cb(
                                    int                  inCounter,    
                                    void *               inRefcon)
 {
-	/*if(XPLMGetDatai(g_replay_active) == 0)
+	if(XPLMGetDatai(g_replay_active) == 0)
 	{
 		if(XPLMGetDataf(g_sim_period) > 0.0f)
-		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+		for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)		
 			(*m)->post_physics();
 	}
-	else
+	/*else
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 		(*m)->post_replay();*/
 
@@ -358,7 +359,7 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 		//xtlua_dref_resolveDREFQueue();
 		xlua_add_callout("flight_start");
 		xlua_add_callout("aircraft_load");
-		
+		xlua_setLoadStatus(1);
 		registerFlightLoop();
 		active=true;
 		printf("XLua active with new scripts\n");
@@ -390,7 +391,8 @@ static void do_during_physics(){
 			for(XTCmd item:runItems){
 				item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
 			}
-			xtlua_do_timers_for_time(xlua_get_simulated_time());
+			if(!xlua_ispaused())
+				xtlua_do_timers_for_time(xlua_get_simulated_time());
 			std::vector<string> msgItems=get_runMessages();
 			waitSleep=false;
 			for(string item:msgItems){
@@ -531,14 +533,17 @@ void XTLuaXPluginReceiveMessage(
 	case XPLM_MSG_PLANE_LOADED:
 		if(inParam == 0)
 			g_is_acf_inited = 0;
+		xlua_setLoadStatus(1);	
 		//printf("XPLM_MSG_PLANE_LOADED\n");
 		break;
 	case XPLM_MSG_PLANE_UNLOADED:
 		if(g_is_acf_inited){
-			xlua_add_callout("aircraft_unload");
-			for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
+			//xlua_add_callout("aircraft_unload");
+			for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)		
 				(*m)->acf_unload();
+
 		}
+		xlua_setLoadStatus(0);
 		g_is_acf_inited = 0;
 		//printf("XPLM_MSG_PLANE_UNLOADED\n");
 		break;
@@ -548,23 +553,24 @@ void XTLuaXPluginReceiveMessage(
 			// Pick up any last stragglers from out-of-order load and then validate our datarefs!
 			xlua_relink_all_drefs();
 			xlua_validate_drefs();
+			xlua_setLoadStatus(1);
 			xlua_add_callout("aircraft_load");
-			//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-			//	(*m)->acf_load();
+			for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
+				(*m)->acf_load();
 			g_is_acf_inited = 1;							
 		}
 		
 		xlua_add_callout("flight_start");
 		//printf("XPLM_MSG_AIRPORT_LOADED\n");
-		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-		//	(*m)->flight_init();
+		for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
+			(*m)->flight_init();
 		break;
 	case XPLM_MSG_PLANE_CRASHED:
 		assert(g_is_acf_inited);
 		xlua_add_callout("flight_crash");
 		//printf("XPLM_MSG_PLANE_CRASHED\n");
-		//for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
-		//	(*m)->flight_crash();		
+		for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
+			(*m)->flight_crash();		
 		break;
 	}
 }

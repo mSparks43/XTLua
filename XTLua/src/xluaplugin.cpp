@@ -6,14 +6,29 @@
 #if IBM
 	#include <Windows.h>
 	#include <Wincon.h>
+	char CONFIG_DEBUG[] = "xtlua_debugging.txt";
+	bool file_exists(const std::string &name)
+	{
+    if (FILE *file = fopen(name.c_str(), "r"))
+    {
+        fclose(file);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+	}
 	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
 	{
-		BOOL chk = AllocConsole();
-		if (chk)
-		{
-			freopen("CONOUT$", "w", stdout);
-			printf("XTLua: printing to console\n");
-			//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
+		if (file_exists(CONFIG_DEBUG)){
+			BOOL chk = AllocConsole();
+			if (chk)
+			{
+				freopen("CONOUT$", "w", stdout);
+				printf("XTLua: printing to console\n");
+				//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
+			}
 		}
 		return TRUE;
 	}

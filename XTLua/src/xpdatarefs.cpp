@@ -1279,9 +1279,16 @@ void xlua_add_callout(string callout){
 	messageQueue.push_back(callout);
 	data_mutex.unlock();
 }
+void xlua_setLoadStatus(int loadStatus)
+{
+	data_mutex.lock();
+	xtluaDefs.isLoaded=loadStatus;
+	data_mutex.unlock();
+}
 bool xlua_ispaused(){
-	int retVal=xtluaDefs.isPaused;
-	return retVal==1;
+	int retVal1=xtluaDefs.isPaused;
+	int retVal2=xtluaDefs.isLoaded;
+	return retVal1==1&&retVal2==1;
 }
 double xlua_get_simulated_time(){
 	//printf("get sim time\n");

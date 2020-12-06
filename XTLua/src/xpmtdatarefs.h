@@ -114,7 +114,8 @@ private:
     bool skipNaviads=true;
     int updateRoll=0;
 public:
-    int isPaused=true;
+    int isPaused=1;
+    int isLoaded=0;
     void *paused_ref=NULL;
     void XTCommandBegin(xtlua_cmd * cmd);
     void XTCommandEnd(xtlua_cmd * cmd);
