@@ -2,11 +2,11 @@
 #include "xluaplugin.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <cstdlib>
 #if IBM
 	#include <Windows.h>
 	#include <Wincon.h>
-	char CONFIG_DEBUG[] = "xtlua_debugging.txt";
+	#include <string>
 	bool file_exists(const std::string &name)
 	{
     if (FILE *file = fopen(name.c_str(), "r"))
@@ -21,15 +21,37 @@
 	}
 	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
 	{
-		if (file_exists(CONFIG_DEBUG)){
-			BOOL chk = AllocConsole();
-			if (chk)
-			{
-				freopen("CONOUT$", "w", stdout);
-				printf("XTLua: printing to console\n");
-				//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
-			}
+		
+		char buf[2048];
+		char dirchar = *XPLMGetDirectorySeparator();
+		XPLMGetPluginInfo(XPLMGetMyID(), NULL, buf, NULL, NULL);
+		//printf("XTLua: I am: %s\n", buf);
+		char* p = buf;
+		char* slash = p;
+		while (*p)
+		{
+			if (*p == dirchar) slash = p;
+			++p;
 		}
+		++slash;
+		*slash = 0;
+		//printf("XTLua: buf now: %s\n", buf);
+		strcat(buf, "xtlua_debugging.txt");
+		//if (file_exists(buf)){
+			
+			
+			if (file_exists(buf))
+			{
+				BOOL chk = AllocConsole();
+				if (chk)
+				{
+					freopen("CONOUT$", "w", stdout);
+					printf("XTLua: printing to console %s\n", buf);
+					//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
+				}
+			}
+			
+		//}
 		return TRUE;
 	}
 #endif
@@ -38,7 +60,8 @@ PLUGIN_API int XPluginStart(
 						char *		outSig,
 						char *		outDesc){
 
-    strcpy(outName, "XTLua " PLUGINVERSION);
+    //strcpy(outName, "XTLua " PLUGINVERSION);
+	sprintf(outName, "XTLua %s id%d", PLUGINVERSION, rand() % 100 + 1);
     //strcpy(outSig, "com.x-plane.xtlua." VERSION);
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
 	printf("XTLua being started\n");
