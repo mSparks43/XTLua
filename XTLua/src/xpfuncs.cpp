@@ -423,6 +423,7 @@ static int XLuaCreateCommand(lua_State * L)
 
 static void cmd_cb_helper(xtlua_cmd * cmd, int phase, float elapsed, void * ref)
 {
+	//printf("xtcmd_cb_helper\n");
 	lua_State * L = setup_lua_callback(ref);
 	if(L)
 	{
@@ -431,6 +432,7 @@ static void cmd_cb_helper(xtlua_cmd * cmd, int phase, float elapsed, void * ref)
 }
 static void xlcmd_cb_helper(xlua_cmd * cmd, int phase, float elapsed, void * ref)
 {
+	//printf("xlcmd_cb_helper\n");
 	lua_State * L = setup_lua_callback(ref);
 	if(L)
 	{
@@ -440,7 +442,9 @@ static void xlcmd_cb_helper(xlua_cmd * cmd, int phase, float elapsed, void * ref
 // XPLMReplaceCommand cmd handler
 static int XlLuaReplaceCommand(lua_State * L)
 {
+	
 	xlua_cmd * d = luaL_checkuserdata<xlua_cmd>(L,1,"expected command");
+
 	notify_cb_t * cb = wrap_lua_func(L, 2);
 	
 	xlua_cmd_install_handler(d, xlcmd_cb_helper, cb);
@@ -489,7 +493,29 @@ static int XTLuaCommandOnce(lua_State * L)
 	xtlua_cmd_once(d);
 	return 0;
 }
+static int XLuaCommandStart(lua_State * L)
+{
+	//printf("C++ command start");
+	xlua_cmd * d = luaL_checkuserdata<xlua_cmd>(L,1,"expected command");
+	xlua_cmd_start(d);
+	return 0;
+}
 
+// XPLMCommandStop cmd
+static int XLuaCommandStop(lua_State * L)
+{
+	xlua_cmd * d = luaL_checkuserdata<xlua_cmd>(L,1,"expected command");
+	xlua_cmd_stop(d);
+	return 0;
+}
+
+// XPLMCommandOnce cmd
+static int XLuaCommandOnce(lua_State * L)
+{
+	xlua_cmd * d = luaL_checkuserdata<xlua_cmd>(L,1,"expected command");
+	xlua_cmd_once(d);
+	return 0;
+}
 //----------------------------------------------------------------
 // TIMERS
 //----------------------------------------------------------------
@@ -603,6 +629,9 @@ static int XLuaIsTimerScheduled(lua_State * L)
 	FUNC(XLuaFindCommand) \
 	FUNC(XLuaCreateCommand) \
 	FUNC(XlLuaReplaceCommand) \
+	FUNC(XLuaCommandStart) \
+	FUNC(XLuaCommandStop) \
+	FUNC(XLuaCommandOnce) \
 	FUNC(XLuaCreateTimer) \
 	FUNC(XLuaRunTimer) \
 	FUNC(XLuaIsTimerScheduled) \

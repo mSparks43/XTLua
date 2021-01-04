@@ -59,8 +59,9 @@ struct xlua_cmd {
 	xlua_cmd *			m_next;
 	std::string				m_name;
 	XPLMCommandRef		m_cmd;
-    xtlua_cmd_handler_f	m_main_handler;
+    xlua_cmd_handler_f	m_main_handler;
 	void *				m_main_ref;
+    float				m_down_time;
 
 };
 /*static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);

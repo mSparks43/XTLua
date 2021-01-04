@@ -29,6 +29,10 @@ void xtlua_cmd_install_post_wrapper(xtlua_cmd * cmd, xtlua_cmd_handler_f handler
 void xtlua_cmd_start(xtlua_cmd * cmd);
 void xtlua_cmd_stop(xtlua_cmd * cmd);
 void xtlua_cmd_once(xtlua_cmd * cmd);
+
+void xlua_cmd_start(xlua_cmd * cmd);
+void xlua_cmd_stop(xlua_cmd * cmd);
+void xlua_cmd_once(xlua_cmd * cmd);
 //void xlua_std_pre_cmd(xtlua_cmd * cmd,int phase);
 void xtlua_cmd_cleanup();
 

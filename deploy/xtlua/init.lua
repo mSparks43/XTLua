@@ -196,7 +196,7 @@ function make_command_obj(in_cmd, in_name)
 					error("Unable to find command:"..name)
 				end
 			end
-			XLuaCommandStart(self.cmd)
+			XTLuaCommandStart(self.cmd)
 		end,
 		stop = function(self)
 			if self.cmd == nil then
@@ -205,7 +205,7 @@ function make_command_obj(in_cmd, in_name)
 					error("Unable to find command:"..name)
 				end
 			end
-			XLuaCommandStop(self.cmd)
+			XTLuaCommandStop(self.cmd)
 		end,
 		once = function(self)
 			if self.cmd == nil then
@@ -214,7 +214,7 @@ function make_command_obj(in_cmd, in_name)
 					error("Unable to find command:"..name)
 				end
 			end
-			XLuaCommandOnce(self.cmd)
+			XTLuaCommandOnce(self.cmd)
 		end,
 		cmd = in_cmd,
 		name = in_name
@@ -228,13 +228,13 @@ end
 
 function create_command(name,desc,handler)
 	c = XLuaCreateCommand(name,desc)
-	XLuaReplaceCommand(c,handler)
+	XTLuaReplaceCommand(c,handler)
 	return make_command_obj(c)
 end
 
 function replace_command(name, func)
 	c = XLuaFindCommand(name)
-	XLuaReplaceCommand(c,func)
+	XTLuaReplaceCommand(c,func)
 	return make_command_obj(c)
 end	
 

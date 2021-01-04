@@ -212,13 +212,13 @@ end
 
 function create_command(name,desc,handler)
 	c = XLuaCreateCommand(name,desc)
-	XLuaReplaceCommand(c,handler)
+	XlLuaReplaceCommand(c,handler)
 	return make_command_obj(c)
 end
 
 function replace_command(name, func)
 	c = XLuaFindCommand(name)
-	XLuaReplaceCommand(c,func)
+	XlLuaReplaceCommand(c,func)
 	return make_command_obj(c)
 end	
 

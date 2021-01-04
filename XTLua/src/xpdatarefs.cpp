@@ -1173,8 +1173,10 @@ std::vector<string> messageQueue;
 std::mutex data_mutex;
 static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
-
 	xtlua_cmd * me = (xtlua_cmd *) ref;
+	if(phase != xplm_CommandBegin&&xtluaDefs.XTGetElapsedTime()==me->m_down_time)
+		return 0;
+	
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_pre_handler){
@@ -1185,7 +1187,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		
 		command.xluaref=me;
 		
-		command.duration=XPLMGetElapsedTime() - me->m_down_time;
+		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		runQueue.push_back(command);
 		data_mutex.unlock();
@@ -1201,6 +1203,10 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
 	xtlua_cmd * me = (xtlua_cmd *) ref;
+	if(phase != xplm_CommandBegin&&xtluaDefs.XTGetElapsedTime()==me->m_down_time)
+		return 0;
+	
+
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_main_handler){
@@ -1211,7 +1217,7 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		
 		command.xluaref=me;
 		
-		command.duration=XPLMGetElapsedTime() - me->m_down_time;
+		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		runQueue.push_back(command);
 		data_mutex.unlock();
@@ -1227,6 +1233,9 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
 {
 	xtlua_cmd * me = (xtlua_cmd *) ref;
+	if(phase != xplm_CommandBegin&&xtluaDefs.XTGetElapsedTime()==me->m_down_time)
+		return 0;
+	
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_post_handler){
@@ -1237,7 +1246,7 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		
 		command.xluaref=me;
 		
-		command.duration=XPLMGetElapsedTime() - me->m_down_time;
+		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		runQueue.push_back(command);
 		data_mutex.unlock();
@@ -1424,6 +1433,7 @@ xtlua_cmd * xtlua_find_cmd(const char * name)
 }
 xlua_cmd * xlua_find_cmd(const char * name)
 {
+	//printf("looking for %s\n",name);
 	for(xlua_cmd * i = l_cmds; i; i = i->m_next)
 	if(i->m_name == name)
 		return i;
@@ -1432,11 +1442,23 @@ xlua_cmd * xlua_find_cmd(const char * name)
 	if(c == NULL){
 		printf("ERROR: Command %s not found\n",name);
 	} 
-	return NULL;	
+	if(c == NULL) return NULL;	
+		
+	xlua_cmd * nc = new xlua_cmd;
+	nc->m_next = l_cmds;
+	l_cmds = nc;
+	nc->m_name = name;
+	nc->m_cmd = c;
+	return nc;
 		
 
 }
 static int xlua_null_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
+	xlua_cmd * me = (xlua_cmd *) ref;
+	if(phase == xplm_CommandBegin)
+		me->m_down_time = XPLMGetElapsedTime();
+	if(me->m_main_handler)
+		me->m_main_handler(me, phase, XPLMGetElapsedTime() - me->m_down_time, me->m_main_ref);
 	return 0;
 }
 xlua_cmd * xlua_create_cmd(const char * name, const char * desc)
@@ -1482,6 +1504,14 @@ void xtlua_cmd_install_handler(xtlua_cmd * cmd, xtlua_cmd_handler_f handler, voi
 }
 void xlua_cmd_install_handler(xlua_cmd * cmd, xlua_cmd_handler_f handler, void * ref)
 {
+	if(cmd->m_main_handler != NULL)
+	{
+		printf("ERROR: there is already a main handler installed: %s.\n", cmd->m_name.c_str());
+		return;
+	}
+	cmd->m_main_handler = handler;
+	cmd->m_main_ref = ref;
+	//XPLMRegisterCommandHandler(cmd->m_cmd, xlua_std_main_handler, 1, cmd);
 	XPLMRegisterCommandHandler(cmd->m_cmd, xlua_null_main_handler, 1, cmd);
 }
 
@@ -1527,7 +1557,22 @@ void xtlua_cmd_once(xtlua_cmd * cmd)
 	xtluaDefs.XTCommandOnce(cmd);
 	//XPLMCommandOnce(cmd->m_cmd);
 }
+void xlua_cmd_start(xlua_cmd * cmd)
+{
+	//xtluaDefs.XTCommandBegin(cmd);
+	XPLMCommandBegin(cmd->m_cmd);
+}
+void xlua_cmd_stop(xlua_cmd * cmd)
+{
+	//xtluaDefs.XTCommandEnd(cmd);
+	XPLMCommandEnd(cmd->m_cmd);
+}
 
+void xlua_cmd_once(xlua_cmd * cmd)
+{
+	//xtluaDefs.XTCommandOnce(cmd);
+	XPLMCommandOnce(cmd->m_cmd);
+}
 void xtlua_cmd_cleanup()
 {
 	while(s_cmds)
