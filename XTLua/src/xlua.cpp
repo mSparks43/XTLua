@@ -528,12 +528,16 @@ void XTLuaXPluginReceiveMessage(
 	//printf("XPLM_MSG_PLANE %d\n",inMessage);
 	if(inFromWho != XPLM_PLUGIN_XPLANE)
 		return;
-		
+	//printf("XPLM_MSG %d\n",inMessage);	
 	switch(inMessage) {
+	case XPLM_MSG_LIVERY_LOADED:
+		xlua_add_callout("livery_load");
+		break;
 	case XPLM_MSG_PLANE_LOADED:
 		if(inParam == 0)
 			g_is_acf_inited = 0;
 		xlua_setLoadStatus(1);	
+		xlua_add_callout("aircraft_load");
 		//printf("XPLM_MSG_PLANE_LOADED\n");
 		break;
 	case XPLM_MSG_PLANE_UNLOADED:
