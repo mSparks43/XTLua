@@ -5,17 +5,7 @@ XTLua is a modification of XLua which runs lua - specifically before_physics and
 
 The goal is to facilitate more complex Lua calcuations without impacting the X-Plane frame rate. The Lua bindings of XLua have been replaced with xtluaDefs in xpdatarefs.cpp which synchronize the current variable states of XTLua with X-Plane once each flight model frame.
 
-Release Notes
------------------
-2.0.2a4 - 06/27/2020
-feature complete
 
-0.0.5b1 -  05/08/2020
-rewrite XTLuaChar
-
-0.0.2b1 -  04/19/2020
-
-Initial Release
 XLua
 ====
 
@@ -111,7 +101,17 @@ This returns true if the timer function will run at any time in the future. It r
 Release Notes
 -----------------
 
-1.0.0r1 - 11/6/2017
+2.0.2a4 - 06/27/2020
+feature complete
+
+0.0.5b1 -  05/08/2020
+rewrite XTLuaChar
+
+0.0.2b1 -  04/19/2020
+
+XTLua Initial Release
+
+XLua 1.0.0r1 - 11/6/2017
 
 Bug fixes:
  * Support for unicode install paths on Windows.
