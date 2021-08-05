@@ -244,7 +244,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
                 lonDiff-=360;
               if(lonDiff<-180)
                 lonDiff+=360; 
-              if(latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1) { 
+              if((latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1)||(outType==8&&(latDiff>-10 && latDiff < 10 && lonDiff>-10 && lonDiff < 10))) { 
                 nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
               }
               else

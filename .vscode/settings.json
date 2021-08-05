@@ -45,6 +45,18 @@
         "forward_list": "cpp",
         "valarray": "cpp",
         "cstddef": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "map": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp",
+        "stop_token": "cpp"
     }
 }
