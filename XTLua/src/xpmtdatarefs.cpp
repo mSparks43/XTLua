@@ -244,7 +244,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
                 lonDiff-=360;
               if(lonDiff<-180)
                 lonDiff+=360; 
-              if((latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1)||(outType==8&&(latDiff>-10 && latDiff < 10 && lonDiff>-10 && lonDiff < 10))) { 
+              if(latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1) { 
                 nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
               }
               else
@@ -294,18 +294,16 @@ void XTLuaDataRefs::updateNavDataRefs(){
     lat=XPLMGetDatad(latR);
     lon=XPLMGetDatad(lonR);
 }
+bool firstPass=true;
 void XTLuaDataRefs::update_localNavData(){
     if(skipNaviads)
         return;
     if(current_navaid==NULL){
         current_navaid=navaids;
          //printf("Nav Rollover\n");
-         skipNaviads=true;
+         
          if(localNavaids.size()>0){
-            lastUpdatelat=lat;
-            lastUpdatelon=lon;
             std::vector<int> left;
-
             int count=0;
             json nVdata =json::array();
             for (auto x : localNavaids) {
@@ -321,7 +319,7 @@ void XTLuaDataRefs::update_localNavData(){
                     latDif-=360;
                 if(latDif<-180)
                     latDif+=360;     
-                if(latDif>2||latDif<-2||lonDif<-2||lonDif>2)
+                if(((latDif>2||latDif<-2||lonDif<-2||lonDif>2)&&val->type!=8)||(val->type==8&&(latDif>10||latDif<-10||lonDif<-10||lonDif>10)))
                     left.push_back(val->id);//localNavaids.erase(val->id);
                 else{
                     nVdata[count]=json::array({val->id,val->type,val->frequency,val->heading,val->latitude,val->longitude,val->name,val->ident});
@@ -351,17 +349,25 @@ void XTLuaDataRefs::update_localNavData(){
     //printf("update_localNavData\n");    
     int count=0;
     //int cSize=localNavaids.size();
-    while(current_navaid!=NULL&&count<20){
+    while(current_navaid!=NULL&&(count<40||firstPass)){
         double latDif=current_navaid->latitude-lat;
         double lonDif=current_navaid->longitude-lon;
-        if(latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2){
+        if((current_navaid->type==8&&(latDif<10&&latDif>-10&&lonDif<10&&lonDif>-10))||(latDif<2&&latDif>-2&&lonDif<2&&lonDif>-2)){
             localNavaids[current_navaid->id]=current_navaid;
             //printf("%d=%d,%d,%f,%f,%f,%s\n",current_navaid->id,current_navaid->type,current_navaid->frequency,latDif,lonDif,current_navaid->heading,current_navaid->name.c_str());
         }
         current_navaid=current_navaid->next;
         count++;
     }
-    
+    if(current_navaid==NULL){
+        if(localNavaids.size()>0){
+            lastUpdatelat=lat;
+            lastUpdatelon=lon;
+            skipNaviads=true;
+            firstPass=false;
+            printf("completed pass\n");
+        }
+    }
     
     /*
    
