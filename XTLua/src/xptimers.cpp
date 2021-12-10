@@ -103,19 +103,20 @@ int xtlua_is_timer_scheduled(xlua_timer * t)
 }
 
 
-void xtlua_do_timers_for_time(double now)
+void xtlua_do_timers_for_time(double now,bool isPaused)
 {
 	for(xlua_timer * t = x_timers; t; t = t->m_next)
 	if(t->m_next_fire_time != -1.0 && t->m_next_fire_time <= now)
 	{
-		t->m_func(t->m_ref);
+		if(!isPaused)
+			t->m_func(t->m_ref);
 		if(t->m_repeat_interval == -1.0)
 			t->m_next_fire_time = -1.0;
 		else
 			t->m_next_fire_time += t->m_repeat_interval;
 	}	
 }
-void xlua_do_timers_for_time(double now)
+void xlua_do_timers_for_time(double now,bool isPaused)
 {
 	for(xlua_timer * t = l_timers; t; t = t->m_next)
 	if(t->m_next_fire_time != -1.0 && t->m_next_fire_time <= now)

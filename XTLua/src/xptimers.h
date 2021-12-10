@@ -20,8 +20,8 @@ int				xlua_is_timer_scheduled(xlua_timer * t);
 xlua_timer *		xtlua_create_timer(xlua_timer_f func, void * ref);
 void				xtlua_run_timer(xlua_timer * t, double delay, double repeat);
 int				xtlua_is_timer_scheduled(xlua_timer * t);
-void xlua_do_timers_for_time(double now);
-void xtlua_do_timers_for_time(double now);
+void xlua_do_timers_for_time(double now,bool isPaused);
+void xtlua_do_timers_for_time(double now,bool isPaused);
 void xtlua_timer_cleanup();
 
 

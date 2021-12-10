@@ -57,7 +57,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/msparks/Development/XLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/home/msparks/Development/XLua/XTLua/lin.xpl")
+  file(INSTALL DESTINATION "/home/msparks/Development/XLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/home/msparks/Development/XLua/XTLua/lin.xpl")
   if(EXISTS "$ENV{DESTDIR}/home/msparks/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/home/msparks/Development/XLua/XTLua/../deploy/xtlua/64/lin.xpl")
     if(CMAKE_INSTALL_DO_STRIP)
