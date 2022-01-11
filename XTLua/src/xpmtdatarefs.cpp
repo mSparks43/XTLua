@@ -164,7 +164,22 @@ void XTLuaDataRefs::updateStringDataRefs(){
         stringdataRefs[x.first]=val;
     }*/
 }
+float scale(XTControlObject* c){
+    float x=XPLMGetDataf(c->srcDref);
+
+    if (x < c->minin)
+        return c->minout;
+    if (x > c->maxin)
+        return c->maxout;
+    float scale=c->scale;  
+    if(c->scaleDref){
+        scale=XPLMGetDataf(c->scaleDref);
+    }  
+    return (c->minout + (c->maxout - c->minout) * (x - c->minin) / (c->maxin - c->minin))*scale;
+
+}
 void XTLuaDataRefs::updateCommands(){
+    //externally locked
     for(XTCmd* c:commandQueue){
         xtlua_cmd* cmd=c->xluaref;
         if(c->fire){
@@ -183,6 +198,72 @@ void XTLuaDataRefs::updateCommands(){
         delete c;
     }
     commandQueue.clear();
+    std::unordered_map<XTControlObject*,float> newValues;
+    for(XTControlObject* c:controlOverrides){
+         
+         if(c->srcDref==NULL){ //needs init
+            printf("Do Create Override %s\n",c->data.c_str());
+            json jData =json::parse(c->data);
+            printf("Find src %s\n",jData["srcDref"].get<std::string>().c_str());
+            c->srcDref=XPLMFindDataRef(jData["srcDref"].get<std::string>().c_str());
+            printf("Find dst %s\n",jData["dstDref"].get<std::string>().c_str());
+            c->dstDref=XPLMFindDataRef(jData["dstDref"].get<std::string>().c_str());
+            c->dstIndex=-1;
+            if(c->dstDref)
+			{
+				XPLMDataTypeID tid = XPLMGetDataRefTypes(c->dstDref);
+                if(tid & (xplmType_FloatArray | xplmType_IntArray))			// AND are array type
+				{
+                   c->dstIndex =jData["dstIndex"].get<int>();
+                }
+            }
+            if(jData.contains("scale"))
+                c->scale=jData["scale"].get<float>();
+            else
+                c->scale=1.0;
+            if(jData.contains("scaledref"))
+            {
+                 c->scaleDref=XPLMFindDataRef(jData["scaledref"].get<std::string>().c_str());
+            } 
+               
+            c->minin=jData["minin"].get<float>();
+            c->maxin=jData["maxin"].get<float>();
+            c->minout=jData["minout"].get<float>();
+            c->maxout=jData["maxout"].get<float>();
+            //c->srcDref = xtlua_find_dref(jData["srcDref"].get<std::string>().c_str());
+            //c->dstDref = xtlua_find_dref(jData["dstDref"].get<std::string>().c_str());
+            
+         }
+         
+         if(c->srcDref!=NULL && c->dstDref!=NULL){
+            float newVal=scale(c);
+            if(newValues.find(c)!=newValues.end()){
+                float oldVal=newValues[c];
+                newVal+=oldVal;
+                if(newVal>c->maxout)
+                    newVal=c->maxout;
+                if(newVal<c->minout)
+                    newVal=c->minout;    
+                newValues[c]=newVal;
+            }
+            else
+                newValues[c]=newVal;
+            //printf("Do Override %f %s \n",newVal,c->data.c_str());
+            
+            
+         }
+         else
+            printf("Cant Override %s\n",c->data.c_str());
+    }
+    for (auto x : newValues) {
+        XTControlObject* c=x.first;
+        float val=newValues[c];
+        if(c->dstIndex>=0){
+            XPLMSetDatavf(c->dstDref, &val, c->dstIndex, 1);
+        }
+        else
+            XPLMSetDataf(c->dstDref, val);
+    }
    // fireCmds.clear();
 }
 void XTLuaDataRefs::addNavData(int    id,
@@ -673,11 +754,16 @@ void XTLuaDataRefs::cleanup(){
          delete cNav;
          cNav=navaids;
      }
+     for(XTControlObject* c:controlOverrides){
+         delete c;
+     }
+
      navaids=NULL;
      lastnavaid=NULL;
      current_navaid=NULL;
      changeddataRefs.clear();
      localNavaids.clear();
+     controlOverrides.clear();
      updateRoll=0;
      printf("XTLua:Cleaned up data\n");
     data_mutex.unlock();
@@ -991,6 +1077,11 @@ int XTLuaDataRefs::XTGetDatab(
 {
     char *outValues =(char *)outValue;
     data_mutex.lock();
+    if(d->m_name.rfind("xtlua/controlObject", 0) == 0){
+        printf("cant read control object\n");
+        data_mutex.unlock();
+        return 0;
+    }
     if(d->m_name.rfind("xtlua/navaids", 0) == 0){
        // std::string tS="testString";
         //printf("reading navaids %d\n",localNavaidString.length());
@@ -1096,6 +1187,15 @@ void XTLuaDataRefs::XTSetDatab(
 {
     
     //char *inValues =(char *)inValue;
+    if(d->m_name.rfind("xtlua/controlObject", 0) == 0){
+        printf("creating control override object %s\n",value.c_str());
+        XTControlObject* override=new XTControlObject();
+        override->data=value;
+        data_mutex.lock();
+        controlOverrides.push_back(override);
+        data_mutex.unlock();
+        return;
+    }
     if(d->m_ours){
         //data_mutex.lock();
         xlua_dref_ours(d->local_dref);

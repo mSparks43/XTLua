@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include "xpcommands.h"
+#include <XPLMDataAccess.h>
 //#include "xpmtdatatypes.h"
 using std::string;
 class XTCmd
@@ -30,6 +31,7 @@ class XTCmd
     bool start;
     bool stop;
 };
+
 struct	xtlua_dref;
 struct	xlua_dref;
 enum xtlua_dref_type {
@@ -38,7 +40,20 @@ enum xtlua_dref_type {
 	xlua_array,
 	xlua_string
 };
-
+class XTControlObject
+{
+	public:
+	XPLMDataRef srcDref;
+	XPLMDataRef dstDref;
+	XPLMDataRef scaleDref;
+	int dstIndex;
+	float scale;
+	float minin;
+	float maxin;
+	float minout;
+	float maxout;
+	std::string data;
+};
 typedef void (* xtlua_dref_notify_f)(xtlua_dref * who, void * ref);
 typedef void (* xlua_dref_notify_f)(xlua_dref * who, void * ref);
 xlua_dref *		xlua_find_dref(const char * name);

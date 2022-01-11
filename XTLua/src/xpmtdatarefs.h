@@ -101,6 +101,7 @@ private:
     //std::unordered_map<std::string, XTCmd> stopCmds;
     //std::unordered_map<std::string, XTCmd> fireCmds;
     std::vector<XTCmd*> commandQueue;
+    std::vector<XTControlObject*> controlOverrides;
     std::vector<XTCmd> runQueue;
     double timeT=0;
     NavAid * navaids=NULL;

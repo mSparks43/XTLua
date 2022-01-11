@@ -57,6 +57,10 @@
         "optional": "cpp",
         "string_view": "cpp",
         "ranges": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp"
     }
 }
