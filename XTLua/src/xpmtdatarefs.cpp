@@ -166,15 +166,16 @@ void XTLuaDataRefs::updateStringDataRefs(){
 }
 float scale(XTControlObject* c){
     float x=XPLMGetDataf(c->srcDref);
-
-    if (x < c->minin)
-        return c->minout;
-    if (x > c->maxin)
-        return c->maxout;
-    float scale=c->scale;  
+    float scale=c->scale;
     if(c->scaleDref){
         scale=XPLMGetDataf(c->scaleDref);
     }  
+    if (x < c->minin)
+        return c->minout*scale;
+    if (x > c->maxin)
+        return c->maxout*scale;
+     
+     
     return (c->minout + (c->maxout - c->minout) * (x - c->minin) / (c->maxin - c->minin))*scale;
 
 }
@@ -198,7 +199,7 @@ void XTLuaDataRefs::updateCommands(){
         delete c;
     }
     commandQueue.clear();
-    std::unordered_map<XTControlObject*,float> newValues;
+    std::unordered_map<XPLMDataRef,float> newValues;
     for(XTControlObject* c:controlOverrides){
          
          if(c->srcDref==NULL){ //needs init
@@ -237,17 +238,18 @@ void XTLuaDataRefs::updateCommands(){
          
          if(c->srcDref!=NULL && c->dstDref!=NULL){
             float newVal=scale(c);
-            if(newValues.find(c)!=newValues.end()){
-                float oldVal=newValues[c];
+            if(newValues.find(c->dstDref)!=newValues.end()){
+                float oldVal=newValues[c->dstDref];
                 newVal+=oldVal;
                 if(newVal>c->maxout)
                     newVal=c->maxout;
                 if(newVal<c->minout)
                     newVal=c->minout;    
-                newValues[c]=newVal;
+                newValues[c->dstDref]=newVal;
+                //printf("Do Override %f %s \n",newVal,c->data.c_str());
             }
             else
-                newValues[c]=newVal;
+                newValues[c->dstDref]=newVal;
             //printf("Do Override %f %s \n",newVal,c->data.c_str());
             
             
@@ -256,13 +258,13 @@ void XTLuaDataRefs::updateCommands(){
             printf("Cant Override %s\n",c->data.c_str());
     }
     for (auto x : newValues) {
-        XTControlObject* c=x.first;
+        XPLMDataRef c=x.first;
         float val=newValues[c];
-        if(c->dstIndex>=0){
+       /*if(c->dstIndex>=0){
             XPLMSetDatavf(c->dstDref, &val, c->dstIndex, 1);
         }
-        else
-            XPLMSetDataf(c->dstDref, val);
+        else*/
+        XPLMSetDataf(c, val);
     }
    // fireCmds.clear();
 }
