@@ -169,6 +169,7 @@ float scale(XTControlObject* c){
     float scale=c->scale;
     if(c->scaleDref){
         scale=XPLMGetDataf(c->scaleDref);
+        c->scale=scale;
     }  
     if (x < c->minin)
         return c->minout*scale;
@@ -226,7 +227,14 @@ void XTLuaDataRefs::updateCommands(){
             {
                  c->scaleDref=XPLMFindDataRef(jData["scaledref"].get<std::string>().c_str());
             } 
-               
+            if(jData.contains("min"))
+            {
+                c->min=jData["min"].get<float>();
+            }
+            if(jData.contains("max"))
+            {
+                c->max=jData["max"].get<float>();
+            }
             c->minin=jData["minin"].get<float>();
             c->maxin=jData["maxin"].get<float>();
             c->minout=jData["minout"].get<float>();
@@ -240,13 +248,30 @@ void XTLuaDataRefs::updateCommands(){
             float newVal=scale(c);
             if(newValues.find(c->dstDref)!=newValues.end()){
                 float oldVal=newValues[c->dstDref];
+                float minVal=c->minout;
+                float maxVal=c->maxout;
+                if(c->scale<0)
+                {
+                    float oldMin=minVal;
+                    minVal=maxVal*-1;
+                    maxVal=oldMin*-1;
+                }
+                if(oldVal<minVal)
+                    minVal=oldVal;
+                if(oldVal>maxVal)
+                    maxVal=oldVal; 
+                if(c->min>-9999)
+                    minVal=c->min;
+                if(c->max<9999)
+                    maxVal=c->max;           
                 newVal+=oldVal;
-                if(newVal>c->maxout)
-                    newVal=c->maxout;
-                if(newVal<c->minout)
-                    newVal=c->minout;    
+                if(newVal>maxVal)
+                    newVal=maxVal;
+                if(newVal<minVal)
+                    newVal=minVal;    
+                
                 newValues[c->dstDref]=newVal;
-                //printf("Do Override %f %s \n",newVal,c->data.c_str());
+                //printf("Do Override %f %f %s \n",oldVal,newVal,c->data.c_str());
             }
             else
                 newValues[c->dstDref]=newVal;

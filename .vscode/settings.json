@@ -62,5 +62,6 @@
         "semaphore": "cpp",
         "codecvt": "cpp",
         "iomanip": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

@@ -52,6 +52,8 @@ class XTControlObject
 	float maxin;
 	float minout;
 	float maxout;
+	float min=-9999;
+	float max=9999;
 	std::string data;
 };
 typedef void (* xtlua_dref_notify_f)(xtlua_dref * who, void * ref);
