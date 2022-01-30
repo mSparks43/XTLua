@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <vector>
 #include <chrono>
-#define XTVERSION "2.0.4"
+#define XTVERSION "2.0.5"
 #include <thread>
 #ifndef XPLM200
 #define XPLM200
@@ -169,7 +169,7 @@ void registerFlightLoop(){
 	pre.structSize = sizeof(pre);
 	post.structSize = sizeof(post);
 	pre.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
-	post.phase = xplm_FlightLoop_Phase_BeforeFlightModel;
+	post.phase = xplm_FlightLoop_Phase_AfterFlightModel;
 	pre.callbackFunc = xlua_pre_timer_master_cb;
 	post.callbackFunc = xlua_post_timer_master_cb;
 
