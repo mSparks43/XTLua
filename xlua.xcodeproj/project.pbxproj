@@ -39,7 +39,7 @@
 		D60205611CC7CC8C00933688 /* xpfuncs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpfuncs.h; sourceTree = "<group>"; };
 		D60205621CC7CC8C00933688 /* xptimers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xptimers.cpp; sourceTree = "<group>"; };
 		D60205631CC7CC8C00933688 /* xptimers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xptimers.h; sourceTree = "<group>"; };
-		D607B19909A556E400699BC3 /* mac.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = mac.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
+		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = xlua.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		D607B19A09A556E400699BC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D607B19909A556E400699BC3 /* mac.xpl */,
+				D607B19909A556E400699BC3 /* xlua.xpl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,7 +149,7 @@
 			);
 			name = xtlua;
 			productName = StarterPlugin;
-			productReference = D607B19909A556E400699BC3 /* mac.xpl */;
+			productReference = D607B19909A556E400699BC3 /* xlua.xpl */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -158,10 +158,17 @@
 		D607B16109A5563100699BC3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+<<<<<<< HEAD
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					D607B19809A556E400699BC3 = {
 						ProvisioningStyle = Manual;
+=======
+				LastUpgradeCheck = 0910;
+				TargetAttributes = {
+					D607B19809A556E400699BC3 = {
+						DevelopmentTeam = LPH4NFE92D;
+>>>>>>> 3dc56650a7766fd248e82275f6a6be2ed23991ac
 					};
 				};
 			};
@@ -258,8 +265,8 @@
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -274,7 +281,11 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
+<<<<<<< HEAD
 				PRODUCT_NAME = mac;
+=======
+				PREBINDING = NO;
+>>>>>>> 3dc56650a7766fd248e82275f6a6be2ed23991ac
 				SDKROOT = macosx;
 				XPSDK_ROOT = XPlaneSDK;
 			};
@@ -331,8 +342,8 @@
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -347,7 +358,7 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
-				PRODUCT_NAME = mac;
+				PREBINDING = NO;
 				SDKROOT = macosx;
 				XPSDK_ROOT = XPlaneSDK;
 			};
@@ -356,29 +367,8 @@
 		D607B19C09A556E400699BC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = deploy/;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac",
-				);
-				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"APL=1",
-					"IBM=0",
-					"LIN=0",
-					"XPLM200=1",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(XPSDK_ROOT)/CHeaders/Widgets",
-					"$(XPSDK_ROOT)/CHeaders/XPLM",
-					LuaSDK/include,
-					"$(HEADER_SEARCH_PATHS)",
-				);
-				INSTALL_PATH = xtlua/64/;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				DEVELOPMENT_TEAM = LPH4NFE92D;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -399,35 +389,18 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				PRODUCT_NAME = xlua;
 			};
 			name = Debug;
 		};
 		D607B19D09A556E400699BC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = deploy/;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac",
-				);
-				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"APL=1",
-					"IBM=0",
-					"LIN=0",
-					"XPLM200=1",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(XPSDK_ROOT)/CHeaders/Widgets",
-					"$(XPSDK_ROOT)/CHeaders/XPLM",
-					LuaSDK/include,
-					"$(HEADER_SEARCH_PATHS)",
-				);
-				INSTALL_PATH = xtlua/64/;
+				CODE_SIGN_IDENTITY = "Developer ID Application: Laminar Research (LPH4NFE92D)";
+				DEVELOPMENT_TEAM = LPH4NFE92D;
+				ENABLE_HARDENED_RUNTIME = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -448,6 +421,9 @@
 					"-Wl,_XPluginStop",
 					LuaSDK/lib/libluajit_mac.a,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				PRODUCT_NAME = xlua;
 			};
 			name = Release;
 		};
