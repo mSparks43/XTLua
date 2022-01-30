@@ -17,26 +17,26 @@ XLua is developed internally by Laminar Research and is intended to help our int
 
 XLua is **not** meant to be an "official" Lua plugin for X-Plane, and it definitely does not replace any of the existing Lua plugins, all of which have significantly more features than XLua itself.
 
-Documentation
-======
-XTLua includes most of the same exports as [XLua](https://forums.x-plane.org/index.php?/forums/topic/154351-xlua-scripting/&tab=comments#comment-1460039)
+## Release Notes
 
-Script packaging and basic structure
---
+**1.1.0r1 - 08/21/2021**
 
-XLua scripts are organized into "modules". ­ Each module is a fully independent script that runs inside your aircraft.
+Features:
+ * Upgraded to LuaJIT 2.1
+ * LuaJIT GC64 support is now enabled so that custom allocator is no longer necessary.
+ * Mac arm64 support
 
-Modules are completely independent of each other and do not share data. They are designed for isolation.
-You do not need to use more than one module. Multiple modules are provided to let work be copied as a whole from one aircraft to each other.
-Each module can use one .lua script file or more than one .lua script file, depending on author’s preferences.
-So, here are two methods you can use for this:
+**1.0.0r1 - 11/6/2017**
 
-As you described, place each script in its own directory (module) with the script name matching the folder name. See the default 747 for examples.
-You can also place multiple scripts in one directory (module). The "main" script file is loaded and run automatically. The other scripts in a directory will load and run based on naming convention used. If the script names include the directory name, they will load and run automatically (see the default C90 for examples), otherwise you will need to use dofile(script_name) to load and run the other scripts.
-Sub­folders in the scripts folder are not allowed. All modules must be within "scripts".
+Bug fixes:
+ * Support for unicode install paths on Windows.
+ * Timing source is now sim time and not user interface time. Fixes scripts breaking on pause.
+ * Debug logging of missing datarefs.
+ * Full back-trace of uncaught Lua exceptions.
 
-The file init.lua is part of the XLua plugin itself and should not be edited or removed.
+**1.0.0b1 - 11/26/16**
 
+Initial Release
 
 How a module script runs
 --
