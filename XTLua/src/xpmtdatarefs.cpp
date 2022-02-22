@@ -574,41 +574,48 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             }
             else
             {
-                std::vector<float> inVals(size); 
-                std::vector<float> outVals(val.size());
+                for(int nz=0;nz<size;nz+=32){
+                    int start=nz;
+                    int end=nz+32;
+                    if(end>size)
+                        end=size;
+                        
+                    int length=end-start;   
+                    std::vector<float> inVals(length); 
+                    std::vector<float> outVals(length);
 
-                for(int i=0;i<val.size();i++){
-                    if(val[i]->get){
-                        hasGetUpdate=true;
+                    for(int i=start;i<end;i++){
+                        if(val[i]->get){
+                            hasGetUpdate=true;
+                        }
+                        val[i]->get=false;
+                        inVals[i-start]=val[i]->value;
                     }
-                    val[i]->get=false;
-                    inVals[i]=val[i]->value;
-                }
-                //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
-                if(hasGetUpdate)
-                    XPLMGetDatavf(val[0]->ref,inVals.data(),0,(int)size);
-                
-                for(int i=0;i<size;i++){
-                    if(val[i]->set){
-                            outVals[i]=val[i]->value;
-                            val[i]->set=false;
-                            hasSetUpdate=true;
+                    //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
+                    if(hasGetUpdate)
+                        XPLMGetDatavf(val[0]->ref,inVals.data(),start,length);
+                    
+                    for(int i=start;i<end;i++){
+                        if(val[i]->set){
+                                outVals[i-start]=val[i]->value;
+                                val[i]->set=false;
+                                hasSetUpdate=true;
                         }
                         else
                         {
-                            
-                            if(hasGetUpdate){
-                                val[i]->value=inVals[i];
-                                outVals[i]=inVals[i];
+                             if(hasGetUpdate){
+                                    val[i]->value=inVals[i-start];
+                                    outVals[i-start]=inVals[i-start];
                             }else{
-                                outVals[i]=val[i]->value;
+                                outVals[i-start]=val[i]->value;
                             }
                         }
-                        
-                       // printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(), val[i]->value);
+                            
+                        // printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(), val[i]->value);
+                    }
+                    if(hasSetUpdate)
+                        XPLMSetDatavf(val[0]->ref,outVals.data(),start,length);
                 }
-                if(hasSetUpdate)
-                    XPLMSetDatavf(val[0]->ref,outVals.data(),0,(int)val.size());
             }
             
             
@@ -957,23 +964,6 @@ int XTLuaDataRefs::resolveQueue(){
                             sprintf(namec,"%p",d->m_dref);
                             std::string name=namec;
                             printf("Resolved singleton dref %s to %p\n",d->m_name.c_str(),d->m_dref);
-                            /*float val=0.0;
-                            XTLuaArrayFloat* v=new XTLuaArrayFloat;
-                            if(d->m_types & xplmType_Double){
-                                val=XPLMGetDatad(d->m_dref);
-                                v->type=xplmType_Double;
-                            }
-                            else if(d->m_types & xplmType_Float){
-                                val=XPLMGetDataf(d->m_dref);
-                                v->type=xplmType_Float;
-                            }
-                            else if(d->m_types & xplmType_Int){
-                                val=XPLMGetDatai(d->m_dref);
-                                v->type=xplmType_Int;
-                            }
-                
-                            v->value=val;
-                            v->ref=d->m_dref;*/
 
                         }
                     }
@@ -1329,15 +1319,7 @@ void XTLuaDataRefs::XTSetDatavf(
                                    float              inValue,    
                                    int                  index)
 {
-    /*if(d->m_ours){
-        
-        //printf("Our ref XTSetDatavf not implimented\n ");
-        //data_mutex.lock();
-        xlua_dref_ours(d->local_dref);
-        xlua_dref_set_array(d->local_dref,index,inValue);
-        //data_mutex.unlock();
-        //return; 
-    }*/
+
     data_mutex.lock();
     char namec[32];
     XPLMDataRef  inDataRef=d->m_dref;
@@ -1348,9 +1330,9 @@ void XTLuaDataRefs::XTSetDatavf(
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
         if(index<val.size()){
             if(!d->m_ours){
-            if(val[index]->value!=inValue)
-                val[index]->set=true;
-                changeddataRefs[name]=val;
+                if(val[index]->value!=inValue)
+                    val[index]->set=true;
+                    changeddataRefs[name]=val;
             }
             else{
                 xlua_dref_set_array(d->local_dref,index,inValue);
@@ -1358,6 +1340,27 @@ void XTLuaDataRefs::XTSetDatavf(
             val[index]->value=inValue;
             
           //printf("apply XTSetDatavf single %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),index,val[index]->value); 
+        }
+        else if(!d->m_ours){
+            //printf("apply XTSetDatavf overflow %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),index,inValue); 
+            int n=val.size();
+            for(;n<index;n++){
+                XTLuaArrayFloat* v=new XTLuaArrayFloat;
+                v->ref=d->m_dref;
+                v->type=xplmType_Float;
+                v->value=0.0;
+                v->get=true;
+                v->index=n;
+                floatdataRefs[name].push_back(v);
+            }
+            XTLuaArrayFloat* v=new XTLuaArrayFloat;
+            v->ref=d->m_dref;
+            v->type=xplmType_Float;
+            v->value=inValue;
+            v->set=true;
+            //printf("did apply XTSetDatavf overflow %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),n,inValue); 
+            v->index=n;
+            floatdataRefs[name].push_back(v);
         }
     }
     
