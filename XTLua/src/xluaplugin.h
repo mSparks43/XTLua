@@ -1,7 +1,7 @@
 //not for use inside a module
 #include <XPLMPlugin.h>
 #include <XPLMUtilities.h>
-#define PLUGINVERSION "2.1.1"
+#define PLUGINVERSION "2.2.1"
 int     XTLuaXPluginStart(char *		outSig);
 void	XTLuaXPluginStop(void);
 void XTLuaXPluginDisable(void);
