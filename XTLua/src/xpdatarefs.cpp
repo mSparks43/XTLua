@@ -585,7 +585,7 @@ xlua_dref *		xlua_create_dref(const char * name, xtlua_dref_type type, int dim, 
 		d = new xlua_dref;
 		d->m_next = l_drefs;
 		l_drefs = d;
-		TRACE_DATAREFS("Creating %s as %p\n", name,d);		
+		printf("Creating %s as %p\n", name,d);		
 	}
 	d->m_name = name;
 	d->m_index = -1;
@@ -1339,10 +1339,10 @@ void			xtlua_dref_cleanup()
 		xtlua_dref *	kill = s_drefs;
 		s_drefs = s_drefs->m_next;
 		
-		/*if(kill->m_dref && kill->m_ours)
+		if(kill->m_dref && kill->m_ours)
 		{
 			XPLMUnregisterDataAccessor(kill->m_dref);
-		}*/ //never
+		} //never
 		
 		delete kill;
 	}
@@ -1355,7 +1355,7 @@ void			xtlua_dref_cleanup()
 		if(kill->m_ours)
 		{
 			if(kill->m_dref){
-				printf("Unregistering %s\n",kill->m_name.c_str());
+				//printf("Unregistering %s\n",kill->m_name.c_str());
 				XPLMUnregisterDataAccessor(kill->m_dref);	
 			}
 		}
@@ -1594,6 +1594,8 @@ void xtlua_cmd_cleanup()
 		l_cmds = l_cmds->m_next;
 		delete k;
 	}
+	s_cmds = NULL;
+	l_cmds = NULL;
 }
 
 

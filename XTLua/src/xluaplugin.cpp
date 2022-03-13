@@ -55,16 +55,20 @@
 		return TRUE;
 	}
 #endif
+
+int id=1;
 PLUGIN_API int XPluginStart(
 						char *		outName,
 						char *		outSig,
 						char *		outDesc){
 
     //strcpy(outName, "XTLua " PLUGINVERSION);
-	sprintf(outName, "XTLua %s id%d", PLUGINVERSION, rand() % 100 + 1);
+	//char path_to_me_c[2048];
+	//XPLMGetPluginInfo(XPLMGetMyID(), NULL, path_to_me_c, NULL, NULL);
+	sprintf(outName, "XTLua %s id%d", PLUGINVERSION, XPLMGetMyID());
     //strcpy(outSig, "com.x-plane.xtlua." VERSION);
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
-	printf("XTLua being started\n");
+	printf("XTLua being started %d\n", XPLMGetMyID());
     
     return XTLuaXPluginStart(outSig);
 

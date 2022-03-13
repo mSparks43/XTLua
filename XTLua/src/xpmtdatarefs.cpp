@@ -765,6 +765,7 @@ void XTLuaDataRefs::cleanup(){
     data_mutex.lock();
     drefResolveQueue.clear();
     cmdResolveQueue.clear();
+    cmdHandlerResolveQueue.clear();
      for (auto x : floatdataRefs) {
         //int i=0;
         string name=x.first;
@@ -806,7 +807,7 @@ void XTLuaDataRefs::cleanup(){
 
 void XTLuaDataRefs::XTqueueresolve_dref(xtlua_dref * d){
     data_mutex.lock();
-    printf("will resolve %s\n",d->m_name.c_str());
+    //printf("will resolve %s\n",d->m_name.c_str());
     drefResolveQueue.push_back(d);//this needs to be done on another thread
     data_mutex.unlock();
 }
@@ -826,7 +827,7 @@ int XTLuaDataRefs::resolveQueue(){
         paused_ref=XPLMFindDataRef("sim/time/paused");
     //printf("XTLua:Resolving queue\n");
     for(xtlua_dref * d:drefResolveQueue){
-        printf("Resolving dref %s\n",d->m_name.c_str());
+        //printf("Resolving dref %s\n",d->m_name.c_str());
         if(d->m_name.rfind("xtlua/", 0) == 0){
             d->m_types =xplmType_Data;
             continue;
@@ -840,15 +841,15 @@ int XTLuaDataRefs::resolveQueue(){
             printf("Resolved local dref %s\n",d->m_name.c_str());
             continue;
         }*/
-        if(!d->m_ours)
-            printf("Not local dref %s\n",d->m_name.c_str());
+       // if(!d->m_ours)
+        //    printf("Not local dref %s\n",d->m_name.c_str());
         d->m_dref = XPLMFindDataRef(d->m_name.c_str());
         //initialise our datasets
         if(d->m_dref)
         {
             d->m_index = -1;
             d->m_types = XPLMGetDataRefTypes(d->m_dref);
-            printf("Resolved dref %s to %p as %d\n",d->m_name.c_str(),d->m_dref,d->m_types);
+            //printf("Resolved dref %s to %p as %d\n",d->m_name.c_str(),d->m_dref,d->m_types);
             if(d->m_types & (xplmType_FloatArray | xplmType_IntArray))			// an array type
             {
                 char namec[32];
@@ -861,12 +862,12 @@ int XTLuaDataRefs::resolveQueue(){
                     type=xplmType_Int;
                     
                     size=XPLMGetDatavi(d->m_dref,NULL,0,0);
-                    printf("Resolved int array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
+                    //printf("Resolved int array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
                 }
                 else{
                     
                     size=XPLMGetDatavf(d->m_dref,NULL,0,0);
-                    printf("Resolved float array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
+                    //printf("Resolved float array dref %s to %p with %d\n",d->m_name.c_str(),d->m_dref,size);
                 }
                 
                 std::vector<float> inVals(size);
@@ -887,7 +888,7 @@ int XTLuaDataRefs::resolveQueue(){
                         v->value=inIVals[i];
                     else
                         v->value=inVals[i];
-                    printf("defaulted array dref %s to %f with %d\n",d->m_name.c_str(),v->value,size);  
+                   // printf("defaulted array dref %s to %f with %d\n",d->m_name.c_str(),v->value,size);  
                     v->ref=d->m_dref;
                     v->type=type;
                     v->get=true;

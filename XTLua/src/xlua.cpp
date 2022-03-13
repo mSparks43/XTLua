@@ -62,7 +62,7 @@ static XPLMFlightLoopID	g_post_loop = NULL;
 static int				g_is_acf_inited = 0;
 XPLMDataRef				g_replay_active = NULL;
 XPLMDataRef				g_sim_period = NULL;
-
+int myID=0;
 struct lua_alloc_request_t {
 			void *	ud;
 			void *	ptr;
@@ -113,6 +113,11 @@ static void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
 }*/
 bool ready=false;
 bool loadedModules=false;
+bool liveThread=false;
+bool run=true;
+bool active=false;
+bool dirtyXTScripts=false;
+bool sleeping=false;
 static float xlua_pre_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
@@ -133,11 +138,7 @@ static float xlua_pre_timer_master_cb(
 		xtlua_dref_preUpdate();
 	return -1;
 }
-bool liveThread=false;
-bool run=true;
-bool active=false;
-bool dirtyXTScripts=false;
-bool sleeping=false;
+
 static float xlua_post_timer_master_cb(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
@@ -153,7 +154,7 @@ static float xlua_post_timer_master_cb(
 	/*else
 	for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)		
 		(*m)->post_replay();*/
-
+	
 	xtlua_dref_postUpdate();
 
 	liveThread=true;
@@ -229,7 +230,7 @@ static void findXTScripts(){
 	dirtyXTScripts=true;
 }
 static void loadXTScripts(){
-	printf("begin loading scripts\n");
+	printf("begin loading scripts %d\n",myID);
 	printf("%s\n",init_script_path.c_str());
 
 	
@@ -367,14 +368,19 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 	
 	return 0;
 }
-static void do_during_physics(){
-	printf("during_physics thread open\n");
+void do_during_physics(){
+	while(myID==0){
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		printf("during_physics thread sleeping %d\n",myID);
+	}
+	printf("during_physics thread open %d\n",myID);
 	while(!liveThread&&run){
 		std::this_thread::sleep_for(std::chrono::seconds(1));
+		printf("during_physics thread sleeping %d\n",myID);
 		sleeping=true;
 	}
 	sleeping=false; 
-	printf("during_physics thread woke up\n");
+	printf("during_physics thread woke up %d\n",myID);
 	loadXTScripts();
 	
 	loadedModules=true;
@@ -383,7 +389,8 @@ static void do_during_physics(){
 	}
 	while(liveThread&&run){
 		bool waitSleep=false;
-		if(active){
+
+		if(active&&!dirtyXTScripts){
 			sleeping=false;
 			auto start = std::chrono::high_resolution_clock::now();
 			std::vector<XTCmd> runItems=get_runQueue();
@@ -436,23 +443,33 @@ static void do_during_physics(){
 			}
 		}
 	}
+	
 	if(g_is_acf_inited)
 	{
 		for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 			(*m)->acf_unload();
 		g_is_acf_inited = 0;
 	}
-
+	sleeping=true;
 	
     //sprintf(gBob_debstr2,"simulation thread stopped\n");
     //XPLMDebugString(gBob_debstr2);
-	printf("XTLua:new during_physics thread stopped\n");
+	printf("XTLua:new during_physics thread stopped %d\n",myID);
 }
-std::thread m_thread(&do_during_physics);
+//std::thread m_thread;
+std::vector<std::thread> threads;
+char * thisSig;
 int XTLuaXPluginStart(char * outSig)
 {
 
-
+	ready=false;
+	loadedModules=false;
+	liveThread=false;
+	run=true;
+	active=false;
+	dirtyXTScripts=false;
+	sleeping=false;
+	g_is_acf_inited = 0;
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
 
@@ -475,44 +492,48 @@ int XTLuaXPluginStart(char * outSig)
 	if(outSig!=NULL)
 		sprintf(outSig,"com.x-plane.xtlua.%s.%s",plugin_base_path.c_str(),XTVERSION);
 	
-	
+	thisSig=outSig;
 	//do create datarefs on thread
 	loadXPScripts();
 	
 	findXTScripts();
 	//reload_cmd=XPLMCreateCommand("xtlua/reloadScripts","Reload all xtlua scripts");
 	//XPLMRegisterCommandHandler(reload_cmd, reloadScripts, 1,  (void *)0);
+	printf("XTLua XTLuaXPluginStart %s\n",outSig);
+	threads.push_back(std::thread(do_during_physics));
+	
 	return 1;
 }
 
 void	XTLuaXPluginStop(void)
 {
 	run=false;
-	if(m_thread.joinable())
-		m_thread.join();
-
+	for (auto& th : threads)
+		if(th.joinable())
+			th.join();
+	g_is_acf_inited = 0;
 	cleanupScripts();
-	
+	printf("XTLua XTLuaXPluginStop %d\n",myID);
 }
 
 void XTLuaXPluginDisable(void)
 {
-	printf("XTLua going to sleep\n");
+	printf("XTLua going to sleep in XTLuaXPluginDisable\n");
 	active=false;
-	while(!sleeping){
-		xtlua_dref_preUpdate();
-		xtlua_dref_postUpdate();
+	while(!sleeping&&liveThread&&run){
+		//xtlua_dref_preUpdate();
+		//xtlua_dref_postUpdate();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		xtlua_dref_postUpdate();//make double sure all calls are applied, race, but meh.
+		//xtlua_dref_postUpdate();//make double sure all calls are applied, race, but meh.
 	}
 	printf("XTLua sleeping\n");
 }
 
 int XTLuaXPluginEnable(void)
 {
-	printf("XTLua active\n");
-	
+	printf("XTLua active %d\n", XPLMGetMyID());
+	myID=XPLMGetMyID();
 	xlua_relink_all_drefs();
 	active=true;
 	return 1;
@@ -534,6 +555,8 @@ void XTLuaXPluginReceiveMessage(
 	case XPLM_MSG_PLANE_LOADED:
 		if(inParam == 0)
 			g_is_acf_inited = 0;
+		xlua_relink_all_drefs();
+		xlua_validate_drefs();
 		xlua_setLoadStatus(1);	
 		xlua_add_callout("aircraft_load");
 		//printf("XPLM_MSG_PLANE_LOADED\n");

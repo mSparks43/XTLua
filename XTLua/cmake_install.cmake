@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Install script for directory: /home/mSparks/Development/XTLua/XTLua
-=======
-# Install script for directory: /home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua
->>>>>>> 56b60d9a5ca35ffa4f001d25b9ded2654ad1980a
+# Install script for directory: /home/msparks/Development/XTLua/XTLua
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -47,44 +43,25 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-<<<<<<< HEAD
-  if(EXISTS "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
+  if(EXISTS "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl"
+         FILE "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
-=======
-  if(EXISTS "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
-    file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl"
-         RPATH "")
-  endif()
-  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
->>>>>>> 56b60d9a5ca35ffa4f001d25b9ded2654ad1980a
+   "/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-<<<<<<< HEAD
-file(INSTALL DESTINATION "/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/home/mSparks/Development/XTLua/XTLua/lin.xpl")
-  if(EXISTS "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
+  file(INSTALL DESTINATION "/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/home/msparks/Development/XTLua/XTLua/lin.xpl")
+  if(EXISTS "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/mSparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
-=======
-  file(INSTALL DESTINATION "/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64" TYPE SHARED_LIBRARY FILES "/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/lin.xpl")
-  if(EXISTS "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
->>>>>>> 56b60d9a5ca35ffa4f001d25b9ded2654ad1980a
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/msparks/Development/XTLua/XTLua/../deploy/xtlua/64/lin.xpl")
     endif()
   endif()
 endif()
@@ -100,9 +77,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-<<<<<<< HEAD
-file(WRITE "/home/mSparks/Development/XTLua/XTLua/${CMAKE_INSTALL_MANIFEST}"
-=======
-file(WRITE "/home/msparks/Development/XPlane-11-AutoATC-plugin/XTLua/XTLua/${CMAKE_INSTALL_MANIFEST}"
->>>>>>> 56b60d9a5ca35ffa4f001d25b9ded2654ad1980a
+file(WRITE "/home/msparks/Development/XTLua/XTLua/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
