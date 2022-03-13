@@ -22,10 +22,10 @@
     <ClCompile Include="src\xptimers.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Lua SDK\include\lauxlib.h" />
-    <ClInclude Include="..\Lua SDK\include\lua.h" />
-    <ClInclude Include="..\Lua SDK\include\luaconf.h" />
-    <ClInclude Include="..\Lua SDK\include\lualib.h" />
+    <ClInclude Include="..\lua_sdk\lauxlib.h" />
+    <ClInclude Include="..\lua_sdk\lua.h" />
+    <ClInclude Include="..\lua_sdk\luaconf.h" />
+    <ClInclude Include="..\lua_sdk\lualib.h" />
     <ClInclude Include="src\lua_helpers.h" />
     <ClInclude Include="src\module.h" />
     <ClInclude Include="src\xluaplugin.h" />
@@ -96,16 +96,12 @@
     <TargetName>win</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-<<<<<<< HEAD:XTLua/xtlua.vcxproj
     <OutDir>..\deploy\$(TargetName)\64\</OutDir>
-=======
-    <OutDir>.\Release\plugins\win_x64</OutDir>
->>>>>>> 3dc56650a7766fd248e82275f6a6be2ed23991ac:xlua.vcxproj
     <IntDir>.\Release\64\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.xpl</TargetExt>
     <GenerateManifest>false</GenerateManifest>
-    <TargetName>xlua</TargetName>
+    <TargetName>win</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>.\Debug\plugins\$(TargetName)\32\</OutDir>
@@ -175,7 +171,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\XPlaneSDK\CHeaders\XPLM;..\XPlaneSDK\CHeaders\Widgets;..\LuaSDK\include;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SDK\CHeaders\XPLM;..\SDK\CHeaders\Widgets;..\lua_sdk;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\64\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\64\xlua.pch</PrecompiledHeaderOutputFile>
@@ -204,8 +200,8 @@
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
       <ImportLibrary>.\Release\64\xlua.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>XPlaneSDK\Libraries\Win;LuaSDK;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;..\XPlaneSDK\Libraries\Win\XPLM_64.lib;..\XPlaneSDK\Libraries\Win\XPWidgets_64.lib;..\LuaSDK\lib\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>SDK\Libraries\Win;Lua_sdk;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Opengl32.lib;..\SDK\Libraries\Win\XPLM_64.lib;..\SDK\Libraries\Win\XPWidgets_64.lib;..\lua_sdk\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>/NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:libcmtd.lib /NODEFAULTLIB:msvcrtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -262,7 +258,7 @@
       <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\X-Plane SDK\CHeaders\XPLM;..\X-Plane SDK\CHeaders\Widgets;..\Lua SDK\include;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SDK\CHeaders\XPLM;..\SDK\CHeaders\Widgets;..\lua_sdk;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\64\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Debug\64\xlua.pch</PrecompiledHeaderOutputFile>
@@ -294,7 +290,7 @@
       <SubSystem>Console</SubSystem>
       <ImportLibrary>.\Debug\64\xlua.lib</ImportLibrary>
       <AdditionalLibraryDirectories>SDK\Libraries\Win;lua_sdk;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;..\X-Plane SDK\Libraries\Win\XPLM_64.lib;..\X-Plane SDK\Libraries\Win\XPWidgets_64.lib;..\Lua SDK\lib\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;..\SDK\Libraries\Win\XPLM_64.lib;..\SDK\Libraries\Win\XPWidgets_64.lib;..\lua_sdk\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
