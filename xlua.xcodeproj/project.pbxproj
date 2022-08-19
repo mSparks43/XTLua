@@ -23,7 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3FAB123825181D370066811B /* XPWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPWidgets.framework; path = XPlaneSDK/Libraries/Mac/XPWidgets.framework; sourceTree = "<group>"; };
+		3FAB123825181D370066811B /* XPWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPWidgets.framework; path = SDK/Libraries/Mac/XPWidgets.framework; sourceTree = "<group>"; };
 		3FAB123B25181ED70066811B /* xluaplugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xluaplugin.h; sourceTree = "<group>"; };
 		3FAB123C25181EFC0066811B /* xluaplugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xluaplugin.cpp; sourceTree = "<group>"; };
 		D60205571CC7CC8C00933688 /* lua_helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_helpers.cpp; sourceTree = "<group>"; };
@@ -42,7 +42,7 @@
 		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = xlua.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = XPlaneSDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
+		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = SDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
 		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
 		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
@@ -158,17 +158,11 @@
 		D607B16109A5563100699BC3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-<<<<<<< HEAD
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					D607B19809A556E400699BC3 = {
+						DevelopmentTeam = unknown;
 						ProvisioningStyle = Manual;
-=======
-				LastUpgradeCheck = 0910;
-				TargetAttributes = {
-					D607B19809A556E400699BC3 = {
-						DevelopmentTeam = LPH4NFE92D;
->>>>>>> 3dc56650a7766fd248e82275f6a6be2ed23991ac
 					};
 				};
 			};
@@ -216,6 +210,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -234,11 +229,16 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
 				DEPLOYMENT_LOCATION = NO;
+				DEVELOPMENT_TEAM = unknown;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				EXECUTABLE_EXTENSION = xpl;
 				FRAMEWORK_SEARCH_PATHS = "$(XPSDK_ROOT)/Libraries/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -261,12 +261,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(XPSDK_ROOT)/CHeaders/Widgets",
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
-					Luasdk,
+					lua_sdk,
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -279,15 +279,11 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					LuaSDK/lib/libluajit_mac.a,
+					lua_sdk/libluajit_mac.a,
 				);
-<<<<<<< HEAD
 				PRODUCT_NAME = mac;
-=======
-				PREBINDING = NO;
->>>>>>> 3dc56650a7766fd248e82275f6a6be2ed23991ac
 				SDKROOT = macosx;
-				XPSDK_ROOT = XPlaneSDK;
+				XPSDK_ROOT = SDK;
 			};
 			name = Debug;
 		};
@@ -295,6 +291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -313,10 +310,16 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
 				DEPLOYMENT_LOCATION = NO;
+				DEVELOPMENT_TEAM = unknown;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=*]" = "Apple Silicon";
 				EXECUTABLE_EXTENSION = xpl;
 				FRAMEWORK_SEARCH_PATHS = "$(XPSDK_ROOT)/Libraries/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -356,25 +359,24 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					LuaSDK/lib/libluajit_mac.a,
+					lua_sdk/libluajit_mac.a,
 				);
-				PREBINDING = NO;
 				SDKROOT = macosx;
-				XPSDK_ROOT = XPlaneSDK;
+				XPSDK_ROOT = SDK;
 			};
 			name = Release;
 		};
 		D607B19C09A556E400699BC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
-				DEVELOPMENT_TEAM = LPH4NFE92D;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac/XPLM.framework",
+					"$(PROJECT_DIR)/SDK/Libraries/Mac/XPLM.framework",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -387,10 +389,8 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					LuaSDK/lib/libluajit_mac.a,
+					lua_sdk/libluajit_mac.a,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				PRODUCT_NAME = xlua;
 			};
 			name = Debug;
@@ -398,15 +398,15 @@
 		D607B19D09A556E400699BC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Laminar Research (LPH4NFE92D)";
-				DEVELOPMENT_TEAM = LPH4NFE92D;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/XPlaneSDK/Libraries/Mac/XPLM.framework",
+					"$(PROJECT_DIR)/SDK/Libraries/Mac/XPLM.framework",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -419,10 +419,8 @@
 					"-Wl,_XPluginDisable",
 					"-Wl,-exported_symbol",
 					"-Wl,_XPluginStop",
-					LuaSDK/lib/libluajit_mac.a,
+					lua_sdk/libluajit_mac.a,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				PRODUCT_NAME = xlua;
 			};
 			name = Release;

@@ -1,8 +1,9 @@
 //not for use inside a module
-#include "xluaplugin.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <cstdlib>
+#include "xluaplugin.h"
 #if IBM
 	#include <Windows.h>
 	#include <Wincon.h>

@@ -578,7 +578,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     int start=nz;
                     int end=nz+32;
                     if(end>size)
-                        end=size;
+                        end=(int)size;
                         
                     int length=end-start;   
                     std::vector<float> inVals(length); 
@@ -1344,7 +1344,7 @@ void XTLuaDataRefs::XTSetDatavf(
         }
         else if(!d->m_ours){
             //printf("apply XTSetDatavf overflow %s %s[%d] = %f\n",d->m_name.c_str(),name.c_str(),index,inValue); 
-            int n=val.size();
+            int n=(int)val.size();
             for(;n<index;n++){
                 XTLuaArrayFloat* v=new XTLuaArrayFloat;
                 v->ref=d->m_dref;
