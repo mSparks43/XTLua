@@ -10,4 +10,6 @@ void XTLuaXPluginReceiveMessage(
 					XPLMPluginID	inFromWho,
 					int				inMessage,
 					void *			inParam);
+typedef void * XPLMCommandRef;
+typedef int XPLMCommandPhase;
 int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref);
