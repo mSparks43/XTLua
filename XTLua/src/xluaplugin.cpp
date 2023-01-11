@@ -55,7 +55,7 @@ bool isDebugInstance(){
 				if (chk)
 				{
 					freopen("CONOUT$", "w", stdout);
-					printf("XTLua: printing to console %s\n", buf);
+					printf("XTLua: printing to console\n");
 					//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 				}
 			}	
