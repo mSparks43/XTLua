@@ -1107,7 +1107,7 @@ void			xtlua_dref_set_string(xtlua_dref * d, const string& value)
 		xlua_data_mutex.unlock();
 		//return;
 	}*/
-	if(d->m_types & xplmType_Data)
+	if(d->m_types & xplmType_Data||d->m_name.rfind("xtlua/", 0) == 0)
 	{
 		//const char * begin = value.c_str();
 		//const char * end = begin + value.size();

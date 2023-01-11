@@ -473,7 +473,7 @@ int XTLuaXPluginStart(char * outSig)
 	g_is_acf_inited = 0;
 	g_replay_active = XPLMFindDataRef("sim/time/is_in_replay");
 	g_sim_period = XPLMFindDataRef("sim/operation/misc/frame_rate_period");
-
+	myID=XPLMGetMyID();
 
 	
 	registerFlightLoop();
@@ -534,7 +534,7 @@ void XTLuaXPluginDisable(void)
 int XTLuaXPluginEnable(void)
 {
 	printf("XTLua active %d\n", XPLMGetMyID());
-	myID=XPLMGetMyID();
+	
 	xlua_relink_all_drefs();
 	active=true;
 	return 1;

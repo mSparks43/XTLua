@@ -1214,6 +1214,25 @@ void XTLuaDataRefs::XTSetDatab(
         data_mutex.unlock();
         return;
     }
+    if(d->m_name.rfind("xtlua/fltpln", 0) == 0){
+        printf("setting flight plan %s\n",value.c_str());
+        json fpData=json::parse(value.c_str());
+        std::vector<json> waypoints=fpData.get<std::vector<json>>();
+        
+        int currentCount=XPLMCountFMSEntries();
+        printf("%d existing entries\n",currentCount);
+        for (int i=0;i<currentCount&&XPLMCountFMSEntries()>0;i++){
+            XPLMClearFMSEntry(i);
+            //printf("clear to %d existing entries\n",currentCount);
+        }
+        for(int i=0;i<waypoints.size();i++){
+            std::vector<double> waypoint=waypoints[i].get<std::vector<double>>();
+            printf("got waypoint %d\n",waypoint.size());
+            XPLMSetFMSEntryLatLon(i,(float)waypoint[0],(float)waypoint[1],(float)waypoint[2]);
+        }
+        printf("got flight plan %d\n",waypoints.size());
+        return;
+    }
     if(d->m_ours){
         //data_mutex.lock();
         xlua_dref_ours(d->local_dref);

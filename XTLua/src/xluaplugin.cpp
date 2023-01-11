@@ -4,11 +4,12 @@
 #include <string.h>
 #include <cstdlib>
 #include "xluaplugin.h"
-#if IBM
-	#include <Windows.h>
-	#include <Wincon.h>
-	#include <string>
-	bool file_exists(const std::string &name)
+#include "XPLMMenus.h"
+#include <string>
+XPLMMenuID				PluginMenu = 0;
+XPLMCommandRef			reload_cmd = nullptr;
+
+bool file_exists(const std::string &name)
 	{
     if (FILE *file = fopen(name.c_str(), "r"))
     {
@@ -20,28 +21,35 @@
         return false;
     }
 	}
+bool isDebugInstance(){
+
+	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
+	char buf[2048];
+	char dirchar = *XPLMGetDirectorySeparator();
+	XPLMGetPluginInfo(XPLMGetMyID(), NULL, buf, NULL, NULL);
+	printf("XTLua: I am: %s\n", buf);
+	char* p = buf;
+	char* slash = p;
+	while (*p)
+	{
+		if (*p == dirchar) slash = p;
+		++p;
+	}
+	++slash;
+	*slash = 0;
+	printf("XTLua: buf now: %s\n", buf);
+	strcat(buf, "xtlua_debugging.txt");
+	return  file_exists(buf);
+}
+	
+#if IBM
+	#include <Windows.h>
+	#include <Wincon.h>
+	
+	
 	BOOL APIENTRY DllMain(IN HINSTANCE dll_handle, IN DWORD call_reason, IN LPVOID reserved)
 	{
-		
-		char buf[2048];
-		char dirchar = *XPLMGetDirectorySeparator();
-		XPLMGetPluginInfo(XPLMGetMyID(), NULL, buf, NULL, NULL);
-		//printf("XTLua: I am: %s\n", buf);
-		char* p = buf;
-		char* slash = p;
-		while (*p)
-		{
-			if (*p == dirchar) slash = p;
-			++p;
-		}
-		++slash;
-		*slash = 0;
-		//printf("XTLua: buf now: %s\n", buf);
-		strcat(buf, "xtlua_debugging.txt");
-		//if (file_exists(buf)){
-			
-			
-			if (file_exists(buf))
+			if (isDebugInstance())
 			{
 				BOOL chk = AllocConsole();
 				if (chk)
@@ -50,14 +58,26 @@
 					printf("XTLua: printing to console %s\n", buf);
 					//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 				}
-			}
-			
+			}	
 		//}
 		return TRUE;
 	}
 #endif
 
 int id=1;
+enum eMenuItems : int
+{
+	MI_ResetState,
+};
+static void MenuHandler(void* menuRef, void* itemRef)
+{
+	switch ((eMenuItems)(size_t)itemRef)
+	{
+		case MI_ResetState:
+			reloadScripts(reload_cmd, xplm_CommandBegin, nullptr);
+			break;
+	}
+}
 PLUGIN_API int XPluginStart(
 						char *		outName,
 						char *		outSig,
@@ -69,8 +89,18 @@ PLUGIN_API int XPluginStart(
 	sprintf(outName, "XTLua %s id%d", PLUGINVERSION, XPLMGetMyID());
     //strcpy(outSig, "com.x-plane.xtlua." VERSION);
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
-	printf("XTLua being started %d\n", XPLMGetMyID());
-    
+	bool isDebugMode=isDebugInstance();	
+	printf("XTLua being started %d %d\n", XPLMGetMyID(),isDebugMode);
+    if(isDebugMode){
+		reload_cmd = XPLMCreateCommand("xtlua/reload_all_scripts", "Reload scripts and state for ");
+		if (reload_cmd != nullptr)
+		{
+			XPLMRegisterCommandHandler(reload_cmd, reloadScripts, 1,  (void *)0);
+		}
+		int item = XPLMAppendMenuItem(XPLMFindPluginsMenu(), outName, nullptr, 0);
+		PluginMenu = XPLMCreateMenu(outName, XPLMFindPluginsMenu(), item, MenuHandler, nullptr);
+		XPLMAppendMenuItem(PluginMenu, "Reload Scripts", (void*)MI_ResetState, 0);
+	}
     return XTLuaXPluginStart(outSig);
 
 
