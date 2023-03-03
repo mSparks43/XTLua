@@ -13,7 +13,7 @@
 #include "xpmtdatarefs.h"
 #include <stdio.h>
 #include <assert.h>
-
+#include "SerialWidget.h"
 #include "json/json.hpp"
 #include <vector>
 using nlohmann::json;
@@ -535,7 +535,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             {
                 std::vector<int> inVals(size); 
                 std::vector<int> outVals(val.size());
-                for(int i=0;i<val.size();i++){
+                for(unsigned int i=0;i<val.size();i++){
                     if(val[i]->get){
                         hasGetUpdate=true;
                     }
@@ -547,7 +547,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 if(hasGetUpdate)
                     XPLMGetDatavi(val[0]->ref,inVals.data(),0,(int)size);
                 
-                for(int i=0;i<size;i++){
+                for(long i=0;i<size;i++){
                     if(val[i]->set){
                             outVals[i]=val[i]->value;
                             val[i]->set=false;
@@ -574,17 +574,17 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             }
             else
             {
-                for(int nz=0;nz<size;nz+=32){
-                    int start=nz;
-                    int end=nz+32;
+                for(long nz=0;nz<size;nz+=32){
+                    long start=nz;
+                    long end=nz+32;
                     if(end>size)
-                        end=(int)size;
+                        end=(long)size;
                         
-                    int length=end-start;   
+                    long length=end-start;   
                     std::vector<float> inVals(length); 
                     std::vector<float> outVals(length);
 
-                    for(int i=start;i<end;i++){
+                    for(long i=start;i<end;i++){
                         if(val[i]->get){
                             hasGetUpdate=true;
                         }
@@ -595,7 +595,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     if(hasGetUpdate)
                         XPLMGetDatavf(val[0]->ref,inVals.data(),start,length);
                     
-                    for(int i=start;i<end;i++){
+                    for(long i=start;i<end;i++){
                         if(val[i]->set){
                                 outVals[i-start]=val[i]->value;
                                 val[i]->set=false;
@@ -675,7 +675,7 @@ void XTLuaDataRefs::refreshAllDataRefs(){
                 std::vector<int> inVals(size); 
                 std::vector<int> outVals(val.size());
                 hasGetUpdate=true;
-                for(int i=0;i<val.size();i++){
+                for(unsigned int i=0;i<val.size();i++){
                     val[i]->get=false;
                     inVals[i]=val[i]->value;
                 }
@@ -714,7 +714,7 @@ void XTLuaDataRefs::refreshAllDataRefs(){
                 std::vector<float> inVals(size); 
                 std::vector<float> outVals(val.size());
                 hasGetUpdate=true;
-                for(int i=0;i<val.size();i++){
+                for(unsigned int i=0;i<val.size();i++){
                     val[i]->get=false;
                     inVals[i]=val[i]->value;
                 }
@@ -742,7 +742,7 @@ void XTLuaDataRefs::updateDataRefs(){
     //printf("updateDataRefs\n");
         timeT = XPLMGetElapsedTime();
         isPaused=XPLMGetDatai(paused_ref);
-        if(updateRoll==0)
+        if(updateRoll==0&&(XPLMGetDatai(replay_ref) == 0))
         {
             updateNavDataRefs();
             
@@ -759,6 +759,7 @@ void XTLuaDataRefs::updateDataRefs(){
             
         } 
         updateRoll++;
+        serialWindow.show();
     data_mutex.unlock();
 }
 void XTLuaDataRefs::cleanup(){
@@ -825,6 +826,8 @@ int XTLuaDataRefs::resolveQueue(){
     data_mutex.lock();
     if(paused_ref==NULL)
         paused_ref=XPLMFindDataRef("sim/time/paused");
+    if(replay_ref==NULL)
+        replay_ref=XPLMFindDataRef("sim/time/is_in_replay");      
     //printf("XTLua:Resolving queue\n");
     for(xtlua_dref * d:drefResolveQueue){
         //printf("Resolving dref %s\n",d->m_name.c_str());
@@ -1105,10 +1108,8 @@ int XTLuaDataRefs::XTGetDatab(
         //printf("reading navaids %d\n",localNavaidString.length());
          skipNaviads=false;
          if(outValues!=NULL){
-             
-
              const char * charArray=localNavaidString.c_str();
-                for(int i=inOffset;i<localNavaidString.length()&&i-inOffset<inMaxBytes;i++){
+                for(unsigned int i=inOffset;i<localNavaidString.length()&&i-inOffset<(unsigned int)inMaxBytes;i++){
                     outValues[i-inOffset]=charArray[i];
                }
          }
@@ -1127,7 +1128,7 @@ int XTLuaDataRefs::XTGetDatab(
              
              
              const char * charArray=localFMSString.c_str();
-                for(int i=inOffset;i<localFMSString.length()&&i-inOffset<inMaxBytes;i++){
+                for(unsigned int i=inOffset;i<localFMSString.length()&&i-inOffset<(unsigned int)inMaxBytes;i++){
                     outValues[i-inOffset]=charArray[i];
                }
          }
@@ -1175,7 +1176,7 @@ int XTLuaDataRefs::XTGetDatab(
                     val->get=true;
                    
                 }
-                for(int i=inOffset;i<val->value.length()&&i-inOffset<inMaxBytes;i++){
+                for(unsigned int i=inOffset;i<val->value.length()&&i-inOffset<(unsigned int)inMaxBytes;i++){
                     outValues[i-inOffset]=charArray[i];
                     retVal++;
                     //printf("apply XTGetDatavf %s %s[%d/%d] %s = %f\n",d->m_name.c_str(),name.c_str(),inOffset,inMax,outValues!=NULL?"values":"size",val[i]->value);
@@ -1205,33 +1206,41 @@ void XTLuaDataRefs::XTSetDatab(
 {
     
     //char *inValues =(char *)inValue;
-    if(d->m_name.rfind("xtlua/controlObject", 0) == 0){
-        printf("creating control override object %s\n",value.c_str());
-        XTControlObject* override=new XTControlObject();
-        override->data=value;
-        data_mutex.lock();
-        controlOverrides.push_back(override);
-        data_mutex.unlock();
-        return;
-    }
-    if(d->m_name.rfind("xtlua/fltpln", 0) == 0){
-        printf("setting flight plan %s\n",value.c_str());
-        json fpData=json::parse(value.c_str());
-        std::vector<json> waypoints=fpData.get<std::vector<json>>();
-        
-        int currentCount=XPLMCountFMSEntries();
-        printf("%d existing entries\n",currentCount);
-        for (int i=0;i<currentCount&&XPLMCountFMSEntries()>0;i++){
-            XPLMClearFMSEntry(i);
-            //printf("clear to %d existing entries\n",currentCount);
+    if(d->m_name.rfind("xtlua/", 0) == 0){
+        if(d->m_name.rfind("xtlua/getserial", 0) == 0){
+                printf("get serial %s\n",value.c_str());
+                serialWindow.init(value);//open a serial entry window
+                return;
         }
-        for(int i=0;i<waypoints.size();i++){
-            std::vector<double> waypoint=waypoints[i].get<std::vector<double>>();
-            printf("got waypoint %d\n",waypoint.size());
-            XPLMSetFMSEntryLatLon(i,(float)waypoint[0],(float)waypoint[1],(float)waypoint[2]);
+        else if(d->m_name.rfind("xtlua/controlObject", 0) == 0){
+            printf("creating control override object %s\n",value.c_str());
+            XTControlObject* override=new XTControlObject();
+            override->data=value;
+            data_mutex.lock();
+            controlOverrides.push_back(override);
+            data_mutex.unlock();
+            return;
         }
-        printf("got flight plan %d\n",waypoints.size());
-        return;
+        else if(d->m_name.rfind("xtlua/fltpln", 0) == 0){
+            printf("setting flight plan %s\n",value.c_str());
+            json fpData=json::parse(value.c_str());
+            std::vector<json> waypoints=fpData.get<std::vector<json>>();
+            
+            int currentCount=XPLMCountFMSEntries();
+            printf("%d existing entries\n",currentCount);
+            printf("becoming %d entries\n",(int)waypoints.size());
+            for (int i=0;i<currentCount&&XPLMCountFMSEntries()>0;i++){
+                XPLMClearFMSEntry(i);
+                //printf("clear to %d existing entries\n",currentCount);
+            }
+            for(unsigned int i=0;i<waypoints.size();i++){
+                std::vector<double> waypoint=waypoints[i].get<std::vector<double>>();
+                printf("%d got waypoint %d\n",i,(int)waypoint.size());
+                XPLMSetFMSEntryLatLon(i,(float)waypoint[0],(float)waypoint[1],(float)waypoint[2]);
+            }
+            printf("got flight plan %d\n",waypoints.size());
+            return;
+        }
     }
     if(d->m_ours){
         //data_mutex.lock();
@@ -1299,7 +1308,7 @@ int XTLuaDataRefs::XTGetDatavf(
             if(floatdataRefs.find(name)!=floatdataRefs.end()){
                 std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
                 bool got=false;
-                for(int i=inOffset;i<val.size()&&i-inOffset<inMax;i++){
+                for(unsigned int i=inOffset;i<val.size()&&i-inOffset<(unsigned int)inMax;i++){
                      if(!d->m_ours){
                         outValues[i-inOffset]=val[i]->value;
                         val[i]->get=true;

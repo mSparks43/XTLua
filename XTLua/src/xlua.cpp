@@ -592,7 +592,7 @@ void XTLuaXPluginReceiveMessage(
 			(*m)->flight_init();
 		break;
 	case XPLM_MSG_PLANE_CRASHED:
-		assert(g_is_acf_inited);
+		//assert(g_is_acf_inited);
 		xlua_add_callout("flight_crash");
 		//printf("XPLM_MSG_PLANE_CRASHED\n");
 		for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)

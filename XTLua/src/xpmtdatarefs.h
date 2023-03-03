@@ -119,6 +119,7 @@ public:
     int isPaused=1;
     int isLoaded=0;
     void *paused_ref=NULL;
+    void *replay_ref=NULL;
     void XTCommandBegin(xtlua_cmd * cmd);
     void XTCommandEnd(xtlua_cmd * cmd);
     void XTCommandOnce(xtlua_cmd * cmd);

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\lua_helpers.cpp" />
     <ClCompile Include="src\module.cpp" />
+    <ClCompile Include="src\SerialWidget.cpp" />
     <ClCompile Include="src\xlua.cpp" />
     <ClCompile Include="src\xluaplugin.cpp" />
     <ClCompile Include="src\xpcommands.cpp" />
@@ -28,6 +29,7 @@
     <ClInclude Include="..\lua_sdk\lualib.h" />
     <ClInclude Include="src\lua_helpers.h" />
     <ClInclude Include="src\module.h" />
+    <ClInclude Include="src\SerialWidget.h" />
     <ClInclude Include="src\xluaplugin.h" />
     <ClInclude Include="src\xpcommands.h" />
     <ClInclude Include="src\xpdatarefs.h" />
