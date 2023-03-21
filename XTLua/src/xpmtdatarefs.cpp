@@ -593,7 +593,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     }
                     //int size=XPLMGetDatavf(val[0]->ref,NULL,0,0);
                     if(hasGetUpdate)
-                        XPLMGetDatavf(val[0]->ref,inVals.data(),start,length);
+                        XPLMGetDatavf(val[0]->ref,inVals.data(),(int)start,(int)length);
                     
                     for(long i=start;i<end;i++){
                         if(val[i]->set){
@@ -614,7 +614,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                         // printf("set array float %p %s[%d] = %f(%d=%d)\n",val[i]->ref,x.first.c_str(),i,val[i]->value,val.size(), val[i]->value);
                     }
                     if(hasSetUpdate)
-                        XPLMSetDatavf(val[0]->ref,outVals.data(),start,length);
+                        XPLMSetDatavf(val[0]->ref,outVals.data(),(int)start,(int)length);
                 }
             }
             
@@ -1238,7 +1238,7 @@ void XTLuaDataRefs::XTSetDatab(
                 printf("%d got waypoint %d\n",i,(int)waypoint.size());
                 XPLMSetFMSEntryLatLon(i,(float)waypoint[0],(float)waypoint[1],(float)waypoint[2]);
             }
-            printf("got flight plan %d\n",waypoints.size());
+            printf("got flight plan %d\n",(int)waypoints.size());
             return;
         }
     }

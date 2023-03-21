@@ -6,6 +6,7 @@
 #include "xluaplugin.h"
 #include "XPLMMenus.h"
 #include <string>
+
 XPLMMenuID				PluginMenu = 0;
 XPLMCommandRef			reload_cmd = nullptr;
 
@@ -23,7 +24,7 @@ bool file_exists(const std::string &name)
 	}
 bool isDebugInstance(){
 
-	XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
+    XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
 	char buf[2048];
 	char dirchar = *XPLMGetDirectorySeparator();
 	XPLMGetPluginInfo(XPLMGetMyID(), NULL, buf, NULL, NULL);

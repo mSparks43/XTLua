@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FAB123525181D370066811B /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDF016A1DED200D1426A /* XPLM.framework */; };
 		3FAB123925181D370066811B /* XPWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FAB123825181D370066811B /* XPWidgets.framework */; };
 		3FAB123D25181EFC0066811B /* xluaplugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FAB123C25181EFC0066811B /* xluaplugin.cpp */; };
 		D60205641CC7CC8C00933688 /* lua_helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60205571CC7CC8C00933688 /* lua_helpers.cpp */; };
@@ -20,6 +19,8 @@
 		D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDA916A1DEA200D1426A /* OpenGL.framework */; };
 		D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */; };
 		F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */; };
+		F4BA26DF29CA0C710042C3D8 /* SerialWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */; };
+		F4BA26E129CA0DFE0042C3D8 /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,10 +43,13 @@
 		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = xlua.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		D6A7BDF016A1DED200D1426A /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = SDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
 		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
 		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
+		F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SerialWidget.cpp; sourceTree = "<group>"; };
+		F4BA26DE29CA0C710042C3D8 /* SerialWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SerialWidget.h; sourceTree = "<group>"; };
+		F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = SDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
+		F4BA26E229CA0E5A0042C3D8 /* XPLM */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XPLM; path = SDK/CHeaders/XPLM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +60,7 @@
 				D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */,
 				D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */,
 				3FAB123925181D370066811B /* XPWidgets.framework in Frameworks */,
-				3FAB123525181D370066811B /* XPLM.framework in Frameworks */,
+				F4BA26E129CA0DFE0042C3D8 /* XPLM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +70,7 @@
 		AC4E46B809C2E0B3006B7E1B /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F4BA26E229CA0E5A0042C3D8 /* XPLM */,
 				D60205561CC7CC8C00933688 /* src */,
 			);
 			name = Source;
@@ -74,6 +79,8 @@
 		D60205561CC7CC8C00933688 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */,
+				F4BA26DE29CA0C710042C3D8 /* SerialWidget.h */,
 				3FAB123C25181EFC0066811B /* xluaplugin.cpp */,
 				3FAB123B25181ED70066811B /* xluaplugin.h */,
 				F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */,
@@ -118,10 +125,10 @@
 		D6A7BDAD16A1DEA700D1426A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */,
 				3FAB123825181D370066811B /* XPWidgets.framework */,
 				D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */,
 				D6A7BDA916A1DEA200D1426A /* OpenGL.framework */,
-				D6A7BDF016A1DED200D1426A /* XPLM.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,6 +207,7 @@
 				D60205671CC7CC8C00933688 /* xpcommands.cpp in Sources */,
 				D602056A1CC7CC8C00933688 /* xptimers.cpp in Sources */,
 				3FAB123D25181EFC0066811B /* xluaplugin.cpp in Sources */,
+				F4BA26DF29CA0C710042C3D8 /* SerialWidget.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +255,7 @@
 					"APL=1",
 					"IBM=0",
 					"LIN=0",
+					"XPLM200=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -266,7 +275,7 @@
 				);
 				MACH_O_TYPE = mh_bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",
@@ -319,7 +328,6 @@
 				DYLIB_CURRENT_VERSION = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=*]" = "Apple Silicon";
 				EXECUTABLE_EXTENSION = xpl;
 				FRAMEWORK_SEARCH_PATHS = "$(XPSDK_ROOT)/Libraries/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -327,6 +335,7 @@
 					"APL=1",
 					"IBM=0",
 					"LIN=0",
+					"XPLM200=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -361,6 +370,8 @@
 					"-Wl,_XPluginStop",
 					lua_sdk/libluajit_mac.a,
 				);
+				PRODUCT_MODULE_NAME = mac;
+				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
 				XPSDK_ROOT = SDK;
 			};
@@ -370,6 +381,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/Libraries/Mac",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -400,6 +415,10 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/Libraries/Mac",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

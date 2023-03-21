@@ -13,11 +13,11 @@ SerialWidget::SerialWidget(){
 
 }
 
-static float	displayserialwindow(
+/*static float	displayserialwindow(
                                    float                inElapsedSinceLastCall,    
                                    float                inElapsedTimeSinceLastFlightLoop,    
                                    int                  inCounter,    
-                                   void *               inRefcon); 
+                                   void *               inRefcon); */
 
 static int serialwindowHandler(
 						XPWidgetMessage			inMessage,
@@ -57,7 +57,8 @@ void SerialWidget::show(){
         std::string serial=serialWindow.getKey();
         XPLMSetDatab(sDref,(void *)serial.c_str(),0,(int)serial.size());
         char activation_Text[1024]={0};
-        int size=XPLMGetDatab(sDref,activation_Text,0,1024);
+        //nt size=
+        XPLMGetDatab(sDref,activation_Text,0,1024);
         //printf("startup is activated text=%s\n",activation_Text);
         if((std::string(activation_Text)).compare("true")==0){
              return;
@@ -121,7 +122,8 @@ int serialwindowHandler(
         if(sDref!=NULL){
             XPLMSetDatab(sDref,(void *)serial.c_str(),0,(int)serial.size());
             char activation_Text[1024]={0};
-            int size=XPLMGetDatab(sDref,activation_Text,0,1024);
+            //int size=
+            XPLMGetDatab(sDref,activation_Text,0,1024);
             //printf("is activated text=%s\n",activation_Text);
             if((std::string(activation_Text)).compare("true")==0){
                 XPDestroyWidget(w_window, 1);
