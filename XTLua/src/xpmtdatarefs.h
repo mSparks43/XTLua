@@ -117,9 +117,11 @@ private:
     int updateRoll=0;
 public:
     int isPaused=1;
+    double simTime=0;
     int isLoaded=0;
-    void *paused_ref=NULL;
-    void *replay_ref=NULL;
+    XPLMDataRef paused_ref=NULL;
+    XPLMDataRef replay_ref=NULL;
+    XPLMDataRef sim_time_ref=NULL;
     void XTCommandBegin(xtlua_cmd * cmd);
     void XTCommandEnd(xtlua_cmd * cmd);
     void XTCommandOnce(xtlua_cmd * cmd);

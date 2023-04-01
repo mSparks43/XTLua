@@ -740,8 +740,11 @@ void XTLuaDataRefs::refreshAllDataRefs(){
 void XTLuaDataRefs::updateDataRefs(){
     data_mutex.lock();
     //printf("updateDataRefs\n");
-        timeT = XPLMGetElapsedTime();
+        //timeT = XPLMGetElapsedTime();
         isPaused=XPLMGetDatai(paused_ref);
+        simTime=XPLMGetDataf(sim_time_ref);
+        //printf("time now %f %f\n",timeT,simTime);
+        timeT = simTime;
         if(updateRoll==0&&(XPLMGetDatai(replay_ref) == 0))
         {
             updateNavDataRefs();
@@ -827,7 +830,9 @@ int XTLuaDataRefs::resolveQueue(){
     if(paused_ref==NULL)
         paused_ref=XPLMFindDataRef("sim/time/paused");
     if(replay_ref==NULL)
-        replay_ref=XPLMFindDataRef("sim/time/is_in_replay");      
+        replay_ref=XPLMFindDataRef("sim/time/is_in_replay");    
+    if(sim_time_ref==NULL)
+        sim_time_ref = XPLMFindDataRef("sim/time/total_running_time_sec");  
     //printf("XTLua:Resolving queue\n");
     for(xtlua_dref * d:drefResolveQueue){
         //printf("Resolving dref %s\n",d->m_name.c_str());

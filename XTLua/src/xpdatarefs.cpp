@@ -1133,6 +1133,7 @@ void			xlua_relink_all_drefs()
 	}
 #endif
 	xtluaDefs.paused_ref=NULL;
+	xtluaDefs.sim_time_ref=NULL;
 	for(xtlua_dref * d = s_drefs; d; d = d->m_next)
 	{
 		if(d->m_dref == NULL)
