@@ -473,7 +473,7 @@ void XTLuaDataRefs::update_localNavData(){
             lastUpdatelon=lon;
             skipNaviads=true;
             firstPass=false;
-            printf("completed pass\n");
+            //printf("completed pass\n");
         }
     }
     
@@ -490,13 +490,19 @@ void XTLuaDataRefs::update_localNavData(){
 }
 void XTLuaDataRefs::updateFloatDataRefs(){
     //std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;
-    for (auto x : changeddataRefs) {
+    bool allGet=(simTime<10);
+    std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > changedList=changeddataRefs;
+    if(allGet){
+       // printf("all get active\n");
+        changedList=floatdataRefs;
+    }
+    for (auto x : changedList) {
         //int i=0;
         string name=x.first;
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
         if(val.size()==1){
             float v=val[0]->value;
-            if(val[0]->get&&!val[0]->set){
+            if((val[0]->get||allGet)&&!val[0]->set){
 
                 
                 float newVal=XPLMGetDataf(val[0]->ref);
@@ -536,7 +542,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 std::vector<int> inVals(size); 
                 std::vector<int> outVals(val.size());
                 for(unsigned int i=0;i<val.size();i++){
-                    if(val[i]->get){
+                    if(val[i]->get||allGet){
                         hasGetUpdate=true;
                     }
                     val[i]->get=false;
@@ -585,7 +591,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     std::vector<float> outVals(length);
 
                     for(long i=start;i<end;i++){
-                        if(val[i]->get){
+                        if(val[i]->get||allGet){
                             hasGetUpdate=true;
                         }
                         val[i]->get=false;
