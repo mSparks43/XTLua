@@ -118,6 +118,7 @@ private:
 public:
     int isPaused=1;
     double simTime=0;
+    double beginFlightTime=0;
     int isLoaded=0;
     XPLMDataRef paused_ref=NULL;
     XPLMDataRef replay_ref=NULL;

@@ -490,10 +490,10 @@ void XTLuaDataRefs::update_localNavData(){
 }
 void XTLuaDataRefs::updateFloatDataRefs(){
     //std::unordered_map<std::string, XTLuaFloat> incomingFloatdataRefs;
-    bool allGet=(simTime<10);
+    bool allGet=((simTime-beginFlightTime)<10);
     std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > changedList=changeddataRefs;
     if(allGet){
-       // printf("all get active\n");
+        printf("all get active\n");
         changedList=floatdataRefs;
     }
     for (auto x : changedList) {
@@ -837,8 +837,10 @@ int XTLuaDataRefs::resolveQueue(){
         paused_ref=XPLMFindDataRef("sim/time/paused");
     if(replay_ref==NULL)
         replay_ref=XPLMFindDataRef("sim/time/is_in_replay");    
-    if(sim_time_ref==NULL)
+    if(sim_time_ref==NULL){
         sim_time_ref = XPLMFindDataRef("sim/time/total_running_time_sec");  
+        beginFlightTime=XPLMGetDataf(sim_time_ref);
+    }
     //printf("XTLua:Resolving queue\n");
     for(xtlua_dref * d:drefResolveQueue){
         //printf("Resolving dref %s\n",d->m_name.c_str());
