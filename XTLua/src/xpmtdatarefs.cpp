@@ -493,7 +493,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
     bool allGet=((simTime-beginFlightTime)<10);
     std::unordered_map<std::string,std::vector<XTLuaArrayFloat*> > changedList=changeddataRefs;
     if(allGet){
-        printf("all get active\n");
+        //printf("all get active\n");
         changedList=floatdataRefs;
     }
     for (auto x : changedList) {
