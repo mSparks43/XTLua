@@ -1,6 +1,7 @@
 [submodule "XTLua/src/imgui"]
-	path = src/imgui
+	path = XTLua/src/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "XTLua/src/ImgWindow"]
-	path = src/ImgWindow
-	url = https://github.com/sparker256/xsb_public.git
+
+[submodule "XTLua/src/XTLua/src/imgui"]
+	path = XTLua/src/XTLua/src/imgui
+	url = https://github.com/ocornut/imgui.git
