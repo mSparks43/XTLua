@@ -6,11 +6,28 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 file(GLOB SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+list(APPEND SOURCE_FILES
+    "${CMAKE_SOURCE_DIR}/src/imgui/imgui.cpp"
+    "${CMAKE_SOURCE_DIR}/src/imgui/imgui_demo.cpp"
+    "${CMAKE_SOURCE_DIR}/src/imgui/imgui_draw.cpp"
+    "${CMAKE_SOURCE_DIR}/src/imgui/imgui_tables.cpp"
+    "${CMAKE_SOURCE_DIR}/src/imgui/imgui_widgets.cpp"
+    "${CMAKE_SOURCE_DIR}/src/imgui/misc/cpp/imgui_stdlib.cpp"
+    "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgFontAtlas.cpp"
+    "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgWindow.cpp"
+)
 add_library(XTLua SHARED ${SOURCE_FILES})
 
-target_compile_definitions(XTLua PUBLIC "XPLM200=1" "XPLM210=1" "XPLM300=1")
+target_compile_definitions(XTLua PUBLIC "XPLM200=1" "XPLM210=1" "XPLM300=1" "XPLM301=1" "IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1")
 
-target_include_directories(XTLua PUBLIC "include" "${CMAKE_SOURCE_DIR}/../SDK/CHeaders/XPLM" "${CMAKE_SOURCE_DIR}/../SDK/CHeaders/Widgets" "${CMAKE_SOURCE_DIR}/../lua_sdk")
+target_include_directories(XTLua PUBLIC "${CMAKE_SOURCE_DIR}/include" 
+	"${CMAKE_SOURCE_DIR}/../SDK/CHeaders/XPLM" 
+	"${CMAKE_SOURCE_DIR}/../SDK/CHeaders/Widgets" 
+	"${CMAKE_SOURCE_DIR}/../lua_sdk"
+	"${CMAKE_SOURCE_DIR}/src/imgui"
+	"${CMAKE_SOURCE_DIR}/src/imgui/misc/cpp"
+	"${CMAKE_SOURCE_DIR}/src/ImgWindow"
+)
 
 set_target_properties(XTLua PROPERTIES PREFIX "")
 set_target_properties(XTLua PROPERTIES SUFFIX ".xpl")

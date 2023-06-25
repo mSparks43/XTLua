@@ -103,7 +103,7 @@ ImgWindow::ImgWindow(
 	io.KeyMap[ImGuiKey_Space] = XPLM_VK_SPACE;
     io.KeyMap[ImGuiKey_Enter] = XPLM_VK_RETURN;
     io.KeyMap[ImGuiKey_Escape] = XPLM_VK_ESCAPE;
-    io.KeyMap[ImGuiKey_KeyPadEnter] = XPLM_VK_ENTER;
+    io.KeyMap[ImGuiKey_KeypadEnter] = XPLM_VK_ENTER;
 	io.KeyMap[ImGuiKey_A] = XPLM_VK_A;
 	io.KeyMap[ImGuiKey_C] = XPLM_VK_C;
 	io.KeyMap[ImGuiKey_V] = XPLM_VK_V;

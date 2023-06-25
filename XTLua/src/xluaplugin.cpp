@@ -4,6 +4,7 @@
 #include <string.h>
 #include <cstdlib>
 #include "xluaplugin.h"
+
 #include "XPLMMenus.h"
 #include <string>
 
