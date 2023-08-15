@@ -272,19 +272,21 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     guiFunc_ptr = guiFunc;
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_WindowBg] = ImColor(0, 0, 0, 180);
+    SetWindowDragArea(0, 5, INT_MAX, 5 + 2*int(FONT_SIZE));
     // We take the parameter combination "SelfDecorateResizeable" + "LayerFlightOverlay"
     // to mean: simulate HUD
     if (decoration  == xplm_WindowDecorationSelfDecoratedResizable &&
         layer       == xplm_WindowLayerFloatingWindows)
     {
         // let's set a fairly transparent, barely visible background
-        ImGuiStyle& style = ImGui::GetStyle();
-        style.Colors[ImGuiCol_WindowBg] = ImColor(0, 0, 0, 0x10);
+        
         // There's no window decoration, so to move the window we need to
         // activate a "drag area", here a small strip (roughly double text height)
         // at the top of the window, ie. the window can be moved by
         // dragging a spot near the window's top
-        SetWindowDragArea(0, 5, INT_MAX, 5 + 2*int(FONT_SIZE));
+        
     }
 
     // Create a flight loop id, but don't schedule it yet
@@ -298,6 +300,7 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
     
     // Define our own window title
     SetWindowTitle("Imgui v" IMGUI_VERSION " for XTLua");
+    //SetWindowTitle("AutoATC Pad");
     SetWindowResizingLimits(100, 100, 1024, 1024);
     SetVisible(true);
     
@@ -308,8 +311,8 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
     };
     
     // if not yet loaded: try loading an image for display
-    if (!image_id)
-        image_id = try2load_image(IMAGE_NAME, image_size);
+    //if (!image_id)
+     //   image_id = try2load_image(IMAGE_NAME, image_size);
     
     // copy initial table example data, init with random heading
    /* tableList = TABLE_CONTENT;

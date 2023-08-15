@@ -50,7 +50,7 @@ ImgWindow* AddWindow (void (*guiFunc)(void))
 {
     int left, top, right, bottom;
     CalcWinCoords(left, top, right, bottom);
-    XPLMWindowDecoration decoration = xplm_WindowDecorationRoundRectangle;
+    XPLMWindowDecoration decoration = xplm_WindowDecorationSelfDecoratedResizable;
     XPLMWindowLayer layer = xplm_WindowLayerFloatingWindows; 
     // This creates a ImguiWidget object inside the list,
     // which in turn creates the actual window through its constructor
