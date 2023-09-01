@@ -48,10 +48,10 @@ public:
 			void		flight_init();
 			void		flight_crash();
 			
-			void		pre_physics();
-			void		post_physics();
+			int		pre_physics();
+			int		post_physics();
 			void		post_replay();
-			void		do_callout(const char * call_name);
+			int		do_callout(const char * call_name);
 
 private:
 

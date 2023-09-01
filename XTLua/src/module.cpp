@@ -239,15 +239,15 @@ void		module::flight_crash()
 	do_callout("flight_crash");
 }
 
-void		module::pre_physics()
+int	module::pre_physics()
 {
-	do_callout("before_physics");
+	return do_callout("before_physics");
 }
 
-void		module::post_physics()
+int		module::post_physics()
 {
 	//auto start = std::chrono::high_resolution_clock::now();
-	do_callout("after_physics");
+	return do_callout("after_physics");
 	/*auto finish = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> elapsed = finish - start;
 	int diff=round(elapsed.count());
@@ -261,18 +261,19 @@ void		module::post_replay()
 	do_callout("after_replay");
 }
 
-void module::do_callout(const char * f)
+int module::do_callout(const char * f)
 {
 	if(m_interp == NULL)
-		return;
+		return 0;
 	lua_getfield(m_interp, LUA_GLOBALSINDEX, "do_callout");
 	if(lua_isnil(m_interp, -1))
 	{
 		lua_pop(m_interp, 1);
+		return 0;
 	}
 	else
 	{	
-		fmt_pcall_stdvars(m_interp,m_debug_proc,"s",f);
+		return fmt_pcall_stdvars(m_interp,m_debug_proc,"s",f);
 	}
 }
 

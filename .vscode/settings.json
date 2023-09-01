@@ -61,7 +61,12 @@
         "numbers": "cpp",
         "semaphore": "cpp",
         "codecvt": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "charconv": "cpp",
+        "set": "cpp",
+        "format": "cpp",
+        "span": "cpp",
+        "variant": "cpp"
     },
     "cmake.configureOnOpen": false
 }

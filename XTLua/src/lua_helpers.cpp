@@ -76,12 +76,15 @@ int validate_args(lua_State * L, const char * fmt)
 static int traceback(lua_State * L)
 {
 	luaL_traceback(L, L, lua_tostring(L, -1), 2);
+
+	std::string err = std::string(lua_tostring(L, -1)) + "\n";
+    XPLMDebugString(err.c_str());
 	lua_getfield(L, LUA_GLOBALSINDEX, "debug");
 	lua_getfield(L, -1, "traceback");
 	lua_pushvalue(L, 1);
 	lua_pushinteger(L, 1);
 	lua_call(L,2,1);
-
+	
 //	lua_getfield(L, LUA_GLOBALSINDEX, "STP");
 //	lua_getfield(L, -1, "stacktrace");
 //	lua_pushvalue(L, 1);
