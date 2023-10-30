@@ -1242,7 +1242,9 @@ void XTLuaDataRefs::XTSetDatab(
             int currentCount=XPLMCountFMSEntries();
             printf("%d existing entries\n",currentCount);
             printf("becoming %d entries\n",(int)waypoints.size());
-            for (int i=0;i<currentCount&&XPLMCountFMSEntries()>0;i++){
+            //int start=currentCount;
+            //for (int i=0;i<currentCount&&XPLMCountFMSEntries()>0;i++){
+            for (int i=currentCount-1;i>=0;i--){    
                 XPLMClearFMSEntry(i);
                 //printf("clear to %d existing entries\n",currentCount);
             }
@@ -1251,7 +1253,7 @@ void XTLuaDataRefs::XTSetDatab(
                 printf("%d got waypoint %d\n",i,(int)waypoint.size());
                 XPLMSetFMSEntryLatLon(i,(float)waypoint[0],(float)waypoint[1],(float)waypoint[2]);
             }
-            printf("got flight plan %d\n",(int)waypoints.size());
+            printf("got flight plan for %d entries is %d entries\n",(int)waypoints.size(),XPLMCountFMSEntries());
             return;
         }
     }

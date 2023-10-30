@@ -110,7 +110,7 @@ int         g_dragVal2  = 0;
 const std::string IMAGE_NAME = "./Resources/plugins/imgui4xp/imgui_demo.jpg";
 
 // Font size, also roughly defines height of one line
-constexpr float FONT_SIZE = 13.0f;
+constexpr float FONT_SIZE = 16.0f;
 
 /// Uses "stb_image" library to load a picture into memory
 /// @param fileName Path to image file
@@ -191,7 +191,10 @@ void configureImgWindow()
 
   // you can use any of these fonts that are provided with X-Plane or find you own.
   // Currently you can only load one font and not sure if this might change in the future.
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSans.ttf", FONT_SIZE);
+   ImFontConfig config;
+    
+  ImFontAtlas glyph_ranges;
+   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,glyph_ranges.GetGlyphRangesFull());
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/ProFontWindows", FONT_SIZE);
@@ -201,12 +204,11 @@ void configureImgWindow()
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Regular.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/tahomabd.ttf", FONT_SIZE);
 
-    ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
+    //ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
     
     // Now we merge some icons from the OpenFontsIcons font into the above font
     // (see `imgui/docs/FONTS.txt`)
-    ImFontConfig config;
-    config.MergeMode = true;
+   config.MergeMode = true;
     
     // We only read very selectively the individual glyphs we are actually using
     // to safe on texture space

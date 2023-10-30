@@ -395,8 +395,9 @@ ImgWindow::updateImgui()
 void
 ImgWindow::DrawWindowCB(XPLMWindowID /* inWindowID */, void *inRefcon)
 {
+	
 	auto *thisWindow = reinterpret_cast<ImgWindow *>(inRefcon);
-
+	//printf("DrawWindowCB %d\n",thisWindow->GetVisible());
 	thisWindow->updateImgui();
 
 	ImGui::SetCurrentContext(thisWindow->mImGuiContext);

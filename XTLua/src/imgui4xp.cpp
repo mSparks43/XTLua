@@ -75,6 +75,7 @@ void IMGGUIXPluginDisable(void) {
     
     // Cleanup the general stuff
     cleanupAfterImgWindow();
+    printf("IMGGUIXPluginDisable completed\n");
 }
 
 int IMGGUIXPluginEnable(void) {
