@@ -194,7 +194,14 @@ void configureImgWindow()
    ImFontConfig config;
     
   ImFontAtlas glyph_ranges;
-   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,glyph_ranges.GetGlyphRangesFull());
+
+  static const ImWchar fullranges[] =
+    {
+        0x0020, 0xFFFF, // Basic Latin + Latin Supplement
+        0,
+    };
+
+   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,fullranges);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/ProFontWindows", FONT_SIZE);
