@@ -232,9 +232,12 @@ static int XTLuaGetDataRefType(lua_State * L)
 		break;
 	case xlua_array:
 		{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 			char buf[256];
 			sprintf(buf,"array[%d]",xtlua_dref_get_dim(d));
 			lua_pushstring(L,buf);
+#pragma GCC diagnostic pop
 		}
 		break;
 	case xlua_string:
@@ -259,7 +262,10 @@ static int XLuaGetDataRefType(lua_State * L)
 	case xlua_array:
 		{
 			char buf[256];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 			sprintf(buf,"array[%d]",xlua_dref_get_dim(d));
+#pragma GCC diagnostic pop
 			lua_pushstring(L,buf);
 		}
 		break;

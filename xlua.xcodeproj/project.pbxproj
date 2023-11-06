@@ -19,6 +19,18 @@
 		D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDA916A1DEA200D1426A /* OpenGL.framework */; };
 		D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */; };
 		F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */; };
+		F43091612AF984EA006B9344 /* imgui_starter_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430915D2AF984EA006B9344 /* imgui_starter_window.cpp */; };
+		F43091622AF984EA006B9344 /* imgui4xp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430915E2AF984EA006B9344 /* imgui4xp.cpp */; };
+		F43091652AF98585006B9344 /* fa-solid-900.inc in Sources */ = {isa = PBXBuildFile; fileRef = F43091632AF98585006B9344 /* fa-solid-900.inc */; };
+		F43091682AF98EEC006B9344 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43091672AF98EEC006B9344 /* ApplicationServices.framework */; };
+		F430916B2AF98F7A006B9344 /* ImgFontAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430916A2AF98F7A006B9344 /* ImgFontAtlas.cpp */; };
+		F430916F2AF98FE0006B9344 /* ImgWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430916E2AF98FE0006B9344 /* ImgWindow.cpp */; };
+		F43091772AF9935F006B9344 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091702AF9935F006B9344 /* imgui_draw.cpp */; };
+		F43091782AF9935F006B9344 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091712AF9935F006B9344 /* imgui.cpp */; };
+		F43091792AF9935F006B9344 /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091722AF9935F006B9344 /* imgui_widgets.cpp */; };
+		F430917A2AF9935F006B9344 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091742AF9935F006B9344 /* imgui_tables.cpp */; };
+		F430917B2AF9935F006B9344 /* imgui_stdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091752AF9935F006B9344 /* imgui_stdlib.cpp */; };
+		F430917C2AF9935F006B9344 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F43091762AF9935F006B9344 /* imgui_demo.cpp */; };
 		F4BA26DF29CA0C710042C3D8 /* SerialWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */; };
 		F4BA26E129CA0DFE0042C3D8 /* XPLM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */; };
 /* End PBXBuildFile section */
@@ -46,6 +58,24 @@
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
 		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
 		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
+		F430915C2AF984EA006B9344 /* imgui4xp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui4xp.h; sourceTree = "<group>"; };
+		F430915D2AF984EA006B9344 /* imgui_starter_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_starter_window.cpp; sourceTree = "<group>"; };
+		F430915E2AF984EA006B9344 /* imgui4xp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui4xp.cpp; sourceTree = "<group>"; };
+		F430915F2AF984EA006B9344 /* ImgWindow */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ImgWindow; sourceTree = "<group>"; };
+		F43091602AF984EA006B9344 /* imgui_starter_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_starter_window.h; sourceTree = "<group>"; };
+		F43091632AF98585006B9344 /* fa-solid-900.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = "fa-solid-900.inc"; sourceTree = "<group>"; };
+		F43091642AF98585006B9344 /* IconsFontAwesome5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconsFontAwesome5.h; sourceTree = "<group>"; };
+		F43091662AF98594006B9344 /* imgui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = imgui; sourceTree = "<group>"; };
+		F43091672AF98EEC006B9344 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		F430916A2AF98F7A006B9344 /* ImgFontAtlas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImgFontAtlas.cpp; path = XTLua/src/ImgWindow/ImgFontAtlas.cpp; sourceTree = "<group>"; };
+		F430916E2AF98FE0006B9344 /* ImgWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImgWindow.cpp; path = XTLua/src/ImgWindow/ImgWindow.cpp; sourceTree = "<group>"; };
+		F43091702AF9935F006B9344 /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_draw.cpp; path = XTLua/src/imgui/imgui_draw.cpp; sourceTree = "<group>"; };
+		F43091712AF9935F006B9344 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui.cpp; path = XTLua/src/imgui/imgui.cpp; sourceTree = "<group>"; };
+		F43091722AF9935F006B9344 /* imgui_widgets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_widgets.cpp; path = XTLua/src/imgui/imgui_widgets.cpp; sourceTree = "<group>"; };
+		F43091732AF9935F006B9344 /* imgui4xp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui4xp.cpp; path = XTLua/src/imgui4xp.cpp; sourceTree = "<group>"; };
+		F43091742AF9935F006B9344 /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = XTLua/src/imgui/imgui_tables.cpp; sourceTree = "<group>"; };
+		F43091752AF9935F006B9344 /* imgui_stdlib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_stdlib.cpp; path = XTLua/src/imgui/misc/cpp/imgui_stdlib.cpp; sourceTree = "<group>"; };
+		F43091762AF9935F006B9344 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_demo.cpp; path = XTLua/src/imgui/imgui_demo.cpp; sourceTree = "<group>"; };
 		F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SerialWidget.cpp; sourceTree = "<group>"; };
 		F4BA26DE29CA0C710042C3D8 /* SerialWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SerialWidget.h; sourceTree = "<group>"; };
 		F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XPLM.framework; path = SDK/Libraries/Mac/XPLM.framework; sourceTree = "<group>"; };
@@ -57,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F43091682AF98EEC006B9344 /* ApplicationServices.framework in Frameworks */,
 				D6A7BDAA16A1DEA200D1426A /* OpenGL.framework in Frameworks */,
 				D6A7BDC116A1DEC000D1426A /* CoreFoundation.framework in Frameworks */,
 				3FAB123925181D370066811B /* XPWidgets.framework in Frameworks */,
@@ -79,6 +110,14 @@
 		D60205561CC7CC8C00933688 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F43091662AF98594006B9344 /* imgui */,
+				F43091632AF98585006B9344 /* fa-solid-900.inc */,
+				F43091642AF98585006B9344 /* IconsFontAwesome5.h */,
+				F430915D2AF984EA006B9344 /* imgui_starter_window.cpp */,
+				F43091602AF984EA006B9344 /* imgui_starter_window.h */,
+				F430915E2AF984EA006B9344 /* imgui4xp.cpp */,
+				F430915C2AF984EA006B9344 /* imgui4xp.h */,
+				F430915F2AF984EA006B9344 /* ImgWindow */,
 				F4BA26DD29CA0C710042C3D8 /* SerialWidget.cpp */,
 				F4BA26DE29CA0C710042C3D8 /* SerialWidget.h */,
 				3FAB123C25181EFC0066811B /* xluaplugin.cpp */,
@@ -107,6 +146,15 @@
 		D607B15F09A5563000699BC3 = {
 			isa = PBXGroup;
 			children = (
+				F43091762AF9935F006B9344 /* imgui_demo.cpp */,
+				F43091702AF9935F006B9344 /* imgui_draw.cpp */,
+				F43091752AF9935F006B9344 /* imgui_stdlib.cpp */,
+				F43091742AF9935F006B9344 /* imgui_tables.cpp */,
+				F43091722AF9935F006B9344 /* imgui_widgets.cpp */,
+				F43091712AF9935F006B9344 /* imgui.cpp */,
+				F43091732AF9935F006B9344 /* imgui4xp.cpp */,
+				F430916E2AF98FE0006B9344 /* ImgWindow.cpp */,
+				F430916A2AF98F7A006B9344 /* ImgFontAtlas.cpp */,
 				D6A7BDAD16A1DEA700D1426A /* Frameworks */,
 				AC4E46B809C2E0B3006B7E1B /* Source */,
 				D607B19A09A556E400699BC3 /* Products */,
@@ -125,6 +173,7 @@
 		D6A7BDAD16A1DEA700D1426A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F43091672AF98EEC006B9344 /* ApplicationServices.framework */,
 				F4BA26E029CA0DFE0042C3D8 /* XPLM.framework */,
 				3FAB123825181D370066811B /* XPWidgets.framework */,
 				D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */,
@@ -198,7 +247,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F43091772AF9935F006B9344 /* imgui_draw.cpp in Sources */,
+				F43091782AF9935F006B9344 /* imgui.cpp in Sources */,
+				F43091792AF9935F006B9344 /* imgui_widgets.cpp in Sources */,
+				F43091622AF984EA006B9344 /* imgui4xp.cpp in Sources */,
+				F430917A2AF9935F006B9344 /* imgui_tables.cpp in Sources */,
+				F430917B2AF9935F006B9344 /* imgui_stdlib.cpp in Sources */,
+				F430917C2AF9935F006B9344 /* imgui_demo.cpp in Sources */,
+				F430916F2AF98FE0006B9344 /* ImgWindow.cpp in Sources */,
+				F430916B2AF98F7A006B9344 /* ImgFontAtlas.cpp in Sources */,
 				D60205651CC7CC8C00933688 /* module.cpp in Sources */,
+				F43091652AF98585006B9344 /* fa-solid-900.inc in Sources */,
 				D60205681CC7CC8C00933688 /* xpdatarefs.cpp in Sources */,
 				D60205691CC7CC8C00933688 /* xpfuncs.cpp in Sources */,
 				D60205661CC7CC8C00933688 /* xlua.cpp in Sources */,
@@ -207,6 +266,7 @@
 				D60205671CC7CC8C00933688 /* xpcommands.cpp in Sources */,
 				D602056A1CC7CC8C00933688 /* xptimers.cpp in Sources */,
 				3FAB123D25181EFC0066811B /* xluaplugin.cpp in Sources */,
+				F43091612AF984EA006B9344 /* imgui_starter_window.cpp in Sources */,
 				F4BA26DF29CA0C710042C3D8 /* SerialWidget.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,10 +278,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -256,11 +316,16 @@
 					"IBM=0",
 					"LIN=0",
 					"XPLM200=1",
+					"XPLM300=1",
+					"XPLM301=1",
+					"XPLM210=1",
+					"IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -272,6 +337,15 @@
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
 					lua_sdk,
 					"$(HEADER_SEARCH_PATHS)",
+					XTLua/include,
+					XTLua/src/ImgWindow,
+					XTLua/src/,
+					XTLua/src/imgui/misc/cpp,
+					XTLua/src/imgui,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-64",
+					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-32",
 				);
 				MACH_O_TYPE = mh_bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -300,10 +374,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -336,11 +410,16 @@
 					"IBM=0",
 					"LIN=0",
 					"XPLM200=1",
+					"XPLM300=1",
+					"XPLM301=1",
+					"XPLM210=1",
+					"IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -352,6 +431,15 @@
 					"$(XPSDK_ROOT)/CHeaders/XPLM",
 					lua_sdk,
 					"$(HEADER_SEARCH_PATHS)",
+					XTLua/include,
+					XTLua/src/ImgWindow,
+					XTLua/src/,
+					XTLua/src/imgui/misc/cpp,
+					XTLua/src/imgui,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-64",
+					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-32",
 				);
 				MACH_O_TYPE = mh_bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -380,6 +468,7 @@
 		D607B19C09A556E400699BC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -413,6 +502,7 @@
 		D607B19D09A556E400699BC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
