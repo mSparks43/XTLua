@@ -165,7 +165,12 @@ inline std::string& toupper (std::string& s)
     std::for_each(s.begin(), s.end(), [](char& c) { c = toupper(c); });
     return s;
 }
-
+ static const ImWchar ranges[] = { 0x0020, 0x07FA, //  Latin + Latin Supplement
+        0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
+        0x2DE0, 0x2DFF, // Cyrillic Extended-A
+        0xA640, 0xA69F, // Cyrillic Extended-B
+        0,
+    };
 void configureImgWindow()
 {
   ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
@@ -195,13 +200,9 @@ void configureImgWindow()
     
   ImFontAtlas glyph_ranges;
 
-  static const ImWchar fullranges[] =
-    {
-        0x0020, 0xFFFF, // Basic Latin + Latin Supplement
-        0,
-    };
+   
 
-   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,fullranges);
+   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,ranges); //glyph_ranges.GetGlyphRangesCyrillic()fullranges);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/ProFontWindows", FONT_SIZE);
