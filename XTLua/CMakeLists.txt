@@ -13,6 +13,7 @@ list(APPEND SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/imgui/imgui_tables.cpp"
     "${CMAKE_SOURCE_DIR}/src/imgui/imgui_widgets.cpp"
     "${CMAKE_SOURCE_DIR}/src/imgui/misc/cpp/imgui_stdlib.cpp"
+	"${CMAKE_SOURCE_DIR}/src/imgui/misc/freetype/imgui_freetype.cpp"
     "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgFontAtlas.cpp"
     "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgWindow.cpp"
 )
@@ -27,6 +28,7 @@ target_include_directories(XTLua PUBLIC "${CMAKE_SOURCE_DIR}/include"
 	"${CMAKE_SOURCE_DIR}/src/imgui"
 	"${CMAKE_SOURCE_DIR}/src/imgui/misc/cpp"
 	"${CMAKE_SOURCE_DIR}/src/ImgWindow"
+	"${CMAKE_SOURCE_DIR}/src/imgui/misc/freetype/"
 )
 
 set_target_properties(XTLua PROPERTIES PREFIX "")

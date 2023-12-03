@@ -83,9 +83,11 @@ public:
 
     ImFontAtlas *getAtlas();
 protected:
-    ImFontAtlas *mOurAtlas;
+    //ImFontAtlas *mOurAtlas;
     bool        mTextureBound;
     int         mGLTextureNum;
+    public:
+    ImFontAtlas *mOurAtlas;
 };
 
 #endif //IMGFONTATLAS_H

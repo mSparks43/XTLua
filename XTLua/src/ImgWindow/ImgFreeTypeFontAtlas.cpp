@@ -47,7 +47,7 @@ ImgFreeTypeFontAtlas::bindTexture()
 
     unsigned char *pixData = nullptr;
     int width, height;
-    ImGuiFreeType::BuildFontAtlas(mOurAtlas, mGlobalFlags);
+   // ImGuiFreeType::BuildFontAtlas(mOurAtlas, mGlobalFlags);
     mOurAtlas->GetTexDataAsRGBA32(&pixData, &width, &height);
 
     XPLMBindTexture2d(mGLTextureNum, 0);

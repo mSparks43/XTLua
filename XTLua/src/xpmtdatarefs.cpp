@@ -11,6 +11,7 @@
 #include <XPLMDataAccess.h>
 #include <XPLMNavigation.h>
 #include "xpmtdatarefs.h"
+#include "XPLMCamera.h"
 #include <stdio.h>
 #include <assert.h>
 #include "SerialWidget.h"
@@ -1212,7 +1213,35 @@ int XTLuaDataRefs::XTGetDatab(
     data_mutex.unlock();
     return retVal;
 }
+float camData[5]={0};
+bool controllingCam=false;
+int wantsCamera=0;
+int XTLuaCameraFunc(
+                                   XPLMCameraPosition_t * outCameraPosition,   
+                                   int                  inIsLosingControl,    
+                                   void *               inRefcon)
+{
+	if (outCameraPosition && !inIsLosingControl)
+	{
 
+		outCameraPosition->x = camData[0];
+		outCameraPosition->y = camData[1];
+		outCameraPosition->z = camData[2];
+		outCameraPosition->pitch = camData[3];
+		outCameraPosition->heading = camData[4];
+		outCameraPosition->roll = 0;		
+        //printf("XTLua Did Cam Control %f %f %f %f %f\n",camData[0],camData[1],camData[2],camData[3],camData[4]);
+	}
+    else{
+        controllingCam=false;
+    }
+    //printf("XTLua Cam Control %f %f %f %f %f\n",camData[0],camData[1],camData[2],camData[3],camData[4]);
+    /* Return 0 to indicate we do not want to keep controlling the camera. */
+    int retVal=wantsCamera;
+    if(retVal==0)
+        controllingCam=false;
+	return retVal;
+}
 void XTLuaDataRefs::XTSetDatab(
                                    xtlua_dref * d,    
                                    std::string value)
@@ -1232,6 +1261,27 @@ void XTLuaDataRefs::XTSetDatab(
             data_mutex.lock();
             controlOverrides.push_back(override);
             data_mutex.unlock();
+            return;
+        }
+        else if(d->m_name.rfind("xtlua/camera", 0) == 0){
+            printf("setting camera %s\n",value.c_str());
+            json jcamData=json::parse(value.c_str());
+            std::vector<double> thiscamData=jcamData.get<std::vector<double>>();
+            bool seenData=false;
+            for(int i=0;i<5;i++){
+                //printf("setting %d to %f\n",i,(float)thiscamData[i]);
+                camData[i]=(float)thiscamData[i];
+                if(camData[i]!=0.0)
+                    seenData=true;
+            }
+            if(seenData)
+                wantsCamera=1;
+            else
+                wantsCamera=0;
+            if(!controllingCam){
+                controllingCam=true;
+                XPLMControlCamera(xplm_ControlCameraUntilViewChanges, XTLuaCameraFunc, NULL);  
+            } 
             return;
         }
         else if(d->m_name.rfind("xtlua/fltpln", 0) == 0){

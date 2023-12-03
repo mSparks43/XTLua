@@ -5,6 +5,13 @@
  *   This is a templete to allow you to use Imgui with X-Plane
  *
  *
+ * 
+C:\vcpkg\installed\x64-windows-static\lib\freetype.lib
+C:\vcpkg\installed\x64-windows-static\lib\bz2.lib
+C:\vcpkg\installed\x64-windows-static\lib\brotlidec-static.lib
+C:\vcpkg\installed\x64-windows-static\lib\brotlicommon-static.lib
+C:\vcpkg\installed\x64-windows-static\lib\libpng16.lib
+C:\vcpkg\installed\x64-windows-static\lib\zlib.lib
  *
  *
  */
@@ -50,14 +57,18 @@ ImgWindow* AddWindow (void (*guiFunc)(void))
 {
     int left, top, right, bottom;
     CalcWinCoords(left, top, right, bottom);
+    XPLMDebugString("AutoATC: AddWindow\n");
     XPLMWindowDecoration decoration = xplm_WindowDecorationSelfDecoratedResizable;
     XPLMWindowLayer layer = xplm_WindowLayerFloatingWindows; 
     // This creates a ImguiWidget object inside the list,
     // which in turn creates the actual window through its constructor
+    XPLMDebugString("AutoATC: make_shared\n");
     std::shared_ptr<ImguiWidget> window=std::make_shared<ImguiWidget>(left, top, right, bottom,
                                                         decoration,
                                                         layer,guiFunc);
+    XPLMDebugString("AutoATC: begin emplace_backd\n");
     gWndList.emplace_back(window);
+    XPLMDebugString("AutoATC: Log window emplace_back\n");
     return window.get();
 }
 
@@ -80,7 +91,7 @@ void IMGGUIXPluginDisable(void) {
 
 int IMGGUIXPluginEnable(void) {
     // Some general ImGui setup
-    configureImgWindow();
+   configureImgWindow();
     
     // Create a first window
    // AddWindow();
