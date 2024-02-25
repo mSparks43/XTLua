@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
 project(XTLua_Project)
-
+find_package(Freetype REQUIRED)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -18,7 +18,7 @@ list(APPEND SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgWindow.cpp"
 )
 add_library(XTLua SHARED ${SOURCE_FILES})
-
+target_include_directories(XTLua PUBLIC ${FREETYPE_INCLUDE_DIRS})
 target_compile_definitions(XTLua PUBLIC "XPLM200=1" "XPLM210=1" "XPLM300=1" "XPLM301=1" "IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1")
 
 target_include_directories(XTLua PUBLIC "${CMAKE_SOURCE_DIR}/include" 
