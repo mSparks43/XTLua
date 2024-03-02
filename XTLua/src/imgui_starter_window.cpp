@@ -276,7 +276,7 @@ void cleanupAfterImgWindow()
 {
     // We just destroy the font atlas
     ImgWindow::sFontAtlas.reset();
-    //ImGui::DestroyContext();
+    ImGui::DestroyContext();
 }
 
 //
