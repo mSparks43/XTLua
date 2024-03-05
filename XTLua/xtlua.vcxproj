@@ -17,7 +17,6 @@
     <ClCompile Include="src\imgui\imgui_draw.cpp" />
     <ClCompile Include="src\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\imgui\misc\freetype\imgui_freetype.cpp" />
     <ClCompile Include="src\imgui_starter_window.cpp" />
     <ClCompile Include="src\ImgWindow\ImgFontAtlas.cpp" />
     <ClCompile Include="src\ImgWindow\ImgFreeTypeFontAtlas.cpp" />
@@ -47,10 +46,8 @@
     <ClInclude Include="src\imgui\imstb_rectpack.h" />
     <ClInclude Include="src\imgui\imstb_textedit.h" />
     <ClInclude Include="src\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\imgui\misc\freetype\imgui_freetype.h" />
     <ClInclude Include="src\imgui_starter_window.h" />
     <ClInclude Include="src\ImgWindow\ImgFontAtlas.h" />
-    <ClInclude Include="src\ImgWindow\ImgFreeTypeFontAtlas.h" />
     <ClInclude Include="src\ImgWindow\ImgWindow.h" />
     <ClInclude Include="src\ImgWindow\WavFile.h" />
     <ClInclude Include="src\ImgWindow\XOGLUtils.h" />
@@ -209,6 +206,8 @@
       <ObjectFileName>.\Release\64\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\64\</ProgramDataBaseFileName>
       <StructMemberAlignment>Default</StructMemberAlignment>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -229,9 +228,10 @@
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
       <ImportLibrary>.\Release\64\xlua.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>SDK\Libraries\Win;Lua_sdk;src\imgui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;..\SDK\Libraries\Win\XPLM_64.lib;..\SDK\Libraries\Win\XPWidgets_64.lib;..\lua_sdk\lua51.lib;C:\vcpkg\installed\x64-windows\lib\freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>/NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:libcmtd.lib /NODEFAULTLIB:msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>SDK\Libraries\Win;Lua_sdk;C:\vcpkg\installed\x64-windows-static\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Opengl32.lib;..\SDK\Libraries\Win\XPLM_64.lib;..\SDK\Libraries\Win\XPWidgets_64.lib;..\lua_sdk\lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
