@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <vector>
 #include <chrono>
-#define XTVERSION "2.1.0"
+#define XTVERSION "2.1.1"
 #include <thread>
 #ifndef XPLM200
 #define XPLM200
@@ -534,6 +534,7 @@ void	XTLuaXPluginStop(void)
 void XTLuaXPluginDisable(void)
 {
 	printf("XTLua going to sleep in XTLuaXPluginDisable\n");
+	XPLMDebugString("XTLua going to sleep in XTLuaXPluginDisable\n");
 	active=false;
 	while(!sleeping&&liveThread&&run){
 		//xtlua_dref_preUpdate();
@@ -545,7 +546,7 @@ void XTLuaXPluginDisable(void)
 	printf("XTLua sleeping\n");
 	printf("IMGUIXPluginDisable\n");
 	IMGGUIXPluginDisable();
-
+	XPLMDebugString("IMGUIXPluginDisabled\n");
 }
 
 int XTLuaXPluginEnable(void)

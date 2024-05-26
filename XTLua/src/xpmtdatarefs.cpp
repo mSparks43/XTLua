@@ -342,7 +342,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
               char                outName[256]={0};    
               char                outReg[1]={0};
               XPLMGetNavAidInfo(outRef,&outType2,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
-              //printf("getting %d=%d,%d ,%s\n",i,outType,outFrequency,outID); 
+             // printf("getting XPLMGetNavAidInfo %d=%d, %d,%d ,%s\n",i,outRef,outType,outFrequency,outID); 
               double latDiff=outLatitude-outLat;
               if(latDiff>180)
                 latDiff-=360;
