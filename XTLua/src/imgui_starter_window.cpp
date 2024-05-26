@@ -173,18 +173,18 @@ inline std::string& toupper (std::string& s)
      ImGui::CreateContext(ImgWindow::sFontAtlas->mOurAtlas);
      ImGuiIO& io = ImGui::GetIO();
      ImFontConfig config;
-     ImFont* font = io.Fonts->AddFontDefault(&config);
+     //ImFont* font = io.Fonts->AddFontDefault(&config);
      XPLMDebugString("AUTOATC: AddFontDefault\n");
      config.MergeMode = true;
-     static const ImWchar this_ranges[] = { 0x0020, 0x00FF, //Latin 
+     /*static const ImWchar this_ranges[] = { 0x0020, 0x00FF, //Latin
        0x0100, 0x07FA, //  + Latin Supplement
       //0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
        0x2DE0, 0x2DFF, // Cyrillic Extended-A
        0xA640, 0xA69F, // Cyrillic Extended-B
        0,
-     };
+     };*/
      //ImFont* font1 = io.Fonts->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE);
-     ImFont* font1 = io.Fonts->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE, &config, this_ranges);
+     //ImFont* font1 = io.Fonts->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", //FONT_SIZE, &config, this_ranges);
      static ImVector<ImWchar> icon_ranges;
      ImFontGlyphRangesBuilder builder;
      XPLMDebugString("AUTOATC: AddFontFromFileTTF\n");
