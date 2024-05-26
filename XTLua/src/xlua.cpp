@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <vector>
 #include <chrono>
-#define XTVERSION "2.1.1"
+#define XTVERSION "2.1.2"
 #include <thread>
 #ifndef XPLM200
 #define XPLM200
