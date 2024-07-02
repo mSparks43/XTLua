@@ -165,8 +165,79 @@ inline std::string& toupper (std::string& s)
     std::for_each(s.begin(), s.end(), [](char& c) { c = toupper(c); });
     return s;
 }
+static const ImWchar ranges[] = { 0x0020, 0x07FA, //  Latin + Latin Supplement
+        0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
+        0x2DE0, 0x2DFF, // Cyrillic Extended-A
+        0xA640, 0xA69F, // Cyrillic Extended-B
+        0,
+    };
+void configureImgWindow()
+{
+  ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
 
- void configureImgWindow()
+  // use actual parameters to configure the font, or use one of the other methods.
+
+  // this is a post from kuroneko on x-plane.org explaining this use.
+
+  // Basic setup looks something like:
+  // To avoid bleeding VRAM like it's going out of fashion, there is only one font atlas shared over all ImgWindows
+  // and we keep the manged pointer to it in the ImgWindow class statics.
+
+  // I use the C++11 managed/smart pointers to enforce RAII behaviours rather than encouraging use of new/delete.
+  //  This means the font atlas will only get destroyed when you break all references to it.
+  // (ie: via ImgWindow::sFontAtlas.reset())  You should never really need to do that though,
+  // unless you're being disabled (because you'll lose your texture handles anyway and it's probably a good idea
+  // to forcibly tear down the font atlas then).
+
+  // It's probably a bug that the instance of ImgWindow doesn't actually take a copy of the shared_ptr to ensure
+  // the font atlas remains valid until it's destroyed.  I was working on a lot of things when I threw that update
+  // together and I was heading down that path, but I think I forgot to finish it.
+
+
+  // you can use any of these fonts that are provided with X-Plane or find you own.
+  // Currently you can only load one font and not sure if this might change in the future.
+   ImFontConfig config;
+    
+  ImFontAtlas glyph_ranges;
+
+   
+
+   ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,ranges); //glyph_ranges.GetGlyphRangesCyrillic()fullranges);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/ProFontWindows", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Bold.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/RobotoCondensed-Regular.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Light.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Regular.ttf", FONT_SIZE);
+  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/tahomabd.ttf", FONT_SIZE);
+
+    //ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
+    
+    // Now we merge some icons from the OpenFontsIcons font into the above font
+    // (see `imgui/docs/FONTS.txt`)
+   config.MergeMode = true;
+    
+    // We only read very selectively the individual glyphs we are actually using
+    // to safe on texture space
+    static ImVector<ImWchar> icon_ranges;
+    ImFontGlyphRangesBuilder builder;
+    // Add all icons that are actually used (they concatenate into one string)
+    builder.AddText(ICON_FA_TRASH_ALT ICON_FA_SEARCH
+                    ICON_FA_EXTERNAL_LINK_SQUARE_ALT
+                    ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
+                    ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
+    builder.BuildRanges(&icon_ranges);
+
+    // Merge the icon font with the text font
+    ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
+                                                          fa_solid_900_compressed_size,
+                                                          FONT_SIZE,
+                                                          &config,
+                                                          icon_ranges.Data);
+}
+
+ void configureImgWindow_win()
  {
      XPLMDebugString("AUTOATC: configureImgWindow\n");
     ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
@@ -194,7 +265,7 @@ inline std::string& toupper (std::string& s)
          ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
          ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
      builder.BuildRanges(&icon_ranges);
-     XPLMDebugString("AUTOATC: AddFontFromMemoryCompressedTTF\n");
+     XPLMDebugString("AUTOATC: AddOldFontFromMemoryCompressedTTF\n");
      // Merge the icon font with the text font
      io.Fonts->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
          fa_solid_900_compressed_size,
@@ -202,7 +273,8 @@ inline std::string& toupper (std::string& s)
          &config,
          icon_ranges.Data);
      
-     io.Fonts->Build();
+     //io.Fonts->Build();
+     XPLMDebugString("AUTOATC: configureImgWindow done\n");
  }
 void configureImgWindow_old()
 {
@@ -275,8 +347,8 @@ void configureImgWindow_old()
 void cleanupAfterImgWindow()
 {
     // We just destroy the font atlas
-    ImgWindow::sFontAtlas.reset();
-    ImGui::DestroyContext();
+    //ImgWindow::sFontAtlas.reset();
+    //ImGui::DestroyContext();
 }
 
 //
