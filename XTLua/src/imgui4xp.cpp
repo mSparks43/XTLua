@@ -92,7 +92,7 @@ void IMGGUIXPluginDisable(void) {
 int IMGGUIXPluginEnable(void) {
     // Some general ImGui setup
    configureImgWindow();
-    
+  // configureImgWindow_win();
     // Create a first window
    // AddWindow();
 

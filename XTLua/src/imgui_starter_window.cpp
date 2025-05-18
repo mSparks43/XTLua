@@ -173,8 +173,10 @@ static const ImWchar ranges[] = { 0x0020, 0x07FA, //  Latin + Latin Supplement
     };
 void configureImgWindow()
 {
+    XPLMDebugString("AUTOATC: IMGUIXPlugin make_shared\n");
   ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
-
+  ImGui::CreateContext(ImgWindow::sFontAtlas->mOurAtlas);
+  ImGuiIO& io = ImGui::GetIO();
   // use actual parameters to configure the font, or use one of the other methods.
 
   // this is a post from kuroneko on x-plane.org explaining this use.
@@ -201,19 +203,10 @@ void configureImgWindow()
   ImFontAtlas glyph_ranges;
 
    
-
+  XPLMDebugString("AUTOATC: IMGUIXPlugin AddFontFromFileTTF\n");
    ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,ranges); //glyph_ranges.GetGlyphRangesCyrillic()fullranges);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/ProFontWindows", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Bold.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/RobotoCondensed-Regular.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Light.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Roboto-Regular.ttf", FONT_SIZE);
-  // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/tahomabd.ttf", FONT_SIZE);
-
-    //ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
-    
+  //ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
+   
     // Now we merge some icons from the OpenFontsIcons font into the above font
     // (see `imgui/docs/FONTS.txt`)
    config.MergeMode = true;
@@ -223,18 +216,19 @@ void configureImgWindow()
     static ImVector<ImWchar> icon_ranges;
     ImFontGlyphRangesBuilder builder;
     // Add all icons that are actually used (they concatenate into one string)
+    XPLMDebugString("AUTOATC: IMGUIXPlugin AddText\n");
     builder.AddText(ICON_FA_TRASH_ALT ICON_FA_SEARCH
                     ICON_FA_EXTERNAL_LINK_SQUARE_ALT
                     ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
                     ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
     builder.BuildRanges(&icon_ranges);
-
+    XPLMDebugString("AUTOATC: IMGUIXPlugin AddFontFromMemoryCompressedTTF\n");
     // Merge the icon font with the text font
-    ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
-                                                          fa_solid_900_compressed_size,
-                                                          FONT_SIZE,
-                                                          &config,
-                                                          icon_ranges.Data);
+   // ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
+    //                                                      fa_solid_900_compressed_size,
+    //                                                      FONT_SIZE,
+    //                                                      &config,
+   //                                                       icon_ranges.Data);
 }
 
  void configureImgWindow_win()
@@ -348,7 +342,7 @@ void cleanupAfterImgWindow()
 {
     // We just destroy the font atlas
     //ImgWindow::sFontAtlas.reset();
-    //ImGui::DestroyContext();
+    ImGui::DestroyContext();
 }
 
 //

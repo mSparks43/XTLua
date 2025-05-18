@@ -31,7 +31,7 @@
 #include "xpdatarefs.h"
 #include "xpcommands.h"
 #include "xptimers.h"
-#include "imgui4xp.h"
+//#include "imgui4xp.h"
 using std::vector;
 
 /*
@@ -544,17 +544,17 @@ void XTLuaXPluginDisable(void)
 		//xtlua_dref_postUpdate();//make double sure all calls are applied, race, but meh.
 	}
 	printf("XTLua sleeping\n");
-	printf("IMGUIXPluginDisable\n");
-	IMGGUIXPluginDisable();
-	XPLMDebugString("IMGUIXPluginDisabled\n");
+	//printf("IMGUIXPluginDisable\n");
+	//IMGGUIXPluginDisable();
+	//XPLMDebugString("IMGUIXPluginDisabled\n");
 }
 
 int XTLuaXPluginEnable(void)
 {
 	printf("XTLua active %d\n", XPLMGetMyID());
 	printf("AUTOATC:IMGUIXPluginEnable\n");
-	XPLMDebugString("AUTOATC: IMGUIXPluginEnable\n");
-	IMGGUIXPluginEnable();
+	//XPLMDebugString("AUTOATC: IMGUIXPluginEnable\n");
+	//IMGGUIXPluginEnable();
 	XPLMDebugString("AUTOATC: xlua_relink_all_drefs\n");
 	xlua_relink_all_drefs();
 	active=true;
@@ -568,7 +568,7 @@ void XTLuaXPluginReceiveMessage(
 					void *			inParam)
 {
 	//printf("XPLM_MSG_PLANE %d\n",inMessage);
-	IMGGUIXPluginReceiveMessage(inFromWho,inMessage,inParam);
+	//IMGGUIXPluginReceiveMessage(inFromWho,inMessage,inParam);
 	if(inFromWho != XPLM_PLUGIN_XPLANE)
 		return;
 	//printf("XPLM_MSG %d\n",inMessage);	

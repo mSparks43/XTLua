@@ -16,6 +16,7 @@
 
 // Configure one-time setup like fonts
 void configureImgWindow();
+void configureImgWindow_win();
 // Cleanup one-time setup
 void cleanupAfterImgWindow();
 

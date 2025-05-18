@@ -11,16 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\imgui4xp.cpp" />
-    <ClCompile Include="src\imgui\imgui.cpp" />
-    <ClCompile Include="src\imgui\imgui_demo.cpp" />
-    <ClCompile Include="src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\imgui\imgui_tables.cpp" />
-    <ClCompile Include="src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\imgui_starter_window.cpp" />
-    <ClCompile Include="src\ImgWindow\ImgFontAtlas.cpp" />
-    <ClCompile Include="src\ImgWindow\ImgFreeTypeFontAtlas.cpp" />
-    <ClCompile Include="src\ImgWindow\ImgWindow.cpp" />
     <ClCompile Include="src\ImgWindow\WavFile.cpp" />
     <ClCompile Include="src\ImgWindow\XOGLUtils.cpp" />
     <ClCompile Include="src\lua_helpers.cpp" />
@@ -39,18 +29,6 @@
     <ClInclude Include="..\lua_sdk\lua.h" />
     <ClInclude Include="..\lua_sdk\luaconf.h" />
     <ClInclude Include="..\lua_sdk\lualib.h" />
-    <ClInclude Include="include\GL\glext.h" />
-    <ClInclude Include="include\KHR\khrplatform.h" />
-    <ClInclude Include="src\imgui4xp.h" />
-    <ClInclude Include="src\imgui\imconfig.h" />
-    <ClInclude Include="src\imgui\imgui.h" />
-    <ClInclude Include="src\imgui\imgui_internal.h" />
-    <ClInclude Include="src\imgui\imstb_rectpack.h" />
-    <ClInclude Include="src\imgui\imstb_textedit.h" />
-    <ClInclude Include="src\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\imgui_starter_window.h" />
-    <ClInclude Include="src\ImgWindow\ImgFontAtlas.h" />
-    <ClInclude Include="src\ImgWindow\ImgWindow.h" />
     <ClInclude Include="src\ImgWindow\WavFile.h" />
     <ClInclude Include="src\ImgWindow\XOGLUtils.h" />
     <ClInclude Include="src\lua_helpers.h" />
@@ -199,7 +177,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\SDK\CHeaders\XPLM;..\SDK\CHeaders\Widgets;..\lua_sdk;include;src/imgui;src/ImgWindow;src/imgui/misc/cpp/;src/imgui/misc/freetype/;C:\vcpkg\installed\x86-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SDK\CHeaders\XPLM;..\SDK\CHeaders\Widgets;..\lua_sdk;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SIMDATA_EXPORTS;IBM=1;XPLM200=1;XPLM210=1;XPLM300=1;XPLM301=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\64\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\64\xlua.pch</PrecompiledHeaderOutputFile>
