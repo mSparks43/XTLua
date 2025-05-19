@@ -228,7 +228,7 @@ void configureImgWindow()
                                                           fa_solid_900_compressed_size,
                                                           FONT_SIZE,
                                                           &config,
-   //                                                       icon_ranges.Data);
+                                                          icon_ranges.Data);
 }
 
  void configureImgWindow_win()

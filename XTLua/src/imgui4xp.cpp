@@ -82,10 +82,10 @@ void IMGGUIXPluginDisable(void) {
     // (Can't use ImgWindow::SafeDelete here as that would wait for a
     //  flight loop callback, which won't be delivered any longer.
     //  Delete should be safe here as no rendering is taking place and will no longer.)
-    gWndList.clear();
+   // gWndList.clear();
     
     // Cleanup the general stuff
-    cleanupAfterImgWindow();
+    //cleanupAfterImgWindow();
     printf("IMGGUIXPluginDisable completed\n");
 }
 
