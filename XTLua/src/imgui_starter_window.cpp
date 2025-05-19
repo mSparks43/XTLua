@@ -224,10 +224,10 @@ void configureImgWindow()
     builder.BuildRanges(&icon_ranges);
     XPLMDebugString("AUTOATC: IMGUIXPlugin AddFontFromMemoryCompressedTTF\n");
     // Merge the icon font with the text font
-   // ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
-    //                                                      fa_solid_900_compressed_size,
-    //                                                      FONT_SIZE,
-    //                                                      &config,
+    ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
+                                                          fa_solid_900_compressed_size,
+                                                          FONT_SIZE,
+                                                          &config,
    //                                                       icon_ranges.Data);
 }
 
@@ -342,7 +342,7 @@ void cleanupAfterImgWindow()
 {
     // We just destroy the font atlas
     //ImgWindow::sFontAtlas.reset();
-    ImGui::DestroyContext();
+   // ImGui::DestroyContext();
 }
 
 //
