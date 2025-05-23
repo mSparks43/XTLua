@@ -176,7 +176,8 @@ void configureImgWindow()
     XPLMDebugString("AUTOATC: IMGUIXPlugin make_shared\n");
   ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
   ImGui::CreateContext(ImgWindow::sFontAtlas->mOurAtlas);
-  ImGuiIO& io = ImGui::GetIO();
+  //ImGuiIO& io =
+  ImGui::GetIO();
   // use actual parameters to configure the font, or use one of the other methods.
 
   // this is a post from kuroneko on x-plane.org explaining this use.

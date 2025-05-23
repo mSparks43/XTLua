@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
 project(XTLua_Project)
-find_package(Freetype REQUIRED)
+#find_package(Freetype REQUIRED)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -13,7 +13,7 @@ list(APPEND SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/imgui/imgui_tables.cpp"
     "${CMAKE_SOURCE_DIR}/src/imgui/imgui_widgets.cpp"
     "${CMAKE_SOURCE_DIR}/src/imgui/misc/cpp/imgui_stdlib.cpp"
-	"${CMAKE_SOURCE_DIR}/src/imgui/misc/freetype/imgui_freetype.cpp"
+#	"${CMAKE_SOURCE_DIR}/src/imgui/misc/freetype/imgui_freetype.cpp"
     "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgFontAtlas.cpp"
     "${CMAKE_SOURCE_DIR}/src/ImgWindow/ImgWindow.cpp"
 )
