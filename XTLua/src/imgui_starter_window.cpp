@@ -461,7 +461,7 @@ float ImguiWidget::cbFlightLoop(float, float, int, void* inRefcon)
     XPLMDebugString("AutoATC: cbFlightLoop\n");
     // refcon is pointer to ImguiWidget
     ImguiWidget& wnd = *reinterpret_cast<ImguiWidget*>(inRefcon);
-XPLMDebugString("AutoATC: cbFlightLoop 2\n");
+    XPLMDebugString("AutoATC: cbFlightLoop 2\n");
     // Has user requested a change in window mode?
     if (wnd.nextWinPosMode >= 0) {
         wnd.SetWindowPositioningMode(wnd.nextWinPosMode);
