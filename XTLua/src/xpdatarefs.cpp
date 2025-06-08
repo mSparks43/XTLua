@@ -1218,7 +1218,13 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		command.xluaref=me;
 		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
-		if(runQueue.size()<60){
+		bool add=true;
+		for(XTCmd item:runQueue){
+			if(item.phase==phase&&item.runFunc==command.runFunc)
+				add=false;
+		}
+		
+		if(runQueue.size()<60&&add){
 			printf("main command %s\n",me->m_name.c_str());
 			runQueue.push_back(command);
 		}
