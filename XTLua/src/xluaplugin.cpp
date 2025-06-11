@@ -65,7 +65,23 @@ bool isDebugInstance(){
 		return TRUE;
 	}
 #endif
-
+#ifdef __linux__
+#include <X11/Xlib.h>
+static bool checkdisplayServer(){
+	Display *display;
+	int opcode, event,error;
+	display = XOpenDisplay(NULL);
+	if(!display)
+		return true;//probably headless
+	bool retVal=true;
+	if(XQueryExtension(display,"XWAYLAND",&opcode, &event,&error)){
+		XPLMDebugString("ERROR: XWayland support depreciated, please switch to a full xserver\n");
+		retVal=false;
+	}
+	XCloseDisplay(display);
+	return retVal;
+}
+#endif
 int id=1;
 enum eMenuItems : int
 {
@@ -96,6 +112,11 @@ PLUGIN_API int XPluginStart(
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
 	bool isDebugMode=isDebugInstance();	
 	printf("XTLua being started %d %d\n", XPLMGetMyID(),isDebugMode);
+#ifdef __linux__
+	if(!checkdisplayServer()){
+		return 0;
+	}
+#endif
     if(isDebugMode){
 		reload_cmd = XPLMCreateCommand("xtlua/reload_all_scripts", "Reload scripts and state for ");
 		if (reload_cmd != nullptr)
