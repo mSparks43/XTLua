@@ -371,12 +371,12 @@ int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
 void do_during_physics(){
 	while(myID==0){
 		std::this_thread::sleep_for(std::chrono::seconds(1));
-		printf("during_physics thread sleeping %d\n",myID);
+		//printf("during_physics thread sleeping %d\n",myID);
 	}
 	printf("during_physics thread open %d\n",myID);
 	while(!liveThread&&run){
 		std::this_thread::sleep_for(std::chrono::seconds(1));
-		printf("during_physics thread sleeping %d\n",myID);
+		//printf("during_physics thread sleeping %d\n",myID);
 		sleeping=true;
 	}
 	sleeping=false; 
@@ -552,7 +552,7 @@ void XTLuaXPluginDisable(void)
 int XTLuaXPluginEnable(void)
 {
 	printf("XTLua active %d\n", XPLMGetMyID());
-	printf("AUTOATC:IMGUIXPluginEnable\n");
+	//printf("AUTOATC:IMGUIXPluginEnable\n");
 	//XPLMDebugString("AUTOATC: IMGUIXPluginEnable\n");
 	//IMGGUIXPluginEnable();
 	XPLMDebugString("AUTOATC: xlua_relink_all_drefs\n");
