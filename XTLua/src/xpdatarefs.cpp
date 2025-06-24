@@ -1190,7 +1190,15 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		
 		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
-		runQueue.push_back(command);
+		bool add=true;
+		if(phase!=1)
+		for(XTCmd item:runQueue){
+			if(item.phase==phase&&item.runFunc==command.runFunc)
+				add=false;
+		}
+		if(runQueue.size()<60&&add){
+			runQueue.push_back(command);
+		}
 		data_mutex.unlock();
 	}
 	printf("Pre command %s\n",me->m_name.c_str());
@@ -1257,7 +1265,16 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		
 		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
-		runQueue.push_back(command);
+		
+		bool add=true;
+		if(phase!=1)
+		for(XTCmd item:runQueue){
+			if(item.phase==phase&&item.runFunc==command.runFunc)
+				add=false;
+		}
+		if(runQueue.size()<60&&add){
+			runQueue.push_back(command);
+		}
 		data_mutex.unlock();
 	}
 	printf("post command %s\n",me->m_name.c_str());
