@@ -83,7 +83,7 @@ double			xlua_dref_get_array(xlua_dref * who, int n);
 void			xlua_dref_set_array(xlua_dref * who, int n, double value);
 void			xtlua_dref_preUpdate();
 void			xtlua_dref_postUpdate();
-std::vector<XTCmd> get_runQueue();
+std::vector<XTCmd*> get_runQueue();
 std::vector<string> get_runMessages();
 void xtlua_localNavData();
 void xlua_add_callout(string callout);

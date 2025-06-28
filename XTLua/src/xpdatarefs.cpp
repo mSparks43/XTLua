@@ -1169,7 +1169,7 @@ void			xlua_relink_all_drefs()
 	active=true;
 }
 
-std::vector<XTCmd> runQueue;
+std::vector<XTCmd*> runQueue;
 std::vector<string> messageQueue;
 std::mutex data_mutex;
 static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void * ref)
@@ -1181,24 +1181,26 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_pre_handler){
-		XTCmd command;
-		command.runFunc=me->m_pre_handler;
-		command.m_func_ref=me->m_pre_ref;
-		command.phase=phase;
+		XTCmd *command =new XTCmd();
+		command->runFunc=me->m_pre_handler;
+		command->m_func_ref=me->m_pre_ref;
+		command->phase=phase;
 		
-		command.xluaref=me;
+		command->xluaref=me;
 		
-		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		bool add=true;
 		if(phase!=1)
-		for(XTCmd item:runQueue){
-			if(item.phase==phase&&item.runFunc==command.runFunc)
+		for(XTCmd* item:runQueue){
+			if(item->phase==phase&&item->runFunc==command->runFunc)
 				add=false;
 		}
 		if(runQueue.size()<60&&add){
 			runQueue.push_back(command);
 		}
+		else
+			delete command;
 		data_mutex.unlock();
 	}
 	printf("Pre command %s\n",me->m_name.c_str());
@@ -1219,17 +1221,17 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_main_handler){
-		XTCmd command=XTCmd();
-		command.runFunc=me->m_main_handler;
-		command.m_func_ref=me->m_main_ref;
-		command.phase=phase;
-		command.xluaref=me;
-		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		XTCmd *command=new XTCmd();
+		command->runFunc=me->m_main_handler;
+		command->m_func_ref=me->m_main_ref;
+		command->phase=phase;
+		command->xluaref=me;
+		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		bool add=true;
 		if(phase!=1)
-		for(XTCmd item:runQueue){
-			if(item.phase==phase&&item.runFunc==command.runFunc)
+		for(XTCmd* item:runQueue){
+			if(item->phase==phase&&item->runFunc==command->runFunc)
 				add=false;
 		}
 		
@@ -1237,6 +1239,8 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 			printf("main command %s %d\n",me->m_name.c_str(),phase);
 			runQueue.push_back(command);
 		}
+		else
+			delete command;
 		data_mutex.unlock();
 	}
 	
@@ -1256,25 +1260,26 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 	if(phase == xplm_CommandBegin)
 		me->m_down_time = xtluaDefs.XTGetElapsedTime();
 	if(me->m_post_handler){
-		XTCmd command;
-		command.runFunc=me->m_post_handler;
-		command.m_func_ref=me->m_post_ref;
-		command.phase=phase;
+		XTCmd *command = new XTCmd();
+		command->runFunc=me->m_post_handler;
+		command->m_func_ref=me->m_post_ref;
+		command->phase=phase;
 		
-		command.xluaref=me;
+		command->xluaref=me;
 		
-		command.duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
 		data_mutex.lock();
 		
 		bool add=true;
 		if(phase!=1)
-		for(XTCmd item:runQueue){
-			if(item.phase==phase&&item.runFunc==command.runFunc)
+		for(XTCmd* item:runQueue){
+			if(item->phase==phase&&item->runFunc==command->runFunc)
 				add=false;
 		}
 		if(runQueue.size()<60&&add){
 			runQueue.push_back(command);
 		}
+		else delete command;
 		data_mutex.unlock();
 	}
 	printf("post command %s\n",me->m_name.c_str());
@@ -1284,11 +1289,12 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		me->m_post_handler(me, phase, xtluaDefs.XTGetElapsedTime() - me->m_down_time, me->m_post_ref);*/
 	return 1;
 }
-std::vector<XTCmd> get_runQueue(){
-	std::vector<XTCmd> items;
+std::vector<XTCmd*> get_runQueue(){
+	std::vector<XTCmd*> items;
 	data_mutex.lock();
-	for(XTCmd item:runQueue)
+	for(XTCmd* item:runQueue){
 		items.push_back(item);
+	}
 	runQueue.clear();
 	data_mutex.unlock();
 	return items;

@@ -66,7 +66,8 @@
         "set": "cpp",
         "format": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "list": "cpp"
     },
     "cmake.configureOnOpen": false
 }

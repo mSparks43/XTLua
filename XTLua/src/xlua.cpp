@@ -395,9 +395,10 @@ void do_during_physics(){
 				
 				sleeping=false;
 				auto start = std::chrono::high_resolution_clock::now();
-				std::vector<XTCmd> runItems=get_runQueue();
-				for(XTCmd item:runItems){
-					item.runFunc(item.xluaref, item.phase, item.duration, item.m_func_ref);
+				std::vector<XTCmd*> runItems=get_runQueue();
+				for(XTCmd* item:runItems){
+					item->runFunc(item->xluaref, item->phase, item->duration, item->m_func_ref);
+					delete item;
 				}
 				xtlua_do_timers_for_time(xlua_get_simulated_time(),xlua_ispaused());
 				std::vector<string> msgItems=get_runMessages();
