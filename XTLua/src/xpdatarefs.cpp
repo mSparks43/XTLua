@@ -1193,7 +1193,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		bool add=true;
 		if(phase!=1)
 		for(XTCmd* item:runQueue){
-			if(item->phase==phase&&item->runFunc==command->runFunc)
+			if(item->phase==phase&&item->runFunc==command->runFunc&&item->m_func_ref==command->m_func_ref)
 				add=false;
 		}
 		if(runQueue.size()<60&&add){
@@ -1231,7 +1231,7 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		bool add=true;
 		if(phase!=1)
 		for(XTCmd* item:runQueue){
-			if(item->phase==phase&&item->runFunc==command->runFunc)
+			if(item->phase==phase&&item->runFunc==command->runFunc&&item->m_func_ref==command->m_func_ref)
 				add=false;
 		}
 		
@@ -1273,7 +1273,7 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		bool add=true;
 		if(phase!=1)
 		for(XTCmd* item:runQueue){
-			if(item->phase==phase&&item->runFunc==command->runFunc)
+			if(item->phase==phase&&item->runFunc==command->runFunc&&item->m_func_ref==command->m_func_ref)
 				add=false;
 		}
 		if(runQueue.size()<60&&add){
