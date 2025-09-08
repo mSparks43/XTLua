@@ -304,6 +304,16 @@ static void loadXPScripts(){
 }
 
 static void cleanupScripts(){
+	if(g_pre_loop!=NULL)
+		XPLMDestroyFlightLoop(g_pre_loop);
+	if(g_post_loop!=NULL)
+		XPLMDestroyFlightLoop(g_post_loop);
+	g_pre_loop = NULL;
+	g_post_loop = NULL;	
+	g_is_acf_inited = 0;
+	xtlua_dref_cleanup();
+	xtlua_cmd_cleanup();
+	xtlua_timer_cleanup();
 	for(vector<module *>::iterator m = xp_modules.begin(); m != xp_modules.end(); ++m)
 		delete (*m);
 	xp_modules.clear();
@@ -312,16 +322,7 @@ static void cleanupScripts(){
 	g_modules.clear();
 	script_paths.clear();
 	
-	if(g_pre_loop!=NULL)
-	XPLMDestroyFlightLoop(g_pre_loop);
-	if(g_post_loop!=NULL)
-	XPLMDestroyFlightLoop(g_post_loop);
-	g_pre_loop = NULL;
-	g_post_loop = NULL;	
-	g_is_acf_inited = 0;
-	xtlua_dref_cleanup();
-	xtlua_cmd_cleanup();
-	xtlua_timer_cleanup();
+	
 }
 
 int reloadScripts(XPLMCommandRef c, XPLMCommandPhase phase, void * ref){
