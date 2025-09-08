@@ -52,7 +52,7 @@
 		D60205611CC7CC8C00933688 /* xpfuncs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpfuncs.h; sourceTree = "<group>"; };
 		D60205621CC7CC8C00933688 /* xptimers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xptimers.cpp; sourceTree = "<group>"; };
 		D60205631CC7CC8C00933688 /* xptimers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xptimers.h; sourceTree = "<group>"; };
-		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = xlua.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
+		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = xlua.xpl; path = /Users/zemsair/Documents/Development/XTLua/deploy/deploy/xlua.xpl; sourceTree = "<absolute>"; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
@@ -165,7 +165,6 @@
 		D607B19A09A556E400699BC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D607B19909A556E400699BC3 /* xlua.xpl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,10 +299,12 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
-				DEPLOYMENT_LOCATION = NO;
+				DEPLOYMENT_LOCATION = YES;
 				DEVELOPMENT_TEAM = unknown;
+				DSTROOT = deploy/;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
+				DYLIB_INSTALL_NAME_BASE = mac.xpl;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_ARCHS = "";
@@ -342,6 +343,8 @@
 					XTLua/src/imgui/misc/cpp,
 					XTLua/src/imgui,
 				);
+				INSTALL_PATH = deploy/;
+				LD_DYLIB_INSTALL_NAME = deploy/64/mac.xpl;
 				LIBRARY_SEARCH_PATHS = (
 					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-64",
 					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-32",
@@ -363,6 +366,7 @@
 					"-Wl,_XPluginStop",
 					lua_sdk/libluajit_mac.a,
 				);
+				PRODUCT_MODULE_NAME = mac;
 				PRODUCT_NAME = mac;
 				SDKROOT = macosx;
 				XPSDK_ROOT = SDK;
@@ -395,10 +399,12 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
-				DEPLOYMENT_LOCATION = NO;
+				DEPLOYMENT_LOCATION = YES;
 				DEVELOPMENT_TEAM = unknown;
+				DSTROOT = deploy/;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
+				DYLIB_INSTALL_NAME_BASE = mac.xpl;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXCLUDED_ARCHS = "";
 				EXECUTABLE_EXTENSION = xpl;
@@ -435,6 +441,8 @@
 					XTLua/src/imgui/misc/cpp,
 					XTLua/src/imgui,
 				);
+				INSTALL_PATH = deploy/;
+				LD_DYLIB_INSTALL_NAME = deploy/64/mac.xpl;
 				LIBRARY_SEARCH_PATHS = (
 					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-64",
 					"XTLua/src/imgui/examples/libs/glfw/lib-vc2010-32",
