@@ -293,6 +293,20 @@ static int XTLuaSetNumber(lua_State * L)
 	xtlua_dref_set_number(d,v);
 	return 0;	
 }
+static int XLuaExistingDataRef(lua_State * L)
+{
+	const char * s = luaL_checkstring(L, 1);
+	XPLMDataRef dRefcheckother = XPLMFindDataRef(s);
+    if(!dRefcheckother){
+        printf("no %s\n",s);
+		lua_pushnumber(L, 0);
+	}
+    else {
+        printf("existing %s\n",s); 
+		lua_pushnumber(L, 1);
+	}
+    return 1;
+}
 static int XLuaGetNumber(lua_State * L)
 {
 	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
@@ -641,7 +655,8 @@ static int XLuaIsTimerScheduled(lua_State * L)
 	FUNC(XLuaCreateTimer) \
 	FUNC(XLuaRunTimer) \
 	FUNC(XLuaIsTimerScheduled) \
-	FUNC(XLuaCreateDataRef)
+	FUNC(XLuaCreateDataRef)\
+	FUNC(XLuaExistingDataRef)
 
 void	add_xpfuncs_to_interp(lua_State * L,bool isXT)
 {
