@@ -1117,6 +1117,11 @@ int XTLuaDataRefs::XTGetDatab(
         data_mutex.unlock();
         return 0;
     }
+    if(d->m_name.rfind("xtlua/currentFMS", 0) == 0){
+        printf("cant read currentFMS object\n");
+        data_mutex.unlock();
+        return 0;
+    }
     if(d->m_name.rfind("xtlua/navaids", 0) == 0){
        // std::string tS="testString";
         //printf("reading navaids %d\n",localNavaidString.length());
@@ -1253,6 +1258,21 @@ void XTLuaDataRefs::XTSetDatab(
                 printf("get serial %s\n",value.c_str());
                 serialWindow.init(value);//open a serial entry window
                 return;
+        }
+        else if(d->m_name.rfind("xtlua/currentFMS", 0) == 0){
+            json fPlan=json::parse(incomingFMSString.c_str());
+
+            printf("setting current FMS target to %s\n",value.c_str());
+            for(int i=0;i<fPlan.size();i++){
+                string cName=fPlan[i][7].get<std::string>();
+                printf("current %d is %s\n",i,cName.c_str());
+                if(cName==value){
+                    XPLMSetDestinationFMSEntry(i);
+                    return;
+                }
+            }
+            //
+            return;
         }
         else if(d->m_name.rfind("xtlua/controlObject", 0) == 0){
             printf("creating control override object %s\n",value.c_str());
