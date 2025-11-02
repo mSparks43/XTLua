@@ -1259,6 +1259,16 @@ void XTLuaDataRefs::XTSetDatab(
                 serialWindow.init(value);//open a serial entry window
                 return;
         }
+        else if(d->m_name.rfind("xtlua/currentFMSID", 0) == 0){
+            json fPlan=json::parse(incomingFMSString.c_str());
+            std::string::size_type sz;   // alias of size_t
+
+            int i_val = std::stoi (value,&sz)-1;
+            printf("setting current FMS target to %d\n",i_val);
+            XPLMSetDestinationFMSEntry(i_val);
+            //
+            return;
+        }
         else if(d->m_name.rfind("xtlua/currentFMS", 0) == 0){
             json fPlan=json::parse(incomingFMSString.c_str());
 

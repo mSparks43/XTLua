@@ -67,7 +67,12 @@
         "format": "cpp",
         "span": "cpp",
         "variant": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "complex": "cpp",
+        "future": "cpp",
+        "queue": "cpp",
+        "stdfloat": "cpp",
+        "text_encoding": "cpp"
     },
     "cmake.configureOnOpen": false
 }
