@@ -321,6 +321,11 @@ void XTLuaDataRefs::addNavData(int    id,
 void XTLuaDataRefs::updateNavDataRefs(){
     int entries=XPLMCountFMSEntries();
     int currentIndex=XPLMGetDestinationFMSEntry();
+    int currentView=XPLMGetDisplayedFMSEntry();
+    json dVdata = json::array();
+    dVdata[0]=currentView+1;
+    currentDisplayedEntry=dVdata.dump();
+   // printf("currentView XPLMGetDisplayedFMSEntry=%d\n",currentView);
     json nVdata =json::array();
     int count=0;
     for(int i=0;i<entries;i++){
@@ -1122,6 +1127,17 @@ int XTLuaDataRefs::XTGetDatab(
         data_mutex.unlock();
         return 0;
     }
+    if(d->m_name.rfind("xtlua/xpFMSData", 0) == 0){
+        if(outValues!=NULL){
+            const char * charArray=currentDisplayedEntry.c_str();
+            for(unsigned int i=inOffset;i<currentDisplayedEntry.length()&&i-inOffset<(unsigned int)inMaxBytes;i++){
+                outValues[i-inOffset]=charArray[i];
+            }
+        }
+        int retVal=(int)currentDisplayedEntry.length();
+        data_mutex.unlock();
+        return retVal;
+    } 
     if(d->m_name.rfind("xtlua/navaids", 0) == 0){
        // std::string tS="testString";
         //printf("reading navaids %d\n",localNavaidString.length());
@@ -1335,6 +1351,9 @@ void XTLuaDataRefs::XTSetDatab(
             }
             printf("got flight plan for %d entries is %d entries\n",(int)waypoints.size(),XPLMCountFMSEntries());
             return;
+        }
+        else if(d->m_name.rfind("xtlua/xpFMSData", 0) == 0){
+             printf("set xtlua/xpFMSData is INOP\n");
         }
     }
     if(d->m_ours){

@@ -97,6 +97,7 @@ private:
     std::string localNavaidString;
     std::string incomingFMSString;
     std::string localFMSString;
+    std::string currentDisplayedEntry;
     //std::unordered_map<std::string, XTCmd> startCmds;
     //std::unordered_map<std::string, XTCmd> stopCmds;
     //std::unordered_map<std::string, XTCmd> fireCmds;
