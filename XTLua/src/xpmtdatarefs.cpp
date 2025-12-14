@@ -1285,6 +1285,17 @@ void XTLuaDataRefs::XTSetDatab(
             //
             return;
         }
+        else if(d->m_name.rfind("xtlua/loadtoFMS", 0) == 0){
+            printf("autoload FMS\n");
+            int currentCount=XPLMCountFMSEntries();
+            for (int i=currentCount-1;i>=0;i--){    
+                XPLMClearFMSEntry(i);
+                
+            }
+            printf("loading %s\n",value.c_str());
+            XPLMLoadFMSFlightPlan(0,value.c_str(),strlen(value.c_str()));
+            return;
+        }
         else if(d->m_name.rfind("xtlua/currentFMS", 0) == 0){
             json fPlan=json::parse(incomingFMSString.c_str());
 
