@@ -19,6 +19,7 @@
 #include <vector>
 using nlohmann::json;
 static std::mutex data_mutex;
+typedef void (*XPLMLoadFMSFlightPlan_f)(int inDevice, const char * inBuffer, unsigned int inBufferLen);
 
 void XTLuaDataRefs::XTCommandBegin(xtlua_cmd * cmd){
     data_mutex.lock();
@@ -1293,7 +1294,10 @@ void XTLuaDataRefs::XTSetDatab(
                 
             }
             printf("loading %s\n",value.c_str());
-            XPLMLoadFMSFlightPlan(0,value.c_str(),strlen(value.c_str()));
+            XPLMLoadFMSFlightPlan_f gLoadFMSFlightPlan = (XPLMLoadFMSFlightPlan_f)XPLMFindSymbol("XPLMLoadFMSFlightPlan");
+            if (gLoadFMSFlightPlan != NULL) {
+                 gLoadFMSFlightPlan(0,value.c_str(),strlen(value.c_str()));
+            }
             return;
         }
         else if(d->m_name.rfind("xtlua/currentFMS", 0) == 0){
