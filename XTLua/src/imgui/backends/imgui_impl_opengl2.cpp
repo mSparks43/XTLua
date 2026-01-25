@@ -63,6 +63,8 @@
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
+#include <GL/glext.h>
+
 #endif
 
 struct ImGui_ImplOpenGL2_Data
