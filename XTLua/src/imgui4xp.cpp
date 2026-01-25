@@ -70,7 +70,7 @@ ImgWindow* AddWindow (void (*guiFunc)(void))
                                                         decoration,
                                                         layer,guiFunc);                                            
     XPLMDebugString("XTLua: begin emplace_backd\n");
-   // gWndList.emplace_back(window);
+    gWndList.emplace_back(window);
     XPLMDebugString("XTLua: Log window emplace_back\n");
     return window;
 }
@@ -85,7 +85,7 @@ void IMGGUIXPluginDisable(void) {
     // (Can't use ImgWindow::SafeDelete here as that would wait for a
     //  flight loop callback, which won't be delivered any longer.
     //  Delete should be safe here as no rendering is taking place and will no longer.)
-   // gWndList.clear();
+    gWndList.clear();
     
     // Cleanup the general stuff
     //cleanupAfterImgWindow();
