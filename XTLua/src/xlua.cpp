@@ -427,13 +427,17 @@ void do_during_physics(){
 				
 				xtlua_localNavData();
 				auto finish = std::chrono::high_resolution_clock::now();
-				std::chrono::duration<double, std::milli> elapsed = finish - start;
-				int diff=round(elapsed.count());
-				if(diff<20)
-					std::this_thread::sleep_for(std::chrono::milliseconds(20-diff));//100fps or less
-				else if(diff>30)
+				auto elapsed = finish - start;
+				auto min_frame = std::chrono::milliseconds(20);
+
+				if (elapsed < min_frame)
+					std::this_thread::sleep_for(min_frame - elapsed);//100fps or less
+				else if(elapsed.count() > 30)
 				{
-					printf("warn: xtlua time overflow!=%d\n",diff);
+					int diff = static_cast<int>(
+						std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count()
+						);
+					printf("warn: xtlua time overflow!=%d\n", diff);
 				}
 				
 			}catch(...){

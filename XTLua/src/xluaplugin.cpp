@@ -104,10 +104,14 @@ PLUGIN_API int XPluginStart(
     //strcpy(outName, "XTLua " PLUGINVERSION);
 	//char path_to_me_c[2048];
 	//XPLMGetPluginInfo(XPLMGetMyID(), NULL, path_to_me_c, NULL, NULL);
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 	sprintf(outName, "XTLua %s id%d", PLUGINVERSION, XPLMGetMyID());
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
     //strcpy(outSig, "com.x-plane.xtlua." VERSION);
     strcpy(outDesc, "A minimal scripting environment for aircraft authors with multithreading.");
 	bool isDebugMode=isDebugInstance();	

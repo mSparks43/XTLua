@@ -80,7 +80,7 @@ static int	xlua_geti(void * ref)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();	
-	int retVal=r->m_number_storage;
+	int retVal= static_cast<int>(round(r->m_number_storage));
 	xlua_data_mutex.unlock();
 	return retVal;
 }
@@ -111,7 +111,7 @@ static float xlua_getf(void * ref)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();	
-	float retVal=r->m_number_storage;
+	float retVal= static_cast<float>(r->m_number_storage);
 	xlua_data_mutex.unlock();
 	return retVal;
 }
@@ -174,7 +174,7 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 		return 0;
 	xlua_dref * r = (xlua_dref *) ref;
 	xlua_data_mutex.lock();
-	unsigned long count=0;
+	size_t count=0;
 	assert(r->m_ours);
 	if(values == NULL){
 		count= r->m_array_storage.size();
@@ -185,7 +185,7 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 	//	return 0;
 	count = min(max, (int) r->m_array_storage.size() - offset);
 	for(int i = 0; i < count; ++i)
-		values[i] = r->m_array_storage[i + offset];
+		values[i] = static_cast<int>(round(r->m_array_storage[i + offset]));
 	xlua_data_mutex.unlock();
 	return (int)count;
 }
@@ -225,7 +225,7 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();
-	unsigned long count=0;
+	size_t count=0;
 	if(values == NULL){
 		count=r->m_array_storage.size();
 		xlua_data_mutex.unlock();
@@ -235,7 +235,7 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 	//	return 0;
 	count = min(max, (int) r->m_array_storage.size() - offset);
 	for(int i = 0; i < count; ++i)
-		values[i] = r->m_array_storage[i + offset];
+		values[i] = static_cast<float>(r->m_array_storage[i + offset]);// r->m_array_storage[i + offset];
 	xlua_data_mutex.unlock();
 	return (int)count;
 }
@@ -276,7 +276,7 @@ static int xlua_getvb(void * ref, void * values, int offset, int max)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();
-	unsigned long count = 0;
+	size_t count = 0;
 	if(values == NULL){
 		count=r->m_string_storage.size();
 		xlua_data_mutex.unlock();
@@ -713,7 +713,7 @@ int	xlua_dref_get_dim(xlua_dref * who)
 	unsigned long retVal=0;
 	xlua_data_mutex.lock();
 	if(who->m_ours)
-		retVal=who->m_array_storage.size();
+		retVal= static_cast<unsigned long>(who->m_array_storage.size());
 	else if(who->m_types & xplmType_Data)
 		retVal=0;
 	else if(who->m_index >= 0)
@@ -790,12 +790,12 @@ void			xlua_dref_set_number(xlua_dref * d, double value)
 	{
 		if(d->m_types & xplmType_FloatArray)
 		{
-			float r = value;
+			float r = static_cast<float>(value);
 			XPLMSetDatavf(d->m_dref, &r, d->m_index, 1);
 		}
 		if(d->m_types & xplmType_IntArray)
 		{
-			int r = value;
+			int r = static_cast<int>(round(value));
 			XPLMSetDatavi(d->m_dref, &r, d->m_index, 1);
 		}
 	}
@@ -805,11 +805,13 @@ void			xlua_dref_set_number(xlua_dref * d, double value)
 	}
 	if(d->m_types & xplmType_Float)
 	{
-		XPLMSetDataf(d->m_dref, value);
+		float v = static_cast<float>(value);
+		XPLMSetDataf(d->m_dref, v);
 	}
 	if(d->m_types & xplmType_Int)
 	{
-		XPLMSetDatai(d->m_dref, value);
+		int r = static_cast<int>(round(value));
+		XPLMSetDatai(d->m_dref, r);
 	}
 }
 double			xlua_dref_get_array(xlua_dref * d, int n)
@@ -859,12 +861,12 @@ void			xlua_dref_set_array(xlua_dref * d, int n, double value)
 	}
 	if(d->m_types & xplmType_FloatArray)
 	{
-		float r = value;
+		float r = static_cast<float>(value);
 		XPLMSetDatavf(d->m_dref, &r, n, 1);
 	}
 	if(d->m_types & xplmType_IntArray)
 	{
-		int r = value;
+		int r = static_cast<int>(round(value));
 		XPLMSetDatavi(d->m_dref, &r, n, 1);
 	}
 }
@@ -918,8 +920,6 @@ void			xlua_dref_set_string(xlua_dref * d, const string& value)
 }
 double	xtlua_dref_get_number(xtlua_dref * d)
 {
-	//if(d->m_ours)
-	//	return d->m_number_storage;
 	
 	if(d->m_index >= 0)
 	{
@@ -930,77 +930,40 @@ double	xtlua_dref_get_number(xtlua_dref * d)
 				return r;
 			return 0.0;
 		}
-		/*if(d->m_types & xplmType_IntArray)
-		{
-			int r;
-			if(xtluaDefs.XTGetDatavi(d, &r, d->m_index, 1,d->m_ours))
-				return r;
-			return 0.0;
-		}*/
+
 		return 0.0;
 	}
-	/*if(d->m_types & xplmType_Double)
-	{
-		return xtluaDefs.XTGetDatad(d->m_dref,d->m_ours);
-	}*/
+
 	if(d->m_types & xplmType_Float||d->m_types & xplmType_Int||d->m_types & xplmType_Double)
 	{
 		return xtluaDefs.XTGetDataf(d,d->m_ours);
 	}
-	/*if(d->m_types & xplmType_Int)
-	{
-		return xtluaDefs.XTGetDatai(d->m_dref,d->m_ours);
-	}*/
 	return 0.0;
 }
 
 void			xtlua_dref_set_number(xtlua_dref * d, double value)
 {
-	/*if(d->m_ours)
-	{
-		d->m_number_storage = value;
-		return;
-	}*/
-
 	if(d->m_index >= 0)
 	{
 		if(d->m_types & xplmType_FloatArray||d->m_types & xplmType_IntArray)
 		{
-			/*float r = (float)value;
-			printf("set %f\n",value);*/
-			xtluaDefs.XTSetDatavf(d, value, d->m_index);
+
+			float v = static_cast<float>(value);
+			xtluaDefs.XTSetDatavf(d, v, d->m_index);
 		}
-		/*if(d->m_types & xplmType_IntArray)
-		{
-			int r = value;
-			xtluaDefs.XTSetDatavi(d->m_dref, &r, d->m_index, 1,d->m_ours);
-		}*/
+
 	}
-	/*if(d->m_types & xplmType_Double)
-	{
-		xtluaDefs.XTSetDatad(d->m_dref, value,d->m_ours);
-	}*/
+
 	if(d->m_types & xplmType_Float || d->m_types & xplmType_Double || d->m_types & xplmType_Int)
 	{
-		xtluaDefs.XTSetDataf(d, value,d->m_ours);
+		float v = static_cast<float>(value);
+		xtluaDefs.XTSetDataf(d, v,d->m_ours);
 	}
-	/*if(d->m_types & xplmType_Int)
-	{
-		xtluaDefs.XTSetDatai(d->m_dref, value,d->m_ours);
-	}*/
 }
 
 double			xtlua_dref_get_array(xtlua_dref * d, int n)
 {
 	assert(n >= 0);
-	/*if(d->m_ours)
-	{
-		if(n >= d->m_array_storage.size())
-		return 0.0;
-		//if(n < d->m_array_storage.size())
-		//	return d->m_array_storage[n];
-		//return 0.0;
-	}*/
 	if((d->m_types & xplmType_FloatArray)||(d->m_types & xplmType_IntArray))
 	{
 		float r;
@@ -1008,31 +971,19 @@ double			xtlua_dref_get_array(xtlua_dref * d, int n)
 			return r;
 		return 0.0;
 	}
-	/*if(d->m_types & xplmType_IntArray)
-	{
-		int r;
-		if(xtluaDefs.XTGetDatavi(d->m_dref, &r, n, 1,d->m_ours))
-			return r;
-		return 0.0;
-	}*/
+	
 	return 0.0;
 }
 
 void			xtlua_dref_set_array(xtlua_dref * d, int n, double value)
 {
 	assert(n >= 0);
-	/*(d->m_ours)
-	{
-		if(n < d->m_array_storage.size())
-			d->m_array_storage[n] = value;
-		//return;
-	}*/
-	//printf("set %s to %f types=%d\n",d->m_name.c_str(),value,d->m_types);
+
 	if((d->m_types & xplmType_FloatArray) || (d->m_types & xplmType_IntArray))
 	{
-		//float r = value;
-		//printf("do set %s to %f types=%d\n",d->m_name.c_str(),value,d->m_types);
-		xtluaDefs.XTSetDatavf(d, value, n);
+
+		float v = static_cast<float>(value);
+		xtluaDefs.XTSetDatavf(d, v, n);
 	}
 	/*if(d->m_types & xplmType_IntArray)
 	{
@@ -1179,7 +1130,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		return 0;
 	
 	if(phase == xplm_CommandBegin)
-		me->m_down_time = xtluaDefs.XTGetElapsedTime();
+		me->m_down_time = static_cast<float>(xtluaDefs.XTGetElapsedTime());
 	if(me->m_pre_handler){
 		XTCmd *command =new XTCmd();
 		command->runFunc=me->m_pre_handler;
@@ -1188,7 +1139,7 @@ static int xlua_std_pre_handler(XPLMCommandRef c, XPLMCommandPhase phase, void *
 		
 		command->xluaref=me;
 		
-		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		command->duration= static_cast<float>(xtluaDefs.XTGetElapsedTime()) - me->m_down_time;
 		data_mutex.lock();
 		bool add=true;
 		if(phase!=1)
@@ -1219,14 +1170,14 @@ static int xlua_std_main_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 	
 
 	if(phase == xplm_CommandBegin)
-		me->m_down_time = xtluaDefs.XTGetElapsedTime();
+		me->m_down_time = static_cast<float>(xtluaDefs.XTGetElapsedTime());
 	if(me->m_main_handler){
 		XTCmd *command=new XTCmd();
 		command->runFunc=me->m_main_handler;
 		command->m_func_ref=me->m_main_ref;
 		command->phase=phase;
 		command->xluaref=me;
-		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		command->duration= static_cast<float>(xtluaDefs.XTGetElapsedTime()) - me->m_down_time;
 		data_mutex.lock();
 		bool add=true;
 		if(phase!=1)
@@ -1258,7 +1209,7 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		return 0;
 	
 	if(phase == xplm_CommandBegin)
-		me->m_down_time = xtluaDefs.XTGetElapsedTime();
+		me->m_down_time = static_cast<float>(xtluaDefs.XTGetElapsedTime());
 	if(me->m_post_handler){
 		XTCmd *command = new XTCmd();
 		command->runFunc=me->m_post_handler;
@@ -1267,7 +1218,7 @@ static int xlua_std_post_handler(XPLMCommandRef c, XPLMCommandPhase phase, void 
 		
 		command->xluaref=me;
 		
-		command->duration=xtluaDefs.XTGetElapsedTime() - me->m_down_time;
+		command->duration= static_cast<float>(xtluaDefs.XTGetElapsedTime()) - me->m_down_time;
 		data_mutex.lock();
 		
 		bool add=true;

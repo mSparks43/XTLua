@@ -306,7 +306,7 @@ AudioSampleData *extractData(FILE* fh, const vector<WavTOCEntry> &toc)
 	if (samplesRead <= 0) {
 		goto fail;
 	}
-	asd->AppendSamples(fc.nBlockAlign, static_cast<unsigned>(samplesRead), dbuf);	
+	asd->AppendSamples(static_cast<uint8_t>(fc.nBlockAlign), static_cast<unsigned>(samplesRead), dbuf);
 	return asd;
 fail:
 	free(dbuf);

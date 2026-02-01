@@ -232,12 +232,17 @@ static int XTLuaGetDataRefType(lua_State * L)
 		break;
 	case xlua_array:
 		{
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 			char buf[256];
 			sprintf(buf,"array[%d]",xtlua_dref_get_dim(d));
 			lua_pushstring(L,buf);
+
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 		}
 		break;
 	case xlua_string:
@@ -262,10 +267,15 @@ static int XLuaGetDataRefType(lua_State * L)
 	case xlua_array:
 		{
 			char buf[256];
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 			sprintf(buf,"array[%d]",xlua_dref_get_dim(d));
+
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 			lua_pushstring(L,buf);
 		}
 		break;
@@ -327,8 +337,7 @@ static int XLuaSetNumber(lua_State * L)
 static int XTLuaGetArray(lua_State * L)
 {
 	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
-	double idx = luaL_checknumber(L, 2);	
-	
+	int idx = static_cast<int>(luaL_checknumber(L, 2));
 	lua_pushnumber(L, xtlua_dref_get_array(d,idx));
 	return 1;	
 }
@@ -337,7 +346,8 @@ static int XTLuaGetArray(lua_State * L)
 static int XTLuaSetArray(lua_State * L)
 {
 	xtlua_dref * d = luaL_checkuserdata<xtlua_dref>(L,1,"expected dataref");
-	double idx = luaL_checknumber(L, 2);
+	//double idx = luaL_checknumber(L, 2);
+	int idx = static_cast<int>(luaL_checknumber(L, 2));
 	double v = luaL_checknumber(L, 3);
 	
 	xtlua_dref_set_array(d,idx,v);
@@ -346,8 +356,8 @@ static int XTLuaSetArray(lua_State * L)
 static int XLuaGetArray(lua_State * L)
 {
 	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
-	double idx = luaL_checknumber(L, 2);	
-	
+	//double idx = luaL_checknumber(L, 2);	
+	int idx = static_cast<int>(luaL_checknumber(L, 2));
 	lua_pushnumber(L, xlua_dref_get_array(d,idx));
 	return 1;	
 }
@@ -356,7 +366,8 @@ static int XLuaGetArray(lua_State * L)
 static int XLuaSetArray(lua_State * L)
 {
 	xlua_dref * d = luaL_checkuserdata<xlua_dref>(L,1,"expected dataref");
-	double idx = luaL_checknumber(L, 2);
+	//double idx = luaL_checknumber(L, 2);
+	int idx = static_cast<int>(luaL_checknumber(L, 2));
 	double v = luaL_checknumber(L, 3);
 	
 	xlua_dref_set_array(d,idx,v);
