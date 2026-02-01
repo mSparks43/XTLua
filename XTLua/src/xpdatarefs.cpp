@@ -11,6 +11,7 @@
 // xTLua
 // Modified by Mark Parker on 04/19/2020
 #include <cstdio>
+#include <cmath>
 #include "xpcommands.h"
 #define XPLM200 1
 #include <XPLMUtilities.h>
@@ -80,7 +81,7 @@ static int	xlua_geti(void * ref)
 	xlua_dref * r = (xlua_dref *) ref;
 	assert(r->m_ours);
 	xlua_data_mutex.lock();	
-	int retVal= static_cast<int>(round(r->m_number_storage));
+	int retVal= static_cast<int>(std::round(r->m_number_storage));
 	xlua_data_mutex.unlock();
 	return retVal;
 }
