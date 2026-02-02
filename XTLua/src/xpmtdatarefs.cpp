@@ -512,7 +512,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             if((val[0]->get||allGet)&&!val[0]->set){
 
                 
-                double newVal=XPLMGetDatad(val[0]->ref);
+                double newVal=XPLMGetDataf(val[0]->ref);
                 if(val[0]->type == xplmType_Double){
                     newVal=XPLMGetDatad(val[0]->ref);
                     
@@ -612,7 +612,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                         }
                         else
                         {
-                             if(hasGetUpdate){
+                            if(hasGetUpdate){
                                     val[i]->value=inVals[i-start];
                                     outVals[i-start]=inVals[i-start];
                             }else{
