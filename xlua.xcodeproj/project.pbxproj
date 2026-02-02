@@ -21,7 +21,6 @@
 		F3FF1D322485AD1F00B8336D /* xpmtdatarefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */; };
 		F43091612AF984EA006B9344 /* imgui_starter_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430915D2AF984EA006B9344 /* imgui_starter_window.cpp */; };
 		F43091622AF984EA006B9344 /* imgui4xp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430915E2AF984EA006B9344 /* imgui4xp.cpp */; };
-		F43091652AF98585006B9344 /* fa-solid-900.inc in Sources */ = {isa = PBXBuildFile; fileRef = F43091632AF98585006B9344 /* fa-solid-900.inc */; };
 		F43091682AF98EEC006B9344 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43091672AF98EEC006B9344 /* ApplicationServices.framework */; };
 		F430916B2AF98F7A006B9344 /* ImgFontAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430916A2AF98F7A006B9344 /* ImgFontAtlas.cpp */; };
 		F430916F2AF98FE0006B9344 /* ImgWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F430916E2AF98FE0006B9344 /* ImgWindow.cpp */; };
@@ -52,12 +51,12 @@
 		D60205611CC7CC8C00933688 /* xpfuncs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpfuncs.h; sourceTree = "<group>"; };
 		D60205621CC7CC8C00933688 /* xptimers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xptimers.cpp; sourceTree = "<group>"; };
 		D60205631CC7CC8C00933688 /* xptimers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xptimers.h; sourceTree = "<group>"; };
-		D607B19909A556E400699BC3 /* xlua.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = xlua.xpl; path = /Users/zemsair/Documents/Development/XTLua/deploy/deploy/xlua.xpl; sourceTree = "<absolute>"; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		F3FF1D2F2485AD1F00B8336D /* xpmtdatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatatypes.h; sourceTree = "<group>"; };
 		F3FF1D302485AD1F00B8336D /* xpmtdatarefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xpmtdatarefs.cpp; sourceTree = "<group>"; };
 		F3FF1D312485AD1F00B8336D /* xpmtdatarefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpmtdatarefs.h; sourceTree = "<group>"; };
+		F421FEB52F2FED4C0049CF28 /* mac.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = mac.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		F430915C2AF984EA006B9344 /* imgui4xp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui4xp.h; sourceTree = "<group>"; };
 		F430915D2AF984EA006B9344 /* imgui_starter_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_starter_window.cpp; sourceTree = "<group>"; };
 		F430915E2AF984EA006B9344 /* imgui4xp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui4xp.cpp; sourceTree = "<group>"; };
@@ -165,6 +164,7 @@
 		D607B19A09A556E400699BC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				F421FEB52F2FED4C0049CF28 /* mac.xpl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,7 +204,7 @@
 			);
 			name = xtlua;
 			productName = StarterPlugin;
-			productReference = D607B19909A556E400699BC3 /* xlua.xpl */;
+			productReference = F421FEB52F2FED4C0049CF28 /* mac.xpl */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -256,7 +256,6 @@
 				F430916F2AF98FE0006B9344 /* ImgWindow.cpp in Sources */,
 				F430916B2AF98F7A006B9344 /* ImgFontAtlas.cpp in Sources */,
 				D60205651CC7CC8C00933688 /* module.cpp in Sources */,
-				F43091652AF98585006B9344 /* fa-solid-900.inc in Sources */,
 				D60205681CC7CC8C00933688 /* xpdatarefs.cpp in Sources */,
 				D60205691CC7CC8C00933688 /* xpfuncs.cpp in Sources */,
 				D60205661CC7CC8C00933688 /* xlua.cpp in Sources */,
@@ -480,6 +479,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK/Libraries/Mac",
 				);
+				INSTALL_PATH = xtlua/64;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -501,7 +501,9 @@
 					"-Wl,_XPluginStop",
 					lua_sdk/libluajit_mac.a,
 				);
-				PRODUCT_NAME = xlua;
+				PRODUCT_NAME = mac;
+				SYMROOT = "$(PROJECT_DIR)/build";
+				WRAPPER_EXTENSION = xpl;
 			};
 			name = Debug;
 		};
@@ -515,6 +517,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK/Libraries/Mac",
 				);
+				INSTALL_PATH = xtlua/64;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -536,7 +539,9 @@
 					"-Wl,_XPluginStop",
 					lua_sdk/libluajit_mac.a,
 				);
-				PRODUCT_NAME = xlua;
+				PRODUCT_NAME = mac;
+				SYMROOT = "$(PROJECT_DIR)/build";
+				WRAPPER_EXTENSION = xpl;
 			};
 			name = Release;
 		};
