@@ -173,7 +173,7 @@ static const ImWchar ranges[] = { 0x0020, 0x07FA, //  Latin + Latin Supplement
     };
 void configureImgWindow()
 {
-    XPLMDebugString("AUTOATC: IMGUIXPlugin make_shared\n");
+    XPLMDebugString("XTLua: IMGUIXPlugin make_shared\n");
   ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
   ImGui::CreateContext(ImgWindow::sFontAtlas->mOurAtlas);
   //ImGuiIO& io =
@@ -204,7 +204,7 @@ void configureImgWindow()
   ImFontAtlas glyph_ranges;
 
    
-  XPLMDebugString("AUTOATC: IMGUIXPlugin AddFontFromFileTTF\n");
+  XPLMDebugString("XTLua: IMGUIXPlugin AddFontFromFileTTF\n");
    ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,ranges); //glyph_ranges.GetGlyphRangesCyrillic()fullranges);
   //ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
    
@@ -217,13 +217,13 @@ void configureImgWindow()
     static ImVector<ImWchar> icon_ranges;
     ImFontGlyphRangesBuilder builder;
     // Add all icons that are actually used (they concatenate into one string)
-    XPLMDebugString("AUTOATC: IMGUIXPlugin AddText\n");
+    XPLMDebugString("XTLua: IMGUIXPlugin AddText\n");
     builder.AddText(ICON_FA_TRASH_ALT ICON_FA_SEARCH
                     ICON_FA_EXTERNAL_LINK_SQUARE_ALT
                     ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
                     ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
     builder.BuildRanges(&icon_ranges);
-    XPLMDebugString("AUTOATC: IMGUIXPlugin AddFontFromMemoryCompressedTTF\n");
+    XPLMDebugString("XTLua: IMGUIXPlugin AddFontFromMemoryCompressedTTF\n");
     // Merge the icon font with the text font
     ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
                                                           fa_solid_900_compressed_size,
@@ -234,13 +234,13 @@ void configureImgWindow()
 
  void configureImgWindow_win()
  {
-     XPLMDebugString("AUTOATC: configureImgWindow\n");
+     XPLMDebugString("XTLua: configureImgWindow\n");
     ImgWindow::sFontAtlas = std::make_shared<ImgFontAtlas>();
      ImGui::CreateContext(ImgWindow::sFontAtlas->mOurAtlas);
      ImGuiIO& io = ImGui::GetIO();
      ImFontConfig config;
      //ImFont* font = io.Fonts->AddFontDefault(&config);
-     XPLMDebugString("AUTOATC: AddFontDefault\n");
+     XPLMDebugString("XTLua: AddFontDefault\n");
      config.MergeMode = true;
      /*static const ImWchar this_ranges[] = { 0x0020, 0x00FF, //Latin
        0x0100, 0x07FA, //  + Latin Supplement
@@ -253,14 +253,14 @@ void configureImgWindow()
      //ImFont* font1 = io.Fonts->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", //FONT_SIZE, &config, this_ranges);
      static ImVector<ImWchar> icon_ranges;
      ImFontGlyphRangesBuilder builder;
-     XPLMDebugString("AUTOATC: AddFontFromFileTTF\n");
+     XPLMDebugString("XTLua: AddFontFromFileTTF\n");
      // Add all icons that are actually used (they concatenate into one string)
      builder.AddText(ICON_FA_TRASH_ALT ICON_FA_SEARCH
          ICON_FA_EXTERNAL_LINK_SQUARE_ALT
          ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
          ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
      builder.BuildRanges(&icon_ranges);
-     XPLMDebugString("AUTOATC: AddOldFontFromMemoryCompressedTTF\n");
+     XPLMDebugString("XTLua: AddOldFontFromMemoryCompressedTTF\n");
      // Merge the icon font with the text font
      io.Fonts->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
          fa_solid_900_compressed_size,
@@ -269,7 +269,7 @@ void configureImgWindow()
          icon_ranges.Data);
      
      //io.Fonts->Build();
-     XPLMDebugString("AUTOATC: configureImgWindow done\n");
+     XPLMDebugString("XTLua: configureImgWindow done\n");
  }
 void configureImgWindow_old()
 {
@@ -301,7 +301,7 @@ void configureImgWindow_old()
   ImFontAtlas glyph_ranges;
 
    
-  XPLMDebugString("AUTOATC: AddFontFromFileTTF\n");
+  XPLMDebugString("XTLua: AddFontFromFileTTF\n");
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("Resources/fonts/DejaVuSans.ttf", FONT_SIZE,&config,ranges); //glyph_ranges.GetGlyphRangesCyrillic()fullranges);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/DejaVuSansMono.ttf", FONT_SIZE);
   // ImgWindow::sFontAtlas->AddFontFromFileTTF("./Resources/fonts/Inconsolata.ttf", FONT_SIZE);
@@ -317,7 +317,7 @@ void configureImgWindow_old()
     // Now we merge some icons from the OpenFontsIcons font into the above font
     // (see `imgui/docs/FONTS.txt`)
    config.MergeMode = true;
-   XPLMDebugString("AUTOATC: BuildRanges\n");
+   XPLMDebugString("XTLua: BuildRanges\n");
     // We only read very selectively the individual glyphs we are actually using
     // to safe on texture space
     static ImVector<ImWchar> icon_ranges;
@@ -328,14 +328,14 @@ void configureImgWindow_old()
                     ICON_FA_WINDOW_MAXIMIZE ICON_FA_WINDOW_MINIMIZE
                     ICON_FA_WINDOW_RESTORE ICON_FA_WINDOW_CLOSE);
     builder.BuildRanges(&icon_ranges);
-    XPLMDebugString("AUTOATC: AddFontFromMemoryCompressedTTF\n");
+    XPLMDebugString("XTLua: AddFontFromMemoryCompressedTTF\n");
     // Merge the icon font with the text font
     ImgWindow::sFontAtlas->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
                                                           fa_solid_900_compressed_size,
                                                           FONT_SIZE,
                                                           &config,
                                                           icon_ranges.Data);
-    XPLMDebugString("AUTOATC: configureImgWindow done\n");
+    XPLMDebugString("XTLua: configureImgWindow done\n");
 }
 
 // Undo what we did in configureImgWindow()
@@ -381,7 +381,7 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
     myWinNum(++num_win)             // assign a unique window number
 {
     // Disable reading/writing of "imgui.ini"
-    XPLMDebugString("AutoATC: ImguiWidget\n");
+    XPLMDebugString("XTLua: ImguiWidget\n");
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     guiFunc_ptr = guiFunc;
@@ -401,7 +401,7 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
         // dragging a spot near the window's top
         
     }
-    XPLMDebugString("AutoATC: XPLMCreateFlightLoop\n");
+    XPLMDebugString("XTLua: XPLMCreateFlightLoop\n");
     // Create a flight loop id, but don't schedule it yet
     XPLMCreateFlightLoop_t flDef = {
         sizeof(flDef),                              // structSize
@@ -413,7 +413,7 @@ ImguiWidget::ImguiWidget(int left, int top, int right, int bot,
     
     // Define our own window title
     SetWindowTitle("Imgui v" IMGUI_VERSION " for XTLua");
-    //SetWindowTitle("AutoATC Pad");
+    //SetWindowTitle("XTLua Pad");
     SetWindowResizingLimits(100, 100, 1024, 1024);
     SetVisible(true);
     
@@ -459,10 +459,10 @@ void ImguiWidget::buildInterface() {
 // Outside all rendering we can change things like window mode
 float ImguiWidget::cbFlightLoop(float, float, int, void* inRefcon)
 {
-    XPLMDebugString("AutoATC: cbFlightLoop\n");
+    XPLMDebugString("XTLua: cbFlightLoop\n");
     // refcon is pointer to ImguiWidget
     ImguiWidget& wnd = *reinterpret_cast<ImguiWidget*>(inRefcon);
-    XPLMDebugString("AutoATC: cbFlightLoop 2\n");
+    XPLMDebugString("XTLua: cbFlightLoop 2\n");
     // Has user requested a change in window mode?
     if (wnd.nextWinPosMode >= 0) {
         wnd.SetWindowPositioningMode(wnd.nextWinPosMode);

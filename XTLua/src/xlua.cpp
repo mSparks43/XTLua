@@ -558,13 +558,13 @@ void XTLuaXPluginDisable(void)
 int XTLuaXPluginEnable(void)
 {
 	printf("XTLua active %d\n", XPLMGetMyID());
-	//printf("AUTOATC:IMGUIXPluginEnable\n");
-	//XPLMDebugString("AUTOATC: IMGUIXPluginEnable\n");
+	//printf("XTLua:IMGUIXPluginEnable\n");
+	//XPLMDebugString("XTLua: IMGUIXPluginEnable\n");
 	//IMGGUIXPluginEnable();
-	XPLMDebugString("AUTOATC: xlua_relink_all_drefs\n");
+	XPLMDebugString("XTLua: xlua_relink_all_drefs\n");
 	xlua_relink_all_drefs();
 	active=true;
-	XPLMDebugString("AUTOATC: XTLua active\n");
+	XPLMDebugString("XTLua: XTLua active\n");
 	return 1;
 }
 
