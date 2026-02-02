@@ -1325,6 +1325,10 @@ void			xtlua_dref_cleanup()
 		
 		if(kill->m_dref && kill->m_ours)
 		{
+			//printf("Unregistering %s\n",kill->m_name.c_str());
+			char gBob_debstr2[128];
+			sprintf(gBob_debstr2,"Unregistering s_drefs %s\n",kill->m_name.c_str());
+    		XPLMDebugString(gBob_debstr2);
 			XPLMUnregisterDataAccessor(kill->m_dref);
 		} //never
 		
@@ -1339,8 +1343,14 @@ void			xtlua_dref_cleanup()
 		if(kill->m_ours)
 		{
 			if(kill->m_dref){
-				//printf("Unregistering %s\n",kill->m_name.c_str());
-				XPLMUnregisterDataAccessor(kill->m_dref);	
+				XPLMDataRef other = XPLMFindDataRef(kill->m_name.c_str());
+				if(other){//check it still exists
+					//printf("Unregistering %s\n",kill->m_name.c_str());
+					char gBob_debstr2[128];
+					sprintf(gBob_debstr2,"Unregistering l_drefs %s\n",kill->m_name.c_str());
+					XPLMDebugString(gBob_debstr2);
+					XPLMUnregisterDataAccessor(kill->m_dref);	
+				}
 			}
 		}
 
@@ -1353,13 +1363,15 @@ void			xtlua_dref_cleanup()
 		//if(kill->m_dref && 
 		if(kill->m_ours)
 		{
-			
-
 			XPLMDataRef other = XPLMFindDataRef(kill->m_name.c_str());
 			if(other)
 				printf("Forcibly Unregistering %s\n",kill->m_name.c_str());
 			int i=0;
 			while(other&&i<4){
+				//printf("Dup Unregistering %s\n",kill->m_name.c_str());
+				char gBob_debstr2[128];
+				sprintf(gBob_debstr2,"Dup Unregistering l_drefs %s\n",kill->m_name.c_str());
+				XPLMDebugString(gBob_debstr2);
 				XPLMUnregisterDataAccessor(other);
 				other = XPLMFindDataRef(kill->m_name.c_str());
 				i++;
