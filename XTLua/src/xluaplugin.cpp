@@ -75,7 +75,7 @@ static bool checkdisplayServer(){
 		return true;//probably headless
 	bool retVal=true;
 	if(XQueryExtension(display,"XWAYLAND",&opcode, &event,&error)){
-		XPLMDebugString("ERROR: XWayland support depreciated, please switch to a full xserver\n");
+		XPLMDebugString("ERROR: XWayland support deprecated, please switch to a full xserver\n");
 		retVal=false;
 	}
 	XCloseDisplay(display);
