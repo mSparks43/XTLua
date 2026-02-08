@@ -11,6 +11,7 @@ vscode/
 XTLua/xtlua.vcxproj.user
 deploy/xtlua/64/win.pdb
 XTLua/cmake_install.cmake
+cmake_install.cmake
 
 # Mac OS X
 *.DS_Store
