@@ -142,7 +142,7 @@ int vfmt_pcall(lua_State * L, int dbg, const char * fmt, va_list va)
 	int e = lua_pcall(L, count, 0, dbg);
 	if(e != 0)
 	{
-		printf("%s\n", lua_tostring(L, -1));
+		//printf("%s\n", lua_tostring(L, -1));
 		lua_pop(L,-1);
 	}
 	return e;
