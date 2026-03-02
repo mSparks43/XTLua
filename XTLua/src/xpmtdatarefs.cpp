@@ -604,7 +604,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                     if(hasGetUpdate)
                         XPLMGetDatavf(val[0]->ref,inVals.data(),(int)start,(int)length);
                     
-                    for(long i=start;i<end;i++){
+                    for(size_t i=start;i<end;i++){
                         if(val[i]->set){
                                 outVals[i-start]=val[i]->value;
                                 val[i]->set=false;
