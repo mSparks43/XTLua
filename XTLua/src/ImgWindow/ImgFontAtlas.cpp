@@ -37,8 +37,8 @@
 
 ImgFontAtlas::ImgFontAtlas():
     mTextureBound(false),
-    mOurAtlas(nullptr),
-    mGLTextureNum(0)
+    mGLTextureNum(0),
+    mOurAtlas(nullptr)
 {
     mOurAtlas = new ImFontAtlas;
 }
