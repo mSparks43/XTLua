@@ -432,12 +432,10 @@ void do_during_physics(){
 
 				if (elapsed < min_frame)
 					std::this_thread::sleep_for(min_frame - elapsed);//100fps or less
-				else if(elapsed.count() > 30)
+				else 
 				{
-					int diff = static_cast<int>(
-						std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count()
-						);
-					printf("warn: xtlua time overflow!=%d\n", diff);
+					int diff = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count());
+					if(diff > 30) printf("warn: xtlua time overflow!=%d\n", diff);
 				}
 				
 			}catch(...){
