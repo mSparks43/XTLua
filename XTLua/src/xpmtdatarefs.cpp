@@ -1296,7 +1296,7 @@ void XTLuaDataRefs::XTSetDatab(
             printf("setting current FMS target to %s\n",value.c_str());
             for(size_t i=0;i<fPlan.size();i++){
                 string cName=fPlan[i][7].get<std::string>();
-                printf("current %d is %s\n",i,cName.c_str());
+                printf("current %zu is %s\n",i,cName.c_str());
                 if(cName==value){
                     XPLMSetDestinationFMSEntry(i);
                     return;
