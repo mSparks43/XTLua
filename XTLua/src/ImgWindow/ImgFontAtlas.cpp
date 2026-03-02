@@ -36,8 +36,8 @@
 #include <XPLMGraphics.h>
 
 ImgFontAtlas::ImgFontAtlas():
-    mOurAtlas(nullptr),
     mTextureBound(false),
+    mOurAtlas(nullptr),
     mGLTextureNum(0)
 {
     mOurAtlas = new ImFontAtlas;

@@ -565,7 +565,7 @@ static int XTLuaCreateTimer(lua_State * L)
 {
 	notify_cb_t * helper = wrap_lua_func(L, -1);
 	if(helper == NULL)
-		return NULL;
+		return 0;
 	
 	xlua_timer * t = xtlua_create_timer(timer_cb, helper);
 	assert(t);
@@ -597,7 +597,7 @@ static int XLuaCreateTimer(lua_State * L)
 {
 	notify_cb_t * helper = wrap_lua_func(L, -1);
 	if(helper == NULL)
-		return NULL;
+		return 0;
 	
 	xlua_timer * t = xlua_create_timer(timer_cb, helper);
 	assert(t);

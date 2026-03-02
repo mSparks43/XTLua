@@ -558,7 +558,7 @@ void XTLuaDataRefs::updateFloatDataRefs(){
                 if(hasGetUpdate)
                     XPLMGetDatavi(val[0]->ref,inVals.data(),0,(int)size);
                 
-                for(long i=0;i<size;i++){
+                for(size_t i=0;i<size;i++){
                     if(val[i]->set){
                             outVals[i]= static_cast<int>(std::lround(val[i]->value));
                             val[i]->set=false;
@@ -583,17 +583,17 @@ void XTLuaDataRefs::updateFloatDataRefs(){
             }
             else
             {
-                for(long nz=0;nz<size;nz+=32){
-                    long start=nz;
-                    long end=nz+32;
+                for(size_t nz=0;nz<size;nz+=32){
+                    size_t start=nz;
+                    size_t end=nz+32;
                     if(end>size)
-                        end=(long)size;
+                        end=size;
                         
-                    long length=end-start;   
+                    size_t length=end-start;   
                     std::vector<float> inVals(length); 
                     std::vector<float> outVals(length);
 
-                    for(long i=start;i<end;i++){
+                    for(size_t i=start;i<end;i++){
                         if(val[i]->get||allGet){
                             hasGetUpdate=true;
                         }
@@ -1249,8 +1249,9 @@ int XTLuaCameraFunc(
     //printf("XTLua Cam Control %f %f %f %f %f\n",camData[0],camData[1],camData[2],camData[3],camData[4]);
     /* Return 0 to indicate we do not want to keep controlling the camera. */
     int retVal=wantsCamera;
-    if(retVal==0)
+    if(retVal==0){
         controllingCam=false;
+    }
 	return retVal;
 }
 void XTLuaDataRefs::XTSetDatab(
@@ -1293,7 +1294,7 @@ void XTLuaDataRefs::XTSetDatab(
             json fPlan=json::parse(incomingFMSString.c_str());
 
             printf("setting current FMS target to %s\n",value.c_str());
-            for(int i=0;i<fPlan.size();i++){
+            for(size_t i=0;i<fPlan.size();i++){
                 string cName=fPlan[i][7].get<std::string>();
                 printf("current %d is %s\n",i,cName.c_str());
                 if(cName==value){
@@ -1475,11 +1476,12 @@ void XTLuaDataRefs::XTSetDatavf(
   
     if(floatdataRefs.find(name)!=floatdataRefs.end()){
         std::vector<XTLuaArrayFloat*> val=floatdataRefs[name];
-        if(index<val.size()){
+        if(index<(int)val.size()){
             if(!d->m_ours){
-                if(val[index]->value!=inValue)
+                if(val[index]->value!=inValue){
                     val[index]->set=true;
                     changeddataRefs[name]=val;
+                }
             }
             else{
                 xlua_dref_set_array(d->local_dref,index,inValue);

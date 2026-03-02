@@ -185,7 +185,7 @@ static int xlua_getvi(void * ref, int * values, int offset, int max)
 	//if(offset >= r->m_array_storage.size())
 	//	return 0;
 	count = min(max, (int) r->m_array_storage.size() - offset);
-	for(int i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 		values[i] = static_cast<int>(round(r->m_array_storage[i + offset]));
 	xlua_data_mutex.unlock();
 	return (int)count;
@@ -235,7 +235,7 @@ static int xlua_getvf(void * ref, float * values, int offset, int max)
 	//if(offset >= r->m_array_storage.size())
 	//	return 0;
 	count = min(max, (int) r->m_array_storage.size() - offset);
-	for(int i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 		values[i] = static_cast<float>(r->m_array_storage[i + offset]);// r->m_array_storage[i + offset];
 	xlua_data_mutex.unlock();
 	return (int)count;
@@ -286,7 +286,7 @@ static int xlua_getvb(void * ref, void * values, int offset, int max)
 	//if(offset >= r->m_string_storage.size())
 	//	return 0;
 	count = min(max, (int) r->m_string_storage.size() - offset);
-	for(int i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 		dst[i] = r->m_string_storage[i + offset];
 	xlua_data_mutex.unlock();
 	return (int)count;
@@ -822,7 +822,7 @@ double			xlua_dref_get_array(xlua_dref * d, int n)
 	{
 		xlua_data_mutex.lock();
 		double retVal=0.0;
-		if(n < d->m_array_storage.size())
+		if(n < (int)d->m_array_storage.size())
 			retVal=d->m_array_storage[n];
 		//printf("get array %d=%f\n",n,retVal);	
 		xlua_data_mutex.unlock();
@@ -851,7 +851,7 @@ void			xlua_dref_set_array(xlua_dref * d, int n, double value)
 	if(d->m_ours)
 	{
 		xlua_data_mutex.lock();
-		if(n < d->m_array_storage.size()){
+		if(n < (int)d->m_array_storage.size()){
 			if(value!=d->m_array_storage[n])
 				xlua_dref_changed(d);
 			//printf("set array %d=%f\n",n,value);	
@@ -888,8 +888,8 @@ string			xlua_dref_get_string(xlua_dref * d)
 		{
 			vector<char>	buf(l);
 			l = XPLMGetDatab(d->m_dref, &buf[0], 0, l);
-			assert(l <= buf.size());
-			if(l == buf.size())
+			assert(l <= (int)buf.size());
+			if(l == (int)buf.size())
 			{
 				return string(buf.begin(),buf.end());
 			}
@@ -1021,9 +1021,9 @@ string			xtlua_dref_get_string(xtlua_dref * d)
 		{
 			vector<char>	buf(l);
 			l = xtluaDefs.XTGetDatab(d, &buf[0], 0, l,d->m_ours);
-			assert(l <= buf.size());
+			assert(l <= (int)buf.size());
 			//printf("get string local returned %d\n",l);
-			if(l == buf.size())
+			if(l == (int)buf.size())
 			{
 				string retVal=string(buf.begin(),buf.end());
 				//printf("returning %s\n",retVal.c_str());

@@ -234,7 +234,7 @@ static void loadXTScripts(){
 	printf("%s\n",init_script_path.c_str());
 
 	
-	for(int i=0;i<script_paths.size();i++)
+	for(int i=0;i<static_cast<int>(script_paths.size());i++)
 	{
 		
 			printf(" loading %s\n",script_paths[i].c_str());
@@ -389,7 +389,7 @@ void do_during_physics(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	while(liveThread&&run){
-		bool waitSleep=false;
+	
 
 		if(active&&!dirtyXTScripts){
 			try{
@@ -403,10 +403,10 @@ void do_during_physics(){
 				}
 				xtlua_do_timers_for_time(xlua_get_simulated_time(),xlua_ispaused());
 				std::vector<string> msgItems=get_runMessages();
-				waitSleep=false;
+
 				for(string item:msgItems){
 						printf("XTLua:do threaded callout %s\n",item.c_str());
-						waitSleep=true;
+
 						for(vector<module *>::iterator m = g_modules.begin(); m != g_modules.end(); ++m)
 							(*m)->do_callout(item.c_str());
 					}
