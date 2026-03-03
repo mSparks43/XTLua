@@ -1298,7 +1298,7 @@ void XTLuaDataRefs::XTSetDatab(
                 string cName=fPlan[i][7].get<std::string>();
                 printf("current %zu is %s\n",i,cName.c_str());
                 if(cName==value){
-                    XPLMSetDestinationFMSEntry(i);
+                    XPLMSetDestinationFMSEntry((int)i);
                     return;
                 }
             }
