@@ -78,7 +78,7 @@ static int traceback(lua_State * L)
 	luaL_traceback(L, L, lua_tostring(L, -1), 2);
 
 	std::string err = std::string(lua_tostring(L, -1)) + "\n";
-    XPLMDebugString(err.c_str());
+    //XPLMDebugString(err.c_str());
 	lua_getfield(L, LUA_GLOBALSINDEX, "debug");
 	lua_getfield(L, -1, "traceback");
 	lua_pushvalue(L, 1);
@@ -105,8 +105,8 @@ static void setup_std_vars(lua_State * L, int dbg)
 	 lua_getfield(L, LUA_GLOBALSINDEX, "setup_callback_var");
 	 //fmt_pcall(L,dbg,"sf","SIM_PERIOD",XPLMGetDataf(g_sim_period));
  	 fmt_pcall(L,dbg,"sf","SIM_PERIOD",0.02);
-	 lua_getfield(L, LUA_GLOBALSINDEX, "setup_callback_var");
-	 fmt_pcall(L,dbg,"si","IN_REPLAY",XPLMGetDatai(g_replay_active) != 0 ?  1 : 0);
+	 //lua_getfield(L, LUA_GLOBALSINDEX, "setup_callback_var");
+	 //fmt_pcall(L,dbg,"si","IN_REPLAY",XPLMGetDatai(g_replay_active) != 0 ?  1 : 0);
 }	
 
 int fmt_pcall(lua_State * L, int dbg, const char * fmt, ...)
