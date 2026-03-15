@@ -25,7 +25,7 @@ bool file_exists(const std::string &name)
 	}
 bool isDebugInstance(){
 
-    XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
+   /* XPLMEnableFeature("XPLM_USE_NATIVE_PATHS", 1);
 	char buf[2048];
 	char dirchar = *XPLMGetDirectorySeparator();
 	XPLMGetPluginInfo(XPLMGetMyID(), NULL, buf, NULL, NULL);
@@ -41,7 +41,8 @@ bool isDebugInstance(){
 	*slash = 0;
 	printf("XTLua: buf now: %s\n", buf);
 	strcat(buf, "xtlua_debugging.txt");
-	return  file_exists(buf);
+	return  file_exists(buf);*/
+	return false;
 }
 	
 #if IBM
