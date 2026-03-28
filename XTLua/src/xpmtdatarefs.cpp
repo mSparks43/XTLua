@@ -328,6 +328,9 @@ void XTLuaDataRefs::updateNavDataRefs(){
     currentDisplayedEntry=dVdata.dump();
    // printf("currentView XPLMGetDisplayedFMSEntry=%d\n",currentView);
     json nVdata =json::array();
+    float lastoutLat;
+    float lastoutLon;
+    int lastoutAltitude;
     int count=0;
     for(int i=0;i<entries;i++){
           XPLMNavType         outType;
@@ -348,7 +351,7 @@ void XTLuaDataRefs::updateNavDataRefs(){
               char                outName[256]={0};    
               char                outReg[1]={0};
               XPLMGetNavAidInfo(outRef,&outType2,&outLatitude,&outLongitude,&outHeight,&outFrequency,&outHeading,outID,outName,outReg);
-             // printf("getting XPLMGetNavAidInfo %d=%d, %d,%d ,%s\n",i,outRef,outType,outFrequency,outID); 
+              //printf("getting XPLMGetNavAidInfo %d=%d, %d,%d ,%s\n",i,outRef,outType,outFrequency,outID); 
               double latDiff=outLatitude-outLat;
               if(latDiff>180)
                 latDiff-=360;
@@ -361,19 +364,33 @@ void XTLuaDataRefs::updateNavDataRefs(){
                 lonDiff+=360; 
               if(latDiff>-1 && latDiff < 1 && lonDiff>-1 && lonDiff < 1) { 
                 nVdata[count]=json::array({outRef,outType,outFrequency,outHeading,outLatitude,outLongitude,string(outName),string(outID),outAltitude,(i==currentIndex)});
+                lastoutLat=outLatitude;
+                lastoutLon=outLongitude;
+                lastoutAltitude=outAltitude;
               }
               else
               {
                  char val[256];
                 sprintf(val,"%f %f",latDiff,lonDiff);
                  nVdata[count]=json::array({outRef,outType,0,0,outLat,outLon,string("latlon"),string("latlon"),outAltitude,(i==currentIndex)});
+                 lastoutLat=outLat;
+                lastoutLon=outLon;
+                lastoutAltitude=outAltitude;
               }
-              
               count++;
           }
           else{
-              nVdata[count]=json::array({outRef,outType,0,0,outLat,outLon,string("latlon"),string(outID),outAltitude,(i==currentIndex)});
-              count++;
+                //printf("getting XPLMGetNavAidInfo %d=%d, %d %f,%f ,%s\n",i,outRef,outType,outLat,outLon,outID); 
+              if (!std::isnan(outLat)&&!std::isnan(outLon)) {  
+                nVdata[count]=json::array({outRef,outType,0,0,outLat,outLon,string("latlon"),string(outID),outAltitude,(i==currentIndex)});
+                count++;
+                lastoutLat=outLat;
+                lastoutLon=outLon;
+                lastoutAltitude=outAltitude;
+              } else{
+                nVdata[count]=json::array({outRef,outType,0,0,lastoutLat,lastoutLon,string("latlon"),string(outID),lastoutAltitude,(i==currentIndex)});
+                count++;
+              }
           }
     }
     
