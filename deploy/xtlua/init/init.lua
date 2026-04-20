@@ -172,30 +172,34 @@ end
 --------------------------------------------------------------------------------
 
 function make_command_obj(in_cmd, in_name)
+	print("make_command_obj ")
 	return { 
 		start = function(self)
+		
 			if self.cmd == nil then
 				self.cmd = XLuaFindCommand(self.name)
 				if self.cmd == nil then
-					error("Unable to find command:"..name)
+					error("Unable to find command:"..self.name)
 				end
 			end
 			XLuaCommandStart(self.cmd)
 		end,
 		stop = function(self)
+			
 			if self.cmd == nil then
 				self.cmd = XLuaFindCommand(self.name)
 				if self.cmd == nil then
-					error("Unable to find command:"..name)
+					error("Unable to find command:"..self.name)
 				end
 			end
 			XLuaCommandStop(self.cmd)
 		end,
 		once = function(self)
+
 			if self.cmd == nil then
 				self.cmd = XLuaFindCommand(self.name)
 				if self.cmd == nil then
-					error("Unable to find command:"..name)
+					error("Unable to find command:"..self.name)
 				end
 			end
 			XLuaCommandOnce(self.cmd)
@@ -323,7 +327,7 @@ function namespace_len(table)
 	for _ in namespace_ipairs(table) do count = count + 1 end
 	return count
 end
-  
+
 
 function namespace_pairs(table, key, value)
 	local function namespace_next(table, index)
@@ -478,7 +482,7 @@ function run_module_in_namespace(fn)
 	n.run_after_time = run_after_time
 	n.run_at_interval = run_at_interval
 	n.dofile = get_run_file_in_namespace(n)
-	n.real_table = get_real_table_in_namespace(n) 
+	n.real_table = get_real_table_in_namespace(n)
 	n.raw_table = get_raw_table_in_namespace(n)
 	
 	setfenv(fn,n)
